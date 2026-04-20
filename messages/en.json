@@ -1,0 +1,238 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "products": "Products",
+    "projects": "Projects",
+    "news": "News",
+    "contact": "Contact",
+    "getQuote": "Get a Quote",
+    "salesTeam": "Sales Team"
+  },
+  "home": {
+    "hero": {
+      "title": "Premium Plywood for Global Markets",
+      "subtitle": "Sustainably harvested. Precision-engineered. Architecturally defined.",
+      "viewProducts": "View Products",
+      "ourProcess": "Our Process"
+    },
+    "about": {
+      "badge": "Est. 1974",
+      "title": "Engineered for Architecture",
+      "description": "Woodland is a premium manufacturer of architectural-grade plywood, supplying specifiers, contractors, and export distributors in over 42 global markets.",
+      "legacyTitle": "Half a century of precision",
+      "legacyDescription": "Since 1974, Woodland has operated at the intersection of forestry science and industrial design—producing substrates that architects and engineers trust.",
+      "stat1Value": "42+",
+      "stat1Label": "Export markets",
+      "stat2Value": "1.2M",
+      "stat2Label": "SqM annual capacity"
+    },
+    "featuredProducts": {
+      "title": "Featured Products",
+      "subtitle": "Engineered substrates for demanding applications",
+      "viewAll": "View All Products"
+    },
+    "whyChooseUs": {
+      "title": "Why Specify Woodland",
+      "items": {
+        "eco": {
+          "title": "Eco-Certified",
+          "description": "FSC & PEFC certified timber from responsibly managed forests."
+        },
+        "precision": {
+          "title": "Precision Milling",
+          "description": "0.1mm tolerance control across all production lines."
+        },
+        "quality": {
+          "title": "Quality Lab",
+          "description": "24-point in-house testing protocol for every batch."
+        },
+        "logistics": {
+          "title": "Global Logistics",
+          "description": "Direct export to 42+ markets with full customs documentation."
+        }
+      }
+    },
+    "projects": {
+      "title": "Projects Showcase",
+      "subtitle": "Woodland in the field",
+      "viewAll": "View All Projects"
+    },
+    "news": {
+      "title": "Latest News",
+      "subtitle": "Industry insights and company updates",
+      "readMore": "Read More",
+      "viewAll": "View All News"
+    },
+    "cta": {
+      "title": "Ready to Source Premium Plywood?",
+      "subtitle": "Contact our export team for pricing, samples, and technical documentation.",
+      "button": "Contact Export Team"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Architecturally Defined",
+      "subtitle": "Est. 1974",
+      "description": "From raw material to masterpiece — precision-engineered plywood for global architecture."
+    },
+    "vision": {
+      "title": "Vision",
+      "description": "To be the world's most trusted architectural timber brand — where material science meets design ambition."
+    },
+    "mission": {
+      "title": "Mission",
+      "description": "We manufacture precision-engineered plywood substrates that enable architects to realise bold, lasting structures with sustainable materials."
+    },
+    "values": {
+      "title": "Core Values",
+      "sustainability": {
+        "title": "Sustainability",
+        "description": "FSC & PEFC certified. Carbon-tracked supply chain."
+      },
+      "quality": {
+        "title": "Quality",
+        "description": "GRADE A+ production with 24-point QA protocol."
+      },
+      "export": {
+        "title": "Export Excellence",
+        "description": "Direct logistics to 42+ markets worldwide."
+      }
+    },
+    "history": {
+      "title": "Our History",
+      "milestones": {
+        "1974": {
+          "title": "Founding Roots",
+          "description": "Established as a regional sawmill in the Pacific Northwest, Woodland began with a vision to supply premium-grade softwood to local architects."
+        },
+        "1998": {
+          "title": "Global Reach",
+          "description": "Woodland expanded operations to serve international markets, establishing distribution networks across Europe and Asia-Pacific."
+        },
+        "2024": {
+          "title": "Digital Precision",
+          "description": "Launched AI-driven quality inspection and real-time supply chain tracking for all global export orders."
+        }
+      }
+    },
+    "gallery": {
+      "title": "Manufacturing Floor"
+    }
+  },
+  "products": {
+    "hero": {
+      "title": "Architectural Timber",
+      "subtitle": "Industrial-grade plywood engineered for demanding applications"
+    },
+    "filters": {
+      "title": "Filter",
+      "type": "Filter by Type",
+      "thickness": "Thickness (mm)",
+      "application": "Application",
+      "support": "Technical Support",
+      "downloadSpec": "Download Spec Sheet"
+    },
+    "sort": {
+      "label": "Sort by",
+      "newest": "Newest",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low"
+    },
+    "results": "products found",
+    "viewDetails": "View Details",
+    "noProducts": "No products found matching your filters.",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "productDetail": {
+    "contactQuote": "Contact for Quote",
+    "downloadCatalog": "Download Catalog",
+    "availability": "Availability",
+    "inStock": "In Stock",
+    "certification": "Certification",
+    "technicalData": {
+      "title": "Technical Data",
+      "subtitle": "Precision Specifications",
+      "attribute": "Attribute",
+      "specification": "Specification",
+      "tolerance": "Tolerance",
+      "standard": "Standard"
+    },
+    "applications": {
+      "title": "Designed for Structural Excellence",
+      "subtitle": "Applications"
+    },
+    "cta": {
+      "title": "Scale Your Next Build",
+      "subtitle": "Request a sample kit or full specification package from our export team.",
+      "button": "Request Sample Kit"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Architectural Partnerships",
+      "subtitle": "Contact our technical team for bespoke solutions and export documentation."
+    },
+    "form": {
+      "title": "Get in Touch",
+      "fullName": "Full Name",
+      "workEmail": "Work Email",
+      "phone": "Phone Number",
+      "company": "Company / Firm",
+      "message": "Message",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "successTitle": "Message Sent",
+      "successMessage": "Thank you. Our export team will respond within 24 hours.",
+      "errorMessage": "Something went wrong. Please try again."
+    },
+    "info": {
+      "headquarters": "Headquarters",
+      "address": "882 Timberline Industrial Way, Sustainable District, OR 97201",
+      "phone": "Phone",
+      "email": "Email"
+    },
+    "certifications": "Certifications & Standards"
+  },
+  "salesTeam": {
+    "hero": {
+      "title": "Our Sales Architects",
+      "subtitle": "Expert guidance from specification to delivery — our team bridges technical knowledge with global logistics."
+    },
+    "contact": {
+      "directLine": "Direct Line",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "zalo": "Zalo"
+    },
+    "support": {
+      "title": "Technical Deep Dive?",
+      "subtitle": "Connect with our engineering team for specification support and custom solutions.",
+      "button": "Contact Engineering"
+    }
+  },
+  "footer": {
+    "description": "Premium architectural plywood manufacturer supplying global markets since 1974.",
+    "navigation": "Navigation",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "cookies": "Cookies",
+    "copyright": "© 2024 Woodland Industrial. All rights reserved.",
+    "newsletter": {
+      "title": "Industry Updates",
+      "placeholder": "your@email.com",
+      "button": "Subscribe"
+    }
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "viewAll": "View All",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "backToProducts": "Back to Products"
+  }
+}

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WOODLAND | Products Listing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&amp;family=Manrope:wght@200;300;400;500;600&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#331917",
+                      "surface-bright": "#fbf9f8",
+                      "on-primary-fixed-variant": "#5e3f3b",
+                      "primary-container": "#4b2e2b",
+                      "inverse-on-surface": "#f3f0f0",
+                      "tertiary": "#22211b",
+                      "outline": "#827472",
+                      "surface-container-high": "#eae8e7",
+                      "on-error": "#ffffff",
+                      "on-surface": "#1b1c1c",
+                      "secondary-container": "#b9ead9",
+                      "surface-container-lowest": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#e4e2e1",
+                      "on-tertiary-fixed": "#1d1c16",
+                      "tertiary-fixed": "#e7e2d8",
+                      "on-secondary-fixed": "#002019",
+                      "on-background": "#1b1c1c",
+                      "background": "#fbf9f8",
+                      "on-error-container": "#93000a",
+                      "surface-dim": "#dcd9d9",
+                      "on-surface-variant": "#504443",
+                      "tertiary-container": "#38362f",
+                      "surface-container-low": "#f5f3f2",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#e4e2e1",
+                      "inverse-surface": "#303030",
+                      "secondary": "#396759",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#be9590",
+                      "outline-variant": "#d4c3c0",
+                      "on-primary-fixed": "#2d1512",
+                      "on-tertiary-fixed-variant": "#494740",
+                      "surface-container": "#f0eded",
+                      "primary-fixed": "#ffdad6",
+                      "secondary-fixed": "#bceddc",
+                      "primary-fixed-dim": "#e8bcb7",
+                      "secondary-fixed-dim": "#a0d1c0",
+                      "on-secondary-container": "#3d6b5e",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#204f42",
+                      "surface": "#fbf9f8",
+                      "inverse-primary": "#e8bcb7",
+                      "on-tertiary-container": "#a29e96",
+                      "surface-tint": "#785652",
+                      "tertiary-fixed-dim": "#cac6bd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Epilogue"],
+                      "body": ["Manrope"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    vertical-align: middle
+    }
+.glass-header {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px)
+    }
+.grain-texture::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCNTX5qq9Ic9g4ci0-S3KS0j-wFF4_R-p-LtQG_WkH-CC7HFfNio-6JvA3IKrS_fAHCQ8IdR4i0fSWtksi7wkaZxkp0-0gXUFHiuXH97sq9909EGyARQ1vNAmLYQPsNpS33xzPEorJST7E765zccs5EtypUw7nuKyOcfh1bajx1IbnWODAw6Ec22DzThrEswx9OW2JTIlAAJnPf4uYIDoTYahz8xF9LzD13wEh0BFhwNJHRLUK8bGNvcQ-gt0qYM_sClxwlOeIL2HNr)
+    }</style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-xl shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-[1920px] mx-auto bg-stone-100/10 backdrop-saturate-150">
+<div class="text-2xl font-black tracking-tighter text-stone-900 dark:text-stone-50 font-headline">
+                WOODLAND
+            </div>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="text-stone-500 dark:text-stone-400 font-medium font-['Epilogue'] font-bold uppercase tracking-widest text-sm hover:text-stone-900 dark:hover:text-stone-50 transition-colors duration-500 ease-in-out" href="#">Home</a>
+<a class="text-stone-500 dark:text-stone-400 font-medium font-['Epilogue'] font-bold uppercase tracking-widest text-sm hover:text-stone-900 dark:hover:text-stone-50 transition-colors duration-500 ease-in-out" href="#">About</a>
+<a class="text-stone-900 dark:text-stone-50 border-b-2 border-stone-800 dark:border-stone-200 pb-1 font-['Epilogue'] font-bold uppercase tracking-widest text-sm" href="#">Products</a>
+<a class="text-stone-500 dark:text-stone-400 font-medium font-['Epilogue'] font-bold uppercase tracking-widest text-sm hover:text-stone-900 dark:hover:text-stone-50 transition-colors duration-500 ease-in-out" href="#">Projects</a>
+<a class="text-stone-500 dark:text-stone-400 font-medium font-['Epilogue'] font-bold uppercase tracking-widest text-sm hover:text-stone-900 dark:hover:text-stone-50 transition-colors duration-500 ease-in-out" href="#">News</a>
+<a class="text-stone-500 dark:text-stone-400 font-medium font-['Epilogue'] font-bold uppercase tracking-widest text-sm hover:text-stone-900 dark:hover:text-stone-50 transition-colors duration-500 ease-in-out" href="#">Contact</a>
+</nav>
+<div class="flex items-center space-x-6">
+<span class="material-symbols-outlined text-stone-900 dark:text-stone-50 cursor-pointer scale-100 active:scale-95 duration-300">language</span>
+<button class="bg-primary text-on-primary px-6 py-2.5 font-headline font-bold uppercase tracking-widest text-xs scale-100 active:scale-95 duration-300 hover:bg-secondary transition-colors duration-500 ease-in-out">Get a Quote</button>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-20 max-w-[1920px] mx-auto px-8 lg:px-12">
+<!-- Hero Title Section -->
+<section class="mb-20">
+<h1 class="font-headline font-black text-6xl md:text-8xl lg:text-9xl tracking-tighter text-primary leading-[0.85] mb-8">
+                ARCHITECTURAL<br/>TIMBER.
+            </h1>
+<p class="font-body text-xl text-on-surface-variant max-w-2xl font-light">
+                Premium industrial-grade plywood and veneers, engineered for high-performance architectural applications and global infrastructure projects.
+            </p>
+</section>
+<div class="flex flex-col lg:flex-row gap-16">
+<!-- Sidebar Filters -->
+<aside class="w-full lg:w-72 flex-shrink-0">
+<div class="sticky top-32">
+<div class="mb-12">
+<h3 class="font-headline font-bold uppercase tracking-widest text-xs mb-6 text-outline">Filter By Type</h3>
+<div class="space-y-4">
+<label class="flex items-center group cursor-pointer">
+<input class="w-4 h-4 border-outline-variant rounded-sm bg-surface-container-low text-secondary focus:ring-secondary" type="checkbox"/>
+<span class="ml-3 font-label text-sm uppercase tracking-wide text-on-surface group-hover:text-primary transition-colors">Film Faced</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="w-4 h-4 border-outline-variant rounded-sm bg-surface-container-low text-secondary focus:ring-secondary" type="checkbox"/>
+<span class="ml-3 font-label text-sm uppercase tracking-wide text-on-surface group-hover:text-primary transition-colors">Commercial</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="w-4 h-4 border-outline-variant rounded-sm bg-surface-container-low text-secondary focus:ring-secondary" type="checkbox"/>
+<span class="ml-3 font-label text-sm uppercase tracking-wide text-on-surface group-hover:text-primary transition-colors">Birch Premium</span>
+</label>
+</div>
+</div>
+<div class="mb-12">
+<h3 class="font-headline font-bold uppercase tracking-widest text-xs mb-6 text-outline">Thickness (mm)</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="py-2 border border-outline-variant text-xs font-label uppercase hover:bg-primary-container hover:text-on-primary-container transition-all">12mm</button>
+<button class="py-2 border border-outline-variant text-xs font-label uppercase hover:bg-primary-container hover:text-on-primary-container transition-all">18mm</button>
+<button class="py-2 border border-outline-variant text-xs font-label uppercase hover:bg-primary-container hover:text-on-primary-container transition-all">21mm</button>
+<button class="py-2 border border-outline-variant text-xs font-label uppercase hover:bg-primary-container hover:text-on-primary-container transition-all">24mm</button>
+</div>
+</div>
+<div class="mb-12">
+<h3 class="font-headline font-bold uppercase tracking-widest text-xs mb-6 text-outline">Application</h3>
+<ul class="space-y-3">
+<li class="font-label text-sm text-on-surface-variant hover:text-primary cursor-pointer transition-colors">Concrete Formwork</li>
+<li class="font-label text-sm text-on-surface-variant hover:text-primary cursor-pointer transition-colors">Structural Roofing</li>
+<li class="font-label text-sm text-on-surface-variant hover:text-primary cursor-pointer transition-colors">Industrial Flooring</li>
+<li class="font-label text-sm text-on-surface-variant hover:text-primary cursor-pointer transition-colors">Cabinetry &amp; Joinery</li>
+</ul>
+</div>
+<div class="p-6 bg-primary-container relative grain-texture overflow-hidden">
+<div class="relative z-10">
+<h4 class="font-headline text-on-primary font-bold text-lg mb-2">TECHNICAL SUPPORT</h4>
+<p class="text-on-primary-container text-xs mb-4">Download our structural load data sheets for project specs.</p>
+<span class="material-symbols-outlined text-on-primary">download</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Product Grid -->
+<div class="flex-grow">
+<div class="flex justify-between items-end mb-12 pb-6 border-b border-outline-variant/10">
+<div class="font-label text-xs uppercase tracking-tighter text-outline">Showing 24 Results / Engineered Grade A</div>
+<div class="flex items-center space-x-4">
+<span class="font-label text-xs uppercase text-outline">Sort By:</span>
+<select class="bg-transparent border-none font-headline font-bold uppercase tracking-widest text-xs focus:ring-0 p-0 pr-8">
+<option>Latest Release</option>
+<option>Grade: High to Low</option>
+<option>Density</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
+<!-- Product Card 1 -->
+<div class="group">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" data-alt="Close-up of high-quality dark film faced plywood sheet showing detailed wood grain texture and reflective industrial coating" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAysxBFFJySJRb72dde3kI_oqtJwuYv6FARk_1F5iA1ZlcIBcKk-E6KOph-GICDBcI17UtcuvsnBg2qD5XzsNJGKxD2pwc7fMGcZrJ2p-rHoBq87J2VFPLjUJyU13aSmKfrhsQ-1PiCs4q2a1chv70HiXTYCJwLQ6P4np_PXbyGHdjnR76W9oD-3KVoKi0GXTArQhVTxiQbl076GDbDcrNYBtcXuOciy5601r7zuZq22hNyf4HCO3hbE_MHam9ljViXKf4dX53WCGgN"/>
+<div class="absolute top-4 right-4">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 font-label text-[10px] font-bold uppercase tracking-widest">Grade A+</span>
+</div>
+</div>
+<h2 class="font-headline font-bold text-xl mb-2 group-hover:text-secondary transition-colors uppercase tracking-tight">W-SERIES FILM FACED</h2>
+<p class="font-label text-xs text-outline mb-6 uppercase tracking-widest">18mm • Phenolic Resin • Water Resistant</p>
+<button class="w-full py-4 border border-outline-variant font-headline font-bold uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-white transition-all duration-300">View Details</button>
+</div>
+<!-- Product Card 2 -->
+<div class="group">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" data-alt="Professional stacks of natural birch plywood sheets in a clean industrial warehouse with bright daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAscm9XraAQLEfVa9VUAwtvNpFYsVlf89oG1XphH-iUV_wZw_RRlPIbZ5WjU46dIa3jUiWmQwaCcm9D4P39BJBM6H5bp5xH_feUsw10q0PZz47fJV8FcER-bUbYReMWM-OQ2bhsah3S1rMmo5Bu9VdDELM0Ju1SApX0KbYSFKddoKCYD7usUvooAtGS-B5zR7u-5RCuhESNv0AIegKCDJNv8j-wJiC4GwzmxUAffR8S_F6ZWVIfIOz8vYL2ftchLCSmXhzCKYJbswuT"/>
+<div class="absolute top-4 right-4">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 font-label text-[10px] font-bold uppercase tracking-widest">Premium Birch</span>
+</div>
+</div>
+<h2 class="font-headline font-bold text-xl mb-2 group-hover:text-secondary transition-colors uppercase tracking-tight">ARCTIC BIRCH CORE</h2>
+<p class="font-label text-xs text-outline mb-6 uppercase tracking-widest">24mm • Multi-ply • Interior Grade</p>
+<button class="w-full py-4 border border-outline-variant font-headline font-bold uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-white transition-all duration-300">View Details</button>
+</div>
+<!-- Product Card 3 -->
+<div class="group">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" data-alt="Side view of plywood sheet edges showing high density layers and precise industrial cuts" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAa1Sl6Jkqh3jvel4xhyGVhtdr5RTriPfPnjEoRnVyhJlf6akMlatSzjVmnjWpcXSTK2hqQ3I1uVmmoOMjgyy8N66Jc68DN_t1K7xAkTg52OzHs5PSfyWtxc5fqoVnnnp4STGZAdXcTfDL2iha_GDq4ayJ4I0OA950voyzotUIhrz8Bveo4Ut_vIVkIAodNFvqZCPfW4seMpkX5QcO7SfaFr86Gl589athJdpknCKvfK_x5ST1mzVbTRPERiMV79-Jfs7G0qVWrhZU"/>
+<div class="absolute top-4 right-4">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 font-label text-[10px] font-bold uppercase tracking-widest">Export Grade</span>
+</div>
+</div>
+<h2 class="font-headline font-bold text-xl mb-2 group-hover:text-secondary transition-colors uppercase tracking-tight">COMMERCIAL OAK VENEER</h2>
+<p class="font-label text-xs text-outline mb-6 uppercase tracking-widest">12mm • Decorative • Grade BB/CC</p>
+<button class="w-full py-4 border border-outline-variant font-headline font-bold uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-white transition-all duration-300">View Details</button>
+</div>
+<!-- Product Card 4 -->
+<div class="group">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" data-alt="Abstract architectural shot of stacked wooden planks in a sawmill with dramatic morning light shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWiHOBLmTASfz1I_dkMNi6tnfRoErm6VaIkMeqJ9D0ynu89oIhDbew5OMtkPRek5dL8lWdw9P3szRFhOGzIGlORojTu3IxNDcDhpECguEA_Xfwgzt-Hh7wony4dEGANpYFYYIsbFWS5dDzcRiDckkE0dDi6dmvbsVcC1Zc1dA2rwa9_adQJ-pTjkRiCTej1B8evjNzwMT_T2PTCLpr_9wnG8829d1bH-WJQbxu1y-Ec-FV2EAEBdeVnm27PGgcQs33Efl6netCWtVW"/>
+</div>
+<h2 class="font-headline font-bold text-xl mb-2 group-hover:text-secondary transition-colors uppercase tracking-tight">H-FORM CONCRETE PANELS</h2>
+<p class="font-label text-xs text-outline mb-6 uppercase tracking-widest">21mm • High Re-use • Formwork</p>
+<button class="w-full py-4 border border-outline-variant font-headline font-bold uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-white transition-all duration-300">View Details</button>
+</div>
+<!-- Product Card 5 -->
+<div class="group">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" data-alt="Detailed view of cross-laminated timber layers showing the strength and precision of industrial bonding" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBITrRpDJ-U1Fg_Hy5mKXu8ENltAwzgj07RR8wsplouBRNR_4qSCQch0rXg4SXWvv8q_cj3Kt-8MhWBs_1wKFZgCDhi0ad4xPMjK56oRxE-_GohQQxPnsn_5c4FR_c8xGmZKRRg9MhFM07mt8pfdsNzGMM_LBlfIeC8jFnyVB93-gliixV_rPoPVN1aOpClPbda0lmnuSvtelru_j2Z22XxqbMBLbK8q3ozdX4FN2UkZmzB24g9-n7fiwBo5R4Kef0OtVAwU-oeEsbi"/>
+</div>
+<h2 class="font-headline font-bold text-xl mb-2 group-hover:text-secondary transition-colors uppercase tracking-tight">MARINE GRADE SHORE</h2>
+<p class="font-label text-xs text-outline mb-6 uppercase tracking-widest">15mm • WBP Glue • Tropical Hardwood</p>
+<button class="w-full py-4 border border-outline-variant font-headline font-bold uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-white transition-all duration-300">View Details</button>
+</div>
+<!-- Product Card 6 -->
+<div class="group">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" data-alt="Close-up of a high-end furniture surface made from light birch plywood with visible layered edges" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxBR_WeCzAfkF52s3rjPrjRIVzhrXa8X-mqFU383ExYKbjKUfQxAyfgxC6r72s9Yx8Ihx12wnEKyhscUBBszfzyl6ZD1ZLkiXF0xq_GkfzTrkKCtjhkNt67X5IrMhXeXCXVCx6VNn3xU2C-pmDeffUMO0tC3TyKCEiv7b36oFqFm8BX_DVt9vtfQ_s29JWuqdoMnSCl2uGoQMzWoOW3fqeTj00bZm90Y8OzAlRF83KWM6WfejwLS5loecDkQjNlYy-kxwVnFKwmuNP"/>
+</div>
+<h2 class="font-headline font-bold text-xl mb-2 group-hover:text-secondary transition-colors uppercase tracking-tight">JOINERY CORE LITE</h2>
+<p class="font-label text-xs text-outline mb-6 uppercase tracking-widest">9mm • Lightweight • Poplar Mix</p>
+<button class="w-full py-4 border border-outline-variant font-headline font-bold uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-white transition-all duration-300">View Details</button>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-24 flex items-center justify-center space-x-12">
+<button class="font-headline font-bold uppercase tracking-widest text-xs text-outline hover:text-primary transition-colors flex items-center">
+<span class="material-symbols-outlined mr-2">arrow_back</span> Previous
+                    </button>
+<div class="flex space-x-6">
+<span class="font-headline font-bold text-xs text-primary border-b-2 border-primary pb-1">01</span>
+<span class="font-headline font-bold text-xs text-outline hover:text-primary cursor-pointer transition-colors pb-1">02</span>
+<span class="font-headline font-bold text-xs text-outline hover:text-primary cursor-pointer transition-colors pb-1">03</span>
+<span class="font-headline font-bold text-xs text-outline pb-1">...</span>
+<span class="font-headline font-bold text-xs text-outline hover:text-primary cursor-pointer transition-colors pb-1">12</span>
+</div>
+<button class="font-headline font-bold uppercase tracking-widest text-xs text-outline hover:text-primary transition-colors flex items-center">
+                        Next <span class="material-symbols-outlined ml-2">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full relative bg-stone-900 dark:bg-black pt-24 pb-12 px-12 mt-20 border-t border-stone-800/30">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-[1440px] mx-auto">
+<div class="md:col-span-1">
+<span class="font-['Epilogue'] font-bold uppercase text-stone-100 tracking-widest text-xl mb-6 block">WOODLAND</span>
+<p class="font-['Manrope'] text-stone-400 font-light text-sm leading-relaxed">
+                    Setting the global standard for architectural timber through sustainable harvesting and industrial precision.
+                </p>
+</div>
+<div>
+<h4 class="font-headline font-bold uppercase tracking-widest text-[10px] text-stone-100 mb-8">Navigation</h4>
+<ul class="space-y-4">
+<li><a class="font-['Manrope'] text-stone-500 hover:text-stone-200 hover:translate-x-1 transition-transform duration-300 text-sm block" href="#">Sustainability</a></li>
+<li><a class="font-['Manrope'] text-stone-500 hover:text-stone-200 hover:translate-x-1 transition-transform duration-300 text-sm block" href="#">Certifications</a></li>
+<li><a class="font-['Manrope'] text-stone-500 hover:text-stone-200 hover:translate-x-1 transition-transform duration-300 text-sm block" href="#">Technical Downloads</a></li>
+<li><a class="font-['Manrope'] text-stone-500 hover:text-stone-200 hover:translate-x-1 transition-transform duration-300 text-sm block" href="#">Global Export</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold uppercase tracking-widest text-[10px] text-stone-100 mb-8">Contact</h4>
+<ul class="space-y-4 font-['Manrope'] text-sm text-stone-400 font-light">
+<li>Global HQ: Hamburg, Germany</li>
+<li>Sales: info@woodland-mfg.com</li>
+<li>Support: tech@woodland-mfg.com</li>
+<li>+49 (0) 40 123 456 78</li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold uppercase tracking-widest text-[10px] text-stone-100 mb-8">Newsletter</h4>
+<div class="relative">
+<input class="w-full bg-stone-800 border-none text-xs font-label uppercase tracking-widest text-stone-100 py-4 px-4 focus:ring-1 focus:ring-stone-500" placeholder="ENTER EMAIL" type="email"/>
+<button class="absolute right-0 top-0 h-full px-6 text-stone-100 hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<div class="max-w-[1440px] mx-auto mt-24 pt-8 border-t border-stone-800/50 flex flex-col md:row justify-between items-center gap-4">
+<span class="font-['Manrope'] text-stone-400 font-light text-[10px] uppercase tracking-widest">© 2024 WOODLAND MANUFACTURING. SUSTAINABLY HARVESTED. ARCHITECTURALLY DEFINED.</span>
+<div class="flex space-x-8">
+<a class="font-['Manrope'] text-stone-500 hover:text-stone-200 text-[10px] uppercase tracking-widest" href="#">Privacy Policy</a>
+<a class="font-['Manrope'] text-stone-500 hover:text-stone-200 text-[10px] uppercase tracking-widest" href="#">Legal Notice</a>
+</div>
+</div>
+</footer>
+</body></html>

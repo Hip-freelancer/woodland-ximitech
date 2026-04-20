@@ -1,26 +1,330 @@
+@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&family=Manrope:wght@200;300;400;500;600&family=Inter:wght@400;500;600&display=swap");
+
+@config "../../tailwind.config.ts";
 @import "tailwindcss";
 
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Grain texture overlay */
+.grain-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scroll reveal animations (global) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --anim-delay: 0ms;
+  --anim-duration: 900ms;
+  --anim-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --anim-x: 0px;
+  --anim-y: 0px;
+  --anim-rot: 0deg;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.anim {
+  opacity: 0;
+  position: relative;
+  will-change: transform, opacity, filter;
+  animation-delay: var(--anim-delay);
+  animation-duration: var(--anim-duration);
+  animation-timing-function: var(--anim-ease);
+  animation-fill-mode: both;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.anim.is-in {
+  opacity: 1;
+}
+
+.anim--fade-in.is-in {
+  animation-name: anim-fade-in;
+}
+
+.anim--fade-up.is-in {
+  animation-name: anim-fade-up;
+}
+
+.anim--fade-down.is-in {
+  animation-name: anim-fade-down;
+}
+
+.anim--fade-left.is-in {
+  animation-name: anim-fade-left;
+}
+
+.anim--fade-right.is-in {
+  animation-name: anim-fade-right;
+}
+
+.anim--zoom-in.is-in {
+  animation-name: anim-zoom-in;
+}
+
+.anim--zoom-out.is-in {
+  animation-name: anim-zoom-out;
+}
+
+.anim--flip-up.is-in {
+  animation-name: anim-flip-up;
+}
+
+.anim--rotate-in.is-in {
+  animation-name: anim-rotate-in;
+}
+
+.anim--blur-in.is-in {
+  animation-name: anim-blur-in;
+}
+
+.anim--pop-in.is-in {
+  animation-name: anim-pop-in;
+}
+
+.anim--elastic-up.is-in {
+  animation-name: anim-elastic-up;
+}
+
+.anim--wipe-up.is-in {
+  animation-name: anim-wipe-up;
+}
+
+.anim--glow-rise.is-in {
+  animation-name: anim-glow-rise;
+}
+
+.anim--ken-burns.is-in {
+  animation-name: anim-ken-burns;
+}
+
+.anim--float-in.is-in {
+  animation-name: anim-float-in;
+}
+
+.anim--skew-in.is-in {
+  animation-name: anim-skew-in;
+}
+
+@keyframes anim-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes anim-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-fade-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-fade-left {
+  from {
+    opacity: 0;
+    transform: translate3d(-12px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-fade-right {
+  from {
+    opacity: 0;
+    transform: translate3d(12px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes anim-zoom-out {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes anim-flip-up {
+  from {
+    opacity: 0;
+    transform: perspective(900px) rotateX(18deg) translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(900px) rotateX(0deg) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-rotate-in {
+  from {
+    opacity: 0;
+    transform: rotate(-2.5deg) translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-blur-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes anim-elastic-up {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.99);
+  }
+  70% {
+    opacity: 1;
+    transform: translate3d(0, -2px, 0) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes anim-wipe-up {
+  0% {
+    opacity: 0;
+    clip-path: inset(100% 0 0 0);
+    transform: translate3d(0, 6px, 0);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-glow-rise {
+  0% {
+    opacity: 0;
+    filter: blur(10px) saturate(1.1);
+    transform: translate3d(0, 12px, 0);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0) saturate(1);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-ken-burns {
+  0% {
+    opacity: 0;
+    transform: scale(1.08) translate3d(var(--anim-x), var(--anim-y), 0);
+    filter: blur(6px);
+  }
+  45% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes anim-float-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes anim-skew-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) rotate(var(--anim-rot)) skewY(2.2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg) skewY(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }

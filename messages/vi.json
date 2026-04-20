@@ -1,0 +1,238 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "products": "Sản phẩm",
+    "projects": "Dự án",
+    "news": "Tin tức",
+    "contact": "Liên hệ",
+    "getQuote": "Yêu cầu báo giá",
+    "salesTeam": "Đội ngũ kinh doanh"
+  },
+  "home": {
+    "hero": {
+      "title": "Ván Ép Cao Cấp cho Thị Trường Toàn Cầu",
+      "subtitle": "Khai thác bền vững. Chế tác chính xác. Được định nghĩa bởi kiến trúc.",
+      "viewProducts": "Xem sản phẩm",
+      "ourProcess": "Quy trình của chúng tôi"
+    },
+    "about": {
+      "badge": "Thành lập 1974",
+      "title": "Được Thiết Kế cho Kiến Trúc",
+      "description": "Woodland là nhà sản xuất ván ép cấp kiến trúc cao cấp, cung cấp cho các nhà thiết kế, nhà thầu và nhà phân phối xuất khẩu tại hơn 42 thị trường toàn cầu.",
+      "legacyTitle": "Nửa thế kỷ chính xác",
+      "legacyDescription": "Từ năm 1974, Woodland hoạt động tại giao điểm của khoa học lâm nghiệp và thiết kế công nghiệp — sản xuất các vật liệu mà kiến trúc sư và kỹ sư tin tưởng.",
+      "stat1Value": "42+",
+      "stat1Label": "Thị trường xuất khẩu",
+      "stat2Value": "1.2M",
+      "stat2Label": "SqM công suất hàng năm"
+    },
+    "featuredProducts": {
+      "title": "Sản Phẩm Nổi Bật",
+      "subtitle": "Vật liệu kỹ thuật cho các ứng dụng đòi hỏi cao",
+      "viewAll": "Xem tất cả sản phẩm"
+    },
+    "whyChooseUs": {
+      "title": "Tại Sao Chọn Woodland",
+      "items": {
+        "eco": {
+          "title": "Chứng nhận Sinh thái",
+          "description": "Gỗ được chứng nhận FSC & PEFC từ rừng được quản lý có trách nhiệm."
+        },
+        "precision": {
+          "title": "Phay Chính Xác",
+          "description": "Kiểm soát dung sai 0.1mm trên tất cả các dây chuyền sản xuất."
+        },
+        "quality": {
+          "title": "Phòng Kiểm Nghiệm",
+          "description": "Quy trình kiểm tra 24 điểm nội bộ cho mỗi lô hàng."
+        },
+        "logistics": {
+          "title": "Logistics Toàn Cầu",
+          "description": "Xuất khẩu trực tiếp đến 42+ thị trường với đầy đủ tài liệu hải quan."
+        }
+      }
+    },
+    "projects": {
+      "title": "Dự Án Tiêu Biểu",
+      "subtitle": "Woodland tại hiện trường",
+      "viewAll": "Xem tất cả dự án"
+    },
+    "news": {
+      "title": "Tin Tức Mới Nhất",
+      "subtitle": "Thông tin ngành và cập nhật công ty",
+      "readMore": "Đọc thêm",
+      "viewAll": "Xem tất cả tin tức"
+    },
+    "cta": {
+      "title": "Sẵn Sàng Tìm Nguồn Ván Ép Cao Cấp?",
+      "subtitle": "Liên hệ đội ngũ xuất khẩu của chúng tôi để biết giá cả, mẫu hàng và tài liệu kỹ thuật.",
+      "button": "Liên hệ Đội Xuất Khẩu"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Được Định Nghĩa bởi Kiến Trúc",
+      "subtitle": "Thành lập 1974",
+      "description": "Từ nguyên liệu thô đến kiệt tác — ván ép được chế tác chính xác cho kiến trúc toàn cầu."
+    },
+    "vision": {
+      "title": "Tầm Nhìn",
+      "description": "Trở thành thương hiệu gỗ kiến trúc được tin tưởng nhất thế giới — nơi khoa học vật liệu gặp gỡ tham vọng thiết kế."
+    },
+    "mission": {
+      "title": "Sứ Mệnh",
+      "description": "Chúng tôi sản xuất các vật liệu ván ép chính xác cho phép kiến trúc sư thực hiện các công trình táo bạo, bền lâu với vật liệu bền vững."
+    },
+    "values": {
+      "title": "Giá Trị Cốt Lõi",
+      "sustainability": {
+        "title": "Bền Vững",
+        "description": "Được chứng nhận FSC & PEFC. Chuỗi cung ứng theo dõi carbon."
+      },
+      "quality": {
+        "title": "Chất Lượng",
+        "description": "Sản xuất GRADE A+ với quy trình QA 24 điểm."
+      },
+      "export": {
+        "title": "Xuất Khẩu Xuất Sắc",
+        "description": "Logistics trực tiếp đến 42+ thị trường trên toàn thế giới."
+      }
+    },
+    "history": {
+      "title": "Lịch Sử Của Chúng Tôi",
+      "milestones": {
+        "1974": {
+          "title": "Nền Móng",
+          "description": "Được thành lập như một xưởng cưa khu vực ở Tây Bắc Thái Bình Dương, Woodland bắt đầu với tầm nhìn cung cấp gỗ mềm cấp cao cho các kiến trúc sư địa phương."
+        },
+        "1998": {
+          "title": "Vươn Ra Toàn Cầu",
+          "description": "Woodland mở rộng hoạt động để phục vụ các thị trường quốc tế, thiết lập mạng lưới phân phối khắp châu Âu và châu Á-Thái Bình Dương."
+        },
+        "2024": {
+          "title": "Chính Xác Kỹ Thuật Số",
+          "description": "Ra mắt kiểm tra chất lượng dựa trên AI và theo dõi chuỗi cung ứng thời gian thực cho tất cả đơn hàng xuất khẩu toàn cầu."
+        }
+      }
+    },
+    "gallery": {
+      "title": "Sàn Sản Xuất"
+    }
+  },
+  "products": {
+    "hero": {
+      "title": "Gỗ Kiến Trúc",
+      "subtitle": "Ván ép cấp công nghiệp được thiết kế cho các ứng dụng đòi hỏi cao"
+    },
+    "filters": {
+      "title": "Lọc",
+      "type": "Lọc theo Loại",
+      "thickness": "Độ Dày (mm)",
+      "application": "Ứng Dụng",
+      "support": "Hỗ Trợ Kỹ Thuật",
+      "downloadSpec": "Tải Tờ Thông Số"
+    },
+    "sort": {
+      "label": "Sắp xếp",
+      "newest": "Mới nhất",
+      "priceAsc": "Giá: Thấp đến Cao",
+      "priceDesc": "Giá: Cao đến Thấp"
+    },
+    "results": "sản phẩm được tìm thấy",
+    "viewDetails": "Xem Chi Tiết",
+    "noProducts": "Không tìm thấy sản phẩm phù hợp với bộ lọc của bạn.",
+    "pagination": {
+      "previous": "Trước",
+      "next": "Tiếp"
+    }
+  },
+  "productDetail": {
+    "contactQuote": "Liên Hệ Báo Giá",
+    "downloadCatalog": "Tải Catalog",
+    "availability": "Tình Trạng",
+    "inStock": "Còn Hàng",
+    "certification": "Chứng Nhận",
+    "technicalData": {
+      "title": "Dữ Liệu Kỹ Thuật",
+      "subtitle": "Thông Số Chính Xác",
+      "attribute": "Thuộc Tính",
+      "specification": "Thông Số",
+      "tolerance": "Dung Sai",
+      "standard": "Tiêu Chuẩn"
+    },
+    "applications": {
+      "title": "Được Thiết Kế cho Sự Xuất Sắc Cấu Trúc",
+      "subtitle": "Ứng Dụng"
+    },
+    "cta": {
+      "title": "Mở Rộng Công Trình Tiếp Theo",
+      "subtitle": "Yêu cầu bộ mẫu hoặc gói thông số kỹ thuật đầy đủ từ đội ngũ xuất khẩu của chúng tôi.",
+      "button": "Yêu Cầu Bộ Mẫu"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Đối Tác Kiến Trúc",
+      "subtitle": "Liên hệ đội ngũ kỹ thuật của chúng tôi để có giải pháp tùy chỉnh và tài liệu xuất khẩu."
+    },
+    "form": {
+      "title": "Liên Hệ Chúng Tôi",
+      "fullName": "Họ và Tên",
+      "workEmail": "Email Công Việc",
+      "phone": "Số Điện Thoại",
+      "company": "Công Ty / Tổ Chức",
+      "message": "Tin Nhắn",
+      "submit": "Gửi Tin Nhắn",
+      "submitting": "Đang gửi...",
+      "successTitle": "Đã Gửi Tin Nhắn",
+      "successMessage": "Cảm ơn bạn. Đội ngũ xuất khẩu của chúng tôi sẽ phản hồi trong vòng 24 giờ.",
+      "errorMessage": "Có lỗi xảy ra. Vui lòng thử lại."
+    },
+    "info": {
+      "headquarters": "Trụ Sở Chính",
+      "address": "882 Timberline Industrial Way, Sustainable District, OR 97201",
+      "phone": "Điện Thoại",
+      "email": "Email"
+    },
+    "certifications": "Chứng Nhận & Tiêu Chuẩn"
+  },
+  "salesTeam": {
+    "hero": {
+      "title": "Kiến Trúc Sư Bán Hàng",
+      "subtitle": "Hướng dẫn chuyên nghiệp từ thông số đến giao hàng — đội ngũ của chúng tôi kết nối kiến thức kỹ thuật với logistics toàn cầu."
+    },
+    "contact": {
+      "directLine": "Đường Dây Trực Tiếp",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "zalo": "Zalo"
+    },
+    "support": {
+      "title": "Cần Tư Vấn Kỹ Thuật?",
+      "subtitle": "Kết nối với đội ngũ kỹ thuật của chúng tôi để được hỗ trợ thông số và giải pháp tùy chỉnh.",
+      "button": "Liên Hệ Kỹ Thuật"
+    }
+  },
+  "footer": {
+    "description": "Nhà sản xuất ván ép kiến trúc cao cấp cung cấp cho thị trường toàn cầu từ năm 1974.",
+    "navigation": "Điều Hướng",
+    "legal": "Pháp Lý",
+    "privacy": "Chính Sách Bảo Mật",
+    "terms": "Điều Khoản Sử Dụng",
+    "cookies": "Cookies",
+    "copyright": "© 2024 Woodland Industrial. Mọi quyền được bảo lưu.",
+    "newsletter": {
+      "title": "Cập Nhật Ngành",
+      "placeholder": "email@cuaban.com",
+      "button": "Đăng Ký"
+    }
+  },
+  "common": {
+    "learnMore": "Tìm Hiểu Thêm",
+    "viewAll": "Xem Tất Cả",
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "backToProducts": "Quay lại Sản Phẩm"
+  }
+}
