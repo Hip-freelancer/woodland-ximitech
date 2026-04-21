@@ -93,7 +93,7 @@ export default function Footer() {
                   placeholder={t("newsletter.placeholder")}
                   className="flex-1 bg-stone-800 border border-stone-700 px-3 py-2 text-xs font-body text-stone-200 placeholder:text-stone-500 focus:outline-none"
                 />
-                <button className="bg-[#396759] px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-widest text-white hover:bg-[#2d5548] transition-colors duration-300">
+                <button className="bg-secondary px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-widest text-on-secondary hover:bg-primary transition-colors duration-300">
                   {t("newsletter.button")}
                 </button>
               </div>
