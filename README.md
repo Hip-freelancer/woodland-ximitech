@@ -34,3 +34,25 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Admin Panel & Database Setup
+
+This project features a comprehensive Admin interface and uses MongoDB with Cloudflare R2 for media upload.
+
+### 1. Environment Setup
+Copy the `.env.example` file to `.env.local` and fill in your Cloudflare R2 and MongoDB credentials.
+```bash
+cp .env.example .env.local
+```
+
+### 2. Seeding the Database
+For the first time setup, you will need to populate the database with initial categories, products, and articles (both English and Vietnamese).
+
+Run the seeded script:
+```bash
+npx tsx src/scripts/seed.ts
+```
+
+### 3. Accessing Admin Panel
+Once the app is running (`npm run dev`), navigate to `/admin`.
+You will be prompted for Basic Authentication. Use the credentials defined in your `.env.local` (`ADMIN_USER` and `ADMIN_PASS`).

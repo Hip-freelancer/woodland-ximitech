@@ -30,7 +30,7 @@ export default function AboutPreviewSection() {
           <span className="text-xs font-label uppercase tracking-[0.3em] text-secondary font-bold">
             {t("badge")}
           </span>
-          <h2 className="pt-4 font-headline font-black text-5xl text-primary uppercase tracking-tighter leading-none">
+          <h2 className="pt-[0.2em] font-headline font-black text-5xl text-primary uppercase tracking-tighter leading-none">
             {t("title")}
           </h2>
           <p className="font-body text-lg text-on-surface-variant leading-relaxed max-w-xl">

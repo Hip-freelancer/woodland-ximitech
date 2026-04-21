@@ -26,20 +26,22 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.grade}
         </span>
         <p className="text-[10px] font-label font-bold uppercase tracking-[0.18em] text-outline mb-2">
-          {product.category}
+          {product.categoryLabel ?? product.category}
         </p>
         <h3 className="font-headline font-bold text-2xl uppercase mb-4 tracking-tight text-primary">
           {product.name}
         </h3>
 
-        <p className="font-body text-sm text-on-surface-variant mb-8">
-          {product.material} | {product.thickness.slice(0, 2).join("-")}mm
+        <p className="font-body text-sm text-on-surface-variant mb-8 break-words whitespace-pre-wrap">
+          {product.material}
+          {product.thickness.length > 0 ? ` | ${product.thickness.slice(0, 2).join("-")}mm` : ""}
         </p>
 
         <div className="flex justify-between items-center pt-8 border-t border-outline-variant/40">
           <span className="text-xs font-label font-bold uppercase text-primary">
-            Spec: {product.thickness[0]}-
-            {product.thickness[product.thickness.length - 1]}mm
+            {product.thickness.length > 0
+              ? `Spec: ${product.thickness[0]}-${product.thickness[product.thickness.length - 1]}mm`
+              : "Spec: Updating"}
           </span>
           <Link
             href={`/products/${product.slug}`}

@@ -1,19 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import ProductCard from "@/components/ui/ProductCard";
 import ProductsFilterSidebar from "./ProductsFilterSidebar";
 import type { Product } from "@/types";
 
 interface ProductsGridProps {
+  initialCategories?: string[];
   products: Product[];
 }
 
-export default function ProductsGrid({ products }: ProductsGridProps) {
+export default function ProductsGrid({
+  initialCategories = [],
+  products,
+}: ProductsGridProps) {
   const t = useTranslations("products");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] =
+    useState<string[]>(initialCategories);
   const [selectedThickness, setSelectedThickness] = useState<number | null>(null);
+
+  const categories = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          products.map((product) => [
+            product.category,
+            product.categoryLabel ?? product.category,
+          ])
+        ).entries()
+      ).map(([slug, label]) => ({ label, slug })),
+    [products]
+  );
 
   const toggleCategory = (cat: string) => {
     setSelectedCategories((prev) =>
@@ -32,6 +50,7 @@ export default function ProductsGrid({ products }: ProductsGridProps) {
   return (
     <div className="flex flex-col lg:flex-row gap-12">
       <ProductsFilterSidebar
+        categories={categories}
         selectedCategories={selectedCategories}
         selectedThickness={selectedThickness}
         onCategoryChange={toggleCategory}

@@ -15,7 +15,7 @@ export default function WhyChooseUsSection() {
 
   return (
     <section className="py-32 px-12 max-w-[1440px] mx-auto text-center">
-      <h2 className="pt-4 font-headline font-black text-5xl text-primary uppercase tracking-tighter mb-24">
+      <h2 className="pt-[0.2em] font-headline font-black text-5xl text-primary uppercase tracking-tighter mb-24">
         {t("title")}
       </h2>
 

@@ -9,7 +9,7 @@ export async function GET(
   try {
     await connectToDatabase();
     const { slug } = await params;
-    const product = await Product.findOne({ slug }).lean();
+    const product = await Product.findOne({ isVisible: true, slug }).lean();
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });

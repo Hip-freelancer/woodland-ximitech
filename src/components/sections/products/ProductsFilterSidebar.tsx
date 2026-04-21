@@ -1,18 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Download } from "lucide-react";
 
-const CATEGORIES = ["Film Faced", "Commercial", "Birch Premium"];
 const THICKNESSES = [12, 18, 21, 24];
-const APPLICATIONS = [
-  "Concrete Formwork",
-  "Structural Roofing",
-  "Industrial Flooring",
-  "Cabinetry & Joinery",
-];
 
 interface ProductsFilterSidebarProps {
+  categories: Array<{ label: string; slug: string }>;
   selectedCategories: string[];
   selectedThickness: number | null;
   onCategoryChange: (cat: string) => void;
@@ -20,6 +13,7 @@ interface ProductsFilterSidebarProps {
 }
 
 export default function ProductsFilterSidebar({
+  categories,
   selectedCategories,
   selectedThickness,
   onCategoryChange,
@@ -35,15 +29,20 @@ export default function ProductsFilterSidebar({
             {t("type")}
           </p>
           <div className="flex flex-col gap-3">
-            {CATEGORIES.map((cat) => (
-              <label key={cat} className="flex items-center gap-3 cursor-pointer">
+            {categories.map((category) => (
+              <label
+                key={category.slug}
+                className="flex items-center gap-3 cursor-pointer"
+              >
                 <input
                   type="checkbox"
-                  checked={selectedCategories.includes(cat)}
-                  onChange={() => onCategoryChange(cat)}
+                  checked={selectedCategories.includes(category.slug)}
+                  onChange={() => onCategoryChange(category.slug)}
                   className="w-3.5 h-3.5 accent-primary"
                 />
-                <span className="font-body text-sm text-on-surface-variant">{cat}</span>
+                <span className="font-body text-sm text-on-surface-variant">
+                  {category.label}
+                </span>
               </label>
             ))}
           </div>
@@ -57,7 +56,9 @@ export default function ProductsFilterSidebar({
             {THICKNESSES.map((mm) => (
               <button
                 key={mm}
-                onClick={() => onThicknessChange(selectedThickness === mm ? null : mm)}
+                onClick={() =>
+                  onThicknessChange(selectedThickness === mm ? null : mm)
+                }
                 className={`font-label text-xs font-semibold uppercase tracking-widest px-3 py-1.5 border transition-colors duration-200 ${
                   selectedThickness === mm
                     ? "bg-primary text-on-primary border-primary"
@@ -68,32 +69,6 @@ export default function ProductsFilterSidebar({
               </button>
             ))}
           </div>
-        </div>
-
-        <div>
-          <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mb-4">
-            {t("application")}
-          </p>
-          <div className="flex flex-col gap-2">
-            {APPLICATIONS.map((app) => (
-              <button
-                key={app}
-                className="font-body text-sm text-on-surface-variant hover:text-primary text-left transition-colors duration-200"
-              >
-                {app}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-surface-container-low p-5">
-          <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-primary mb-2">
-            {t("support")}
-          </p>
-          <button className="flex items-center gap-2 font-label text-xs font-semibold uppercase tracking-widest text-secondary hover:text-primary transition-colors duration-200 mt-3">
-            <Download size={12} />
-            {t("downloadSpec")}
-          </button>
         </div>
       </div>
     </aside>

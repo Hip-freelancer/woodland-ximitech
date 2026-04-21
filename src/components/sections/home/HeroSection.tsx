@@ -19,7 +19,7 @@ export default function HeroSection() {
           <span className="inline-block px-3 py-1 bg-secondary text-on-secondary font-label text-[10px] uppercase tracking-[0.2em] mb-8">
             Industrial Excellence
           </span>
-          <h1 className="pt-4 font-headline font-black text-6xl md:text-8xl text-on-primary uppercase leading-[0.9] tracking-tighter mb-8">
+          <h1 className="pt-[0.2em] font-headline font-black text-6xl md:text-8xl text-on-primary uppercase leading-[0.9] tracking-tighter mb-8">
             {t("title")}
           </h1>
           <p className="font-body text-xl text-primary-fixed max-w-2xl mb-12 font-light leading-relaxed">

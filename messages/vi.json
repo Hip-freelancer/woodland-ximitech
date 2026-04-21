@@ -7,7 +7,17 @@
     "news": "Tin tức",
     "contact": "Liên hệ",
     "getQuote": "Yêu cầu báo giá",
-    "salesTeam": "Đội ngũ kinh doanh"
+    "salesTeam": "Đội ngũ kinh doanh",
+    "productMenu": {
+      "eyebrow": "Danh mục nổi bật",
+      "title": "Thư viện sản phẩm",
+      "description": "Xem nhanh từng nhóm sản phẩm cùng các mã tiêu biểu ngay từ header, sau đó đi thẳng vào trang danh mục hoặc chi tiết sản phẩm.",
+      "browseAll": "Xem toàn bộ sản phẩm",
+      "loading": "Đang tải danh mục sản phẩm...",
+      "empty": "Danh mục sản phẩm đang được cập nhật.",
+      "itemCount": "{count} sản phẩm",
+      "moreProducts": "+{count} sản phẩm khác"
+    }
   },
   "home": {
     "hero": {
@@ -234,5 +244,27 @@
     "loading": "Đang tải...",
     "error": "Đã xảy ra lỗi",
     "backToProducts": "Quay lại Sản Phẩm"
+  },
+  "newsBase": {
+    "hero": {
+      "title": "Tin Tức & Thông Tin",
+      "subtitle": "Kiến thức ngành và cập nhật công ty."
+    },
+    "filters": {
+      "all": "Tất cả",
+      "company": "Công ty",
+      "industry": "Ngành",
+      "sustainability": "Bền vững"
+    },
+    "list": {
+      "readMore": "Đọc bài viết",
+      "noResults": "Không tìm thấy bài viết nào."
+    },
+    "detail": {
+      "backToList": "Quay lại Tin Tức",
+      "share": "Chia sẻ",
+      "related": "Bài Viết Liên Quan",
+      "author": "Được viết bởi Ban biên tập Woodland"
+    }
   }
 }

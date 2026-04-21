@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&family=Manrope:wght@200;300;400;500;600&family=Inter:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap&subset=vietnamese");
 
 @config "../../tailwind.config.ts";
 @import "tailwindcss";
@@ -7,10 +7,24 @@
   box-sizing: border-box;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding-top: 0.2em !important;
+}
+
 html,
 body {
   width: 100%;
   overflow-x: hidden;
+}
+
+html:lang(vi) .font-headline {
+  font-family: "Manrope", sans-serif;
+  letter-spacing: -0.02em;
 }
 
 /* Grain texture overlay */
@@ -31,14 +45,6 @@ body {
   --anim-x: 0px;
   --anim-y: 0px;
   --anim-rot: 0deg;
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    padding-top: 0.25rem;
-  }
 }
 
 .anim {
@@ -335,4 +341,60 @@ body {
     transform: none !important;
     filter: none !important;
   }
+}
+
+.rich-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.rich-content > * + * {
+  margin-top: 1rem;
+}
+
+.rich-content h1,
+.rich-content h2,
+.rich-content h3,
+.rich-content h4,
+.rich-content h5,
+.rich-content h6 {
+  color: #1f6f3a;
+  font-family: "Epilogue", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+html:lang(vi) .rich-content h1,
+html:lang(vi) .rich-content h2,
+html:lang(vi) .rich-content h3,
+html:lang(vi) .rich-content h4,
+html:lang(vi) .rich-content h5,
+html:lang(vi) .rich-content h6 {
+  font-family: "Manrope", sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.rich-content p,
+.rich-content li,
+.rich-content blockquote {
+  white-space: pre-wrap;
+}
+
+.rich-content ul,
+.rich-content ol {
+  padding-left: 1.5rem;
+}
+
+.rich-content img {
+  display: block;
+  height: auto;
+  margin: 1.5rem 0;
+  max-width: 100%;
+}
+
+.rich-content a {
+  color: #2f7a53;
+  text-decoration: underline;
 }

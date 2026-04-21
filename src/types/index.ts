@@ -6,6 +6,7 @@ export interface Product {
   description: string;
   grade: string;
   category: string;
+  categoryLabel?: string;
   thickness: number[];
   material: string;
   bonding: string;
@@ -17,8 +18,25 @@ export interface Product {
   specifications: ProductSpec[];
   applications: ProductApplication[];
   featured: boolean;
+  isVisible?: boolean;
+  priority?: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ProductMenuItem {
+  _id: string;
+  image: string;
+  name: string;
+  slug: string;
+}
+
+export interface ProductMenuCategory {
+  image: string;
+  name: string;
+  productCount: number;
+  products: ProductMenuItem[];
+  slug: string;
 }
 
 export interface ProductSpec {
@@ -69,8 +87,24 @@ export interface NewsArticle {
   author: string;
   publishDate: string;
   slug: string;
+  category?: string;
+  categoryLabel?: string;
   tags: string[];
   createdAt: string;
+  updatedAt?: string;
+  isVisible?: boolean;
+  priority?: number;
+}
+
+export interface Category {
+  _id: string;
+  image: string;
+  isVisible: boolean;
+  name: string;
+  priority: number;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ContactFormData {

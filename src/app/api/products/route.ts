@@ -13,14 +13,14 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get("page") ?? "1");
     const limit = parseInt(searchParams.get("limit") ?? "12");
 
-    const query: Record<string, unknown> = {};
+    const query: Record<string, unknown> = { isVisible: true };
     if (category) query.category = category;
     if (thickness) query.thickness = { $in: [parseInt(thickness)] };
     if (featured === "true") query.featured = true;
 
     const skip = (page - 1) * limit;
     const [products, total] = await Promise.all([
-      Product.find(query).skip(skip).limit(limit).lean(),
+      Product.find(query).sort({ priority: 1, createdAt: -1 }).skip(skip).limit(limit).lean(),
       Product.countDocuments(query),
     ]);
 

@@ -7,7 +7,17 @@
     "news": "News",
     "contact": "Contact",
     "getQuote": "Get a Quote",
-    "salesTeam": "Sales Team"
+    "salesTeam": "Sales Team",
+    "productMenu": {
+      "eyebrow": "Featured Collections",
+      "title": "Product Library",
+      "description": "Preview each product family from the header with representative items, then jump directly to the filtered catalog or product detail page.",
+      "browseAll": "Browse all products",
+      "loading": "Loading product categories...",
+      "empty": "Product categories are being updated.",
+      "itemCount": "{count, plural, one {# product} other {# products}}",
+      "moreProducts": "{count, plural, one {+# more product} other {+# more products}}"
+    }
   },
   "home": {
     "hero": {
@@ -234,5 +244,27 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "backToProducts": "Back to Products"
+  },
+  "newsBase": {
+    "hero": {
+      "title": "News & Insights",
+      "subtitle": "Industry knowledge and company updates."
+    },
+    "filters": {
+      "all": "All",
+      "company": "Company",
+      "industry": "Industry",
+      "sustainability": "Sustainability"
+    },
+    "list": {
+      "readMore": "Read Article",
+      "noResults": "No articles found."
+    },
+    "detail": {
+      "backToList": "Back to News",
+      "share": "Share Article",
+      "related": "Related Articles",
+      "author": "Written by Woodland Editorial"
+    }
   }
 }

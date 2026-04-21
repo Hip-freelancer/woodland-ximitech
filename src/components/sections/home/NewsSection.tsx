@@ -17,12 +17,12 @@ export default function NewsSection({ articles }: NewsSectionProps) {
           <p className="text-xs font-label uppercase tracking-[0.3em] text-secondary font-bold mb-3">
             {t("subtitle")}
           </p>
-          <h2 className="pt-4 font-headline font-black text-5xl text-primary uppercase tracking-tighter">
+          <h2 className="pt-[0.2em] font-headline font-black text-5xl text-primary uppercase tracking-tighter">
             {t("title")}
           </h2>
         </div>
         <Link
-          href="/contact"
+          href="/news"
           className="font-headline font-bold uppercase text-sm tracking-widest text-primary hover:text-secondary transition-colors border-b-2 border-primary pb-1 whitespace-nowrap"
         >
           {t("viewAll")} →
@@ -51,7 +51,7 @@ export default function NewsSection({ articles }: NewsSectionProps) {
               <h3 className="font-headline font-bold text-xl uppercase leading-tight group-hover:text-secondary transition-colors text-primary">
                 {article.title}
               </h3>
-              <p className="font-body text-sm text-on-surface-variant line-clamp-3">
+              <p className="font-body text-sm text-on-surface-variant line-clamp-3 break-words whitespace-pre-wrap">
                 {article.excerpt}
               </p>
               <span className="font-label text-xs font-bold uppercase tracking-widest text-secondary">
