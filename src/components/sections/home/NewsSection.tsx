@@ -14,16 +14,16 @@ export default function NewsSection({ articles }: NewsSectionProps) {
     <section className="py-32 px-12 max-w-[1440px] mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-4">
         <div>
-          <p className="text-xs font-label uppercase tracking-[0.3em] text-[#396759] font-bold mb-3">
+          <p className="text-xs font-label uppercase tracking-[0.3em] text-secondary font-bold mb-3">
             {t("subtitle")}
           </p>
-          <h2 className="font-headline font-black text-5xl text-[#331917] uppercase tracking-tighter">
+          <h2 className="pt-4 font-headline font-black text-5xl text-primary uppercase tracking-tighter">
             {t("title")}
           </h2>
         </div>
         <Link
           href="/contact"
-          className="font-headline font-bold uppercase text-sm tracking-widest text-[#331917] hover:text-[#396759] transition-colors border-b-2 border-[#331917] pb-1 whitespace-nowrap"
+          className="font-headline font-bold uppercase text-sm tracking-widest text-primary hover:text-secondary transition-colors border-b-2 border-primary pb-1 whitespace-nowrap"
         >
           {t("viewAll")} →
         </Link>
@@ -41,20 +41,20 @@ export default function NewsSection({ articles }: NewsSectionProps) {
               />
             </div>
             <div className="space-y-4">
-              <time className="text-[10px] font-label font-bold uppercase tracking-[0.2em] text-[#827472]">
+              <time className="text-[10px] font-label font-bold uppercase tracking-[0.2em] text-outline">
                 {new Date(article.publishDate).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "long",
                   year: "numeric",
                 })}
               </time>
-              <h3 className="font-headline font-bold text-xl uppercase leading-tight group-hover:text-[#396759] transition-colors text-[#331917]">
+              <h3 className="font-headline font-bold text-xl uppercase leading-tight group-hover:text-secondary transition-colors text-primary">
                 {article.title}
               </h3>
-              <p className="font-body text-sm text-[#504443] line-clamp-3">
+              <p className="font-body text-sm text-on-surface-variant line-clamp-3">
                 {article.excerpt}
               </p>
-              <span className="font-label text-xs font-bold uppercase tracking-widest text-[#396759]">
+              <span className="font-label text-xs font-bold uppercase tracking-widest text-secondary">
                 {t("readMore")} →
               </span>
             </div>

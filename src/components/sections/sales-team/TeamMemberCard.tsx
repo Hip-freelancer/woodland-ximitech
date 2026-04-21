@@ -12,7 +12,7 @@ export default function TeamMemberCard({ member }: TeamMemberCardProps) {
   const t = useTranslations("salesTeam.contact");
 
   return (
-    <div className="group bg-[#f5f3f2]">
+    <div className="group bg-surface-container-low">
       <div className="relative aspect-[3/4] overflow-hidden">
         <Image
           src={member.image}
@@ -26,17 +26,17 @@ export default function TeamMemberCard({ member }: TeamMemberCardProps) {
         <div className="mb-3">
           <Badge label={member.region} variant="green" />
         </div>
-        <h3 className="font-headline font-black text-xl uppercase text-[#331917] tracking-wide mb-1">
+        <h3 className="font-headline font-black text-xl uppercase text-primary tracking-wide mb-1">
           {member.name}
         </h3>
-        <p className="font-body text-sm text-[#534340] mb-5">{member.title}</p>
+        <p className="font-body text-sm text-on-surface-variant mb-5">{member.title}</p>
 
         <div className="space-y-2 mb-5">
           <a
             href={`tel:${member.phone}`}
-            className="flex items-center gap-2 font-body text-sm text-[#534340] hover:text-[#331917] transition-colors"
+            className="flex items-center gap-2 font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
           >
-            <Phone size={13} className="text-[#396759]" />
+            <Phone size={13} className="text-secondary" />
             <span className="font-label text-[10px] uppercase tracking-widest mr-1">
               {t("directLine")}:
             </span>
@@ -44,9 +44,9 @@ export default function TeamMemberCard({ member }: TeamMemberCardProps) {
           </a>
           <a
             href={`mailto:${member.email}`}
-            className="flex items-center gap-2 font-body text-sm text-[#534340] hover:text-[#331917] transition-colors"
+            className="flex items-center gap-2 font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
           >
-            <Mail size={13} className="text-[#396759]" />
+            <Mail size={13} className="text-secondary" />
             {member.email}
           </a>
         </div>
@@ -57,7 +57,7 @@ export default function TeamMemberCard({ member }: TeamMemberCardProps) {
               href={`https://wa.me/${member.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-label text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 bg-[#396759] text-white hover:bg-[#2d5548] transition-colors duration-200"
+              className="font-label text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 bg-secondary text-on-secondary hover:bg-primary transition-colors duration-200"
             >
               {t("whatsapp")}
             </a>
@@ -67,7 +67,7 @@ export default function TeamMemberCard({ member }: TeamMemberCardProps) {
               href={`https://zalo.me/${member.zalo}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-label text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 border border-[#331917] text-[#331917] hover:bg-[#331917] hover:text-white transition-colors duration-200"
+              className="font-label text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 border border-primary text-primary hover:bg-primary hover:text-on-primary transition-colors duration-200"
             >
               {t("zalo")}
             </a>

@@ -40,15 +40,15 @@ export default function ProductsGrid({ products }: ProductsGridProps) {
 
       <div className="flex-1">
         <div className="flex items-center justify-between mb-8">
-          <p className="font-label text-xs text-[#534340]">
-            <span className="font-semibold text-[#331917]">{filtered.length}</span>{" "}
+          <p className="font-label text-xs text-on-surface-variant">
+            <span className="font-semibold text-primary">{filtered.length}</span>{" "}
             {t("results")}
           </p>
         </div>
 
         {filtered.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="font-body text-base text-[#534340]">{t("noProducts")}</p>
+            <p className="font-body text-base text-on-surface-variant">{t("noProducts")}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">

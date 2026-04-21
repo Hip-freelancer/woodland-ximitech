@@ -31,6 +31,14 @@ body {
   --anim-x: 0px;
   --anim-y: 0px;
   --anim-rot: 0deg;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    padding-top: 0.25rem;
+  }
 }
 
 .anim {

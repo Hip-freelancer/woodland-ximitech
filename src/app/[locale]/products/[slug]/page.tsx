@@ -52,12 +52,12 @@ function TechnicalDataTable({ product }: { product: (typeof ALL_PRODUCTS)[0] }) 
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-[#e4e2e1]">
+          <tr className="border-b border-surface-variant">
             {[t("attribute"), t("specification"), t("tolerance"), t("standard")].map(
               (h) => (
                 <th
                   key={h}
-                  className="font-label text-[10px] font-semibold uppercase tracking-widest text-[#534340] text-left py-3 pr-6"
+                  className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant text-left py-3 pr-6"
                 >
                   {h}
                 </th>
@@ -69,18 +69,18 @@ function TechnicalDataTable({ product }: { product: (typeof ALL_PRODUCTS)[0] }) 
           {rows.map((row, i) => (
             <tr
               key={i}
-              className="border-b border-[#f5f3f2] hover:bg-[#f5f3f2] transition-colors duration-200"
+              className="border-b border-surface-container-low hover:bg-surface-container-low transition-colors duration-200"
             >
-              <td className="font-label text-xs font-semibold uppercase tracking-widest text-[#331917] py-4 pr-6">
+              <td className="font-label text-xs font-semibold uppercase tracking-widest text-primary py-4 pr-6">
                 {row.attribute}
               </td>
-              <td className="font-body text-sm text-[#534340] py-4 pr-6">
+              <td className="font-body text-sm text-on-surface-variant py-4 pr-6">
                 {row.specification}
               </td>
-              <td className="font-body text-sm text-[#534340] py-4 pr-6">
+              <td className="font-body text-sm text-on-surface-variant py-4 pr-6">
                 {row.tolerance}
               </td>
-              <td className="font-body text-sm text-[#534340] py-4">{row.standard}</td>
+              <td className="font-body text-sm text-on-surface-variant py-4">{row.standard}</td>
             </tr>
           ))}
         </tbody>
@@ -107,13 +107,13 @@ function ProductDetailContent({ product }: { product: (typeof ALL_PRODUCTS)[0] }
   return (
     <>
       <section className="max-w-[1440px] mx-auto px-6 py-8">
-        <div className="flex items-center gap-2 font-label text-xs text-[#534340]">
-          <Link href="/products" className="hover:text-[#331917] transition-colors flex items-center gap-1">
+        <div className="flex items-center gap-2 font-label text-xs text-on-surface-variant">
+          <Link href="/products" className="hover:text-primary transition-colors flex items-center gap-1">
             <ArrowLeft size={12} />
             {tCommon("backToProducts")}
           </Link>
           <span>/</span>
-          <span className="text-[#331917]">{product.name}</span>
+          <span className="text-primary">{product.name}</span>
         </div>
       </section>
 
@@ -132,38 +132,38 @@ function ProductDetailContent({ product }: { product: (typeof ALL_PRODUCTS)[0] }
 
           <div className="md:col-span-3">
             <Badge label={product.series} variant="green" />
-            <h1 className="font-headline font-black text-4xl md:text-5xl uppercase text-[#331917] leading-none tracking-tight mt-4 mb-6">
+            <h1 className="font-headline font-black text-4xl md:text-5xl uppercase text-primary leading-none tracking-tight mt-4 mb-6">
               {product.name}
             </h1>
-            <p className="font-body text-base text-[#534340] leading-relaxed mb-8">
+            <p className="font-body text-base text-on-surface-variant leading-relaxed mb-8">
               {product.description}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-8">
               <Link
                 href="/contact"
-                className="flex items-center justify-center gap-2 bg-[#331917] text-white font-label text-xs font-semibold uppercase tracking-widest px-6 py-4 hover:bg-[#4b2e2b] transition-colors duration-300"
+                className="flex items-center justify-center gap-2 bg-primary text-on-primary font-label text-xs font-semibold uppercase tracking-widest px-6 py-4 hover:bg-secondary transition-colors duration-300"
               >
                 {t("contactQuote")}
                 <ArrowRight size={14} />
               </Link>
-              <button className="flex items-center justify-center gap-2 border border-[#331917] text-[#331917] font-label text-xs font-semibold uppercase tracking-widest px-6 py-4 hover:bg-[#331917] hover:text-white transition-colors duration-300">
+              <button className="flex items-center justify-center gap-2 border border-primary text-primary font-label text-xs font-semibold uppercase tracking-widest px-6 py-4 hover:bg-primary hover:text-on-primary transition-colors duration-300">
                 <Download size={14} />
                 {t("downloadCatalog")}
               </button>
             </div>
 
-            <div className="bg-[#f5f3f2] p-6 space-y-3">
+            <div className="bg-surface-container-low p-6 space-y-3">
               <div className="flex justify-between">
-                <span className="font-label text-[10px] font-semibold uppercase tracking-widest text-[#534340]">
+                <span className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant">
                   {t("availability")}
                 </span>
-                <span className="font-body text-sm text-[#396759] font-semibold">
+                <span className="font-body text-sm text-secondary font-semibold">
                   {t("inStock")}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="font-label text-[10px] font-semibold uppercase tracking-widest text-[#534340]">
+                <span className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant">
                   {t("certification")}
                 </span>
                 <div className="flex gap-1 flex-wrap justify-end">
@@ -179,15 +179,15 @@ function ProductDetailContent({ product }: { product: (typeof ALL_PRODUCTS)[0] }
 
       <SectionDivider />
 
-      <section className="bg-[#331917] py-16 relative grain-overlay overflow-hidden">
+      <section className="bg-primary py-16 relative grain-overlay overflow-hidden">
         <div className="relative z-10 max-w-[1440px] mx-auto px-6">
-          <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-[#396759] mb-4">
+          <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-primary-fixed mb-4">
             {t("technicalData.subtitle")}
           </p>
           <h2 className="font-headline font-black text-3xl uppercase text-white leading-none tracking-tight mb-10">
             {t("technicalData.title")}
           </h2>
-          <div className="bg-[#4b2e2b]/50">
+          <div className="bg-primary-container/50">
             <TechnicalDataTable product={product} />
           </div>
         </div>

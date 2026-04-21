@@ -7,20 +7,20 @@ export default function CtaBannerSection() {
 
   return (
     <section className="max-w-[1440px] mx-auto px-12 mb-32">
-      <div className="bg-[#4b2e2b] p-16 md:p-24 relative overflow-hidden flex flex-col items-center text-center grain-overlay">
-        <div className="absolute top-0 right-0 opacity-10 pointer-events-none -translate-y-1/2 translate-x-1/2 text-[220px] leading-none text-[#e8bcb7]">
+      <div className="bg-primary-container p-16 md:p-24 relative overflow-hidden flex flex-col items-center text-center grain-overlay">
+        <div className="absolute top-0 right-0 opacity-10 pointer-events-none -translate-y-1/2 translate-x-1/2 text-[220px] leading-none text-primary-fixed-dim">
           ○
         </div>
         <div className="relative z-10 max-w-3xl">
-          <h2 className="font-headline font-black text-4xl md:text-6xl text-[#fbf9f8] uppercase tracking-tighter mb-8 leading-none">
+          <h2 className="font-headline font-black text-4xl md:text-6xl text-on-primary uppercase tracking-tighter mb-8 leading-none">
             {t("title")}
           </h2>
-          <p className="font-body text-lg text-[#be9590] mb-12">
+          <p className="font-body text-lg text-primary-fixed mb-12">
             {t("subtitle")}
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 bg-[#fbf9f8] text-[#331917] px-12 py-6 font-headline font-bold uppercase text-sm tracking-widest hover:bg-[#396759] hover:text-white transition-all duration-500"
+            className="inline-flex items-center gap-2 bg-surface text-primary px-12 py-6 font-headline font-bold uppercase text-sm tracking-widest hover:bg-secondary hover:text-on-secondary transition-all duration-500"
           >
             {t("button")}
             <ArrowRight size={14} />

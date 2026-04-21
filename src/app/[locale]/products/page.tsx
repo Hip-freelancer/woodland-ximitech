@@ -6,9 +6,9 @@ import { ALL_PRODUCTS } from "@/lib/staticData";
 function ProductsHero() {
   const t = useTranslations("products.hero");
   return (
-    <section className="bg-[#331917] py-20 px-6">
+    <section className="bg-primary py-20 px-6">
       <div className="max-w-[1440px] mx-auto">
-        <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-[#396759] mb-4">
+        <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-primary-fixed mb-4">
           {t("subtitle")}
         </p>
         <h1 className="font-headline font-black text-5xl md:text-7xl uppercase text-white leading-none tracking-tight">

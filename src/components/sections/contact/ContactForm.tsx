@@ -53,16 +53,16 @@ export default function ContactForm() {
   if (status === "success") {
     return (
       <div className="py-16 text-center">
-        <h3 className="font-headline font-bold text-2xl uppercase text-[#331917] mb-3">
+        <h3 className="font-headline font-bold text-2xl uppercase text-primary mb-3">
           {t("successTitle")}
         </h3>
-        <p className="font-body text-base text-[#534340]">{t("successMessage")}</p>
+        <p className="font-body text-base text-on-surface-variant">{t("successMessage")}</p>
       </div>
     );
   }
 
   const inputClass =
-    "w-full bg-transparent border-b border-[#e4e2e1] py-3 font-body text-sm text-[#1c1b1b] placeholder:text-[#857370] focus:outline-none focus:border-[#396759] transition-colors duration-300";
+    "w-full bg-transparent border-b border-surface-variant py-3 font-body text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary transition-colors duration-300";
 
   const fields = [
     { name: "fullName", label: t("fullName"), type: "text" },
@@ -76,7 +76,7 @@ export default function ContactForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {fields.map(({ name, label, type }) => (
           <div key={name}>
-            <label className="block font-label text-[10px] font-semibold uppercase tracking-widest text-[#534340] mb-2">
+            <label className="block font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mb-2">
               {label}
             </label>
             <input
@@ -93,7 +93,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block font-label text-[10px] font-semibold uppercase tracking-widest text-[#534340] mb-2">
+        <label className="block font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mb-2">
           {t("message")}
         </label>
         <textarea
@@ -114,7 +114,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="flex items-center gap-2 bg-[#331917] text-white font-label text-xs font-semibold uppercase tracking-widest px-8 py-4 hover:bg-[#4b2e2b] transition-colors duration-300 disabled:opacity-50"
+        className="flex items-center gap-2 bg-primary text-on-primary font-label text-xs font-semibold uppercase tracking-widest px-8 py-4 hover:bg-secondary transition-colors duration-300 disabled:opacity-50"
       >
         {status === "loading" ? t("submitting") : t("submit")}
         <ArrowRight size={14} />

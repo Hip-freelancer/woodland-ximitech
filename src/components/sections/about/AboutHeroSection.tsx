@@ -13,9 +13,9 @@ export default function AboutHeroSection() {
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-[#331917]/90 via-[#331917]/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/50 to-transparent" />
       <div className="relative z-10 max-w-[1440px] mx-auto px-6 w-full">
-        <p className="font-label text-xs font-semibold uppercase tracking-widest text-[#396759] mb-4">
+        <p className="font-label text-xs font-semibold uppercase tracking-widest text-primary-fixed mb-4">
           {t("subtitle")}
         </p>
         <h1 className="font-headline font-black text-5xl md:text-7xl uppercase text-white leading-none tracking-tight mb-6">

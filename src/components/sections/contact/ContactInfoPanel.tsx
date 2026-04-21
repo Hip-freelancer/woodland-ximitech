@@ -8,33 +8,33 @@ export default function ContactInfoPanel() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-[#534340] mb-3">
+        <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mb-3">
           {t("headquarters")}
         </p>
         <div className="flex gap-3">
-          <MapPin size={16} className="text-[#396759] mt-0.5 shrink-0" />
-          <p className="font-body text-sm text-[#534340] leading-relaxed">
+          <MapPin size={16} className="text-secondary mt-0.5 shrink-0" />
+          <p className="font-body text-sm text-on-surface-variant leading-relaxed">
             {t("address")}
           </p>
         </div>
       </div>
 
       <div>
-        <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-[#534340] mb-3">
+        <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mb-3">
           {t("phone")}
         </p>
         <div className="flex gap-3">
-          <Phone size={16} className="text-[#396759] mt-0.5 shrink-0" />
+          <Phone size={16} className="text-secondary mt-0.5 shrink-0" />
           <div className="space-y-1">
             <a
               href="tel:+18005550000"
-              className="block font-body text-sm text-[#534340] hover:text-[#331917] transition-colors"
+              className="block font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
             >
               +1 (800) 555-WOOD
             </a>
             <a
               href="tel:+15035550192"
-              className="block font-body text-sm text-[#534340] hover:text-[#331917] transition-colors"
+              className="block font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
             >
               +1 (503) 555-0192
             </a>
@@ -43,21 +43,21 @@ export default function ContactInfoPanel() {
       </div>
 
       <div>
-        <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-[#534340] mb-3">
+        <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mb-3">
           {t("email")}
         </p>
         <div className="flex gap-3">
-          <Mail size={16} className="text-[#396759] mt-0.5 shrink-0" />
+          <Mail size={16} className="text-secondary mt-0.5 shrink-0" />
           <div className="space-y-1">
             <a
               href="mailto:exports@woodland.com"
-              className="block font-body text-sm text-[#534340] hover:text-[#331917] transition-colors"
+              className="block font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
             >
               exports@woodland.com
             </a>
             <a
               href="mailto:press@woodland.com"
-              className="block font-body text-sm text-[#534340] hover:text-[#331917] transition-colors"
+              className="block font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
             >
               press@woodland.com
             </a>
@@ -72,7 +72,7 @@ export default function ContactInfoPanel() {
           fill
           className="object-cover"
         />
-        <div className="absolute bottom-4 left-4 bg-[#331917]/80 backdrop-blur-sm px-3 py-2">
+        <div className="absolute bottom-4 left-4 bg-primary/80 backdrop-blur-sm px-3 py-2">
           <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-white">
             Portland, OR — HQ
           </p>
