@@ -1,7 +1,9 @@
 <!-- BEGIN:nextjs-agent-rules -->
+
 # This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+
 <!-- END:nextjs-agent-rules -->
 
 # Agent Rules
@@ -11,3 +13,4 @@ This version has breaking changes — APIs, conventions, and file structure may 
 3. Luôn bám sát tài liệu, không tự ý thay đổi cấu trúc dự án.
 4. Template mẫu của dự án ở trong thư mục `templateUi` nhưng màu đã được chuyển sang màu xanh như file tailwind.config.ts.
 5. Khi yêu cầu thay đổi giao diện, hãy ưu tiên sử dụng các component có sẵn trong dự án, nếu không có thì hãy tạo mới theo đúng style của dự án và bám sát layout + animation mẫu.
+6. Khi sửa đổi UI-UX sang layout mới thì docs lại tài liệu vào thư mục docs để Developer Backend tiến hành tạo các model để đổ data thật cho các phần chưa có trong backend.
