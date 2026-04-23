@@ -3,7 +3,9 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import { Film, Link as LinkIcon, Trash2, Upload } from "lucide-react";
 import AdminNotice from "@/components/admin/AdminNotice";
-import { uploadAdminHeroVideo } from "@/lib/adminClient";
+import { deleteAdminHeroVideo, uploadAdminHeroVideo } from "@/lib/adminClient";
+
+const LOCAL_HERO_MEDIA_PREFIX = "/uploads/hero-media/";
 
 interface AdminVideoFieldProps {
   label: string;
@@ -19,6 +21,7 @@ export default function AdminVideoField({
   helperText,
 }: AdminVideoFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -49,6 +52,27 @@ export default function AdminVideoField({
     }
   };
 
+  const handleRemoveVideo = async () => {
+    setErrorMessage("");
+
+    try {
+      if (value.startsWith(LOCAL_HERO_MEDIA_PREFIX)) {
+        setIsDeleting(true);
+        await deleteAdminHeroVideo(value);
+      }
+
+      onChange("");
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Không thể xóa video hero tạm thời."
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
@@ -57,7 +81,7 @@ export default function AdminVideoField({
         </span>
         <button
           className="inline-flex items-center gap-2 border border-outline-variant px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant transition-colors hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isUploading}
+          disabled={isUploading || isDeleting}
           onClick={handlePickFile}
           type="button"
         >
@@ -115,11 +139,12 @@ export default function AdminVideoField({
               </p>
               <button
                 className="inline-flex items-center gap-2 border border-outline-variant px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant transition-colors hover:border-red-500 hover:text-red-600"
-                onClick={() => onChange("")}
+                disabled={isDeleting}
+                onClick={() => void handleRemoveVideo()}
                 type="button"
               >
                 <Trash2 size={13} />
-                Xóa video
+                {isDeleting ? "Đang xóa..." : "Xóa video"}
               </button>
             </div>
           </div>

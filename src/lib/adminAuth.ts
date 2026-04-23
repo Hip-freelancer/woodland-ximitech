@@ -76,7 +76,10 @@ export function isAdminRequestAuthenticated(
 }
 
 export function createAdminApiUnauthorizedResponse() {
-  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  return NextResponse.json(
+    { error: "Phiên đăng nhập quản trị không hợp lệ." },
+    { status: 401 }
+  );
 }
 
 export function getAdminSessionCookieOptions(maxAge = ADMIN_SESSION_MAX_AGE) {

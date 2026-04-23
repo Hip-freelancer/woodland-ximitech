@@ -1,3 +1,9 @@
+export interface SeoFields {
+  title: string;
+  description: string;
+  keywords: string;
+}
+
 export interface Product {
   _id: string;
   name: string;
@@ -20,6 +26,7 @@ export interface Product {
   featured: boolean;
   isVisible?: boolean;
   priority?: number;
+  seo?: SeoFields;
   createdAt: string;
   updatedAt: string;
 }
@@ -97,14 +104,17 @@ export interface NewsArticle {
   updatedAt?: string;
   isVisible?: boolean;
   priority?: number;
+  seo?: SeoFields;
 }
 
 export interface Category {
   _id: string;
+  contentType?: "product" | "news";
   image: string;
   isVisible: boolean;
   name: string;
   priority: number;
+  seo?: SeoFields;
   slug: string;
   createdAt: string;
   updatedAt: string;

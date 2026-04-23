@@ -3,22 +3,22 @@ import "./globals.css";
 import type { Metadata } from "next";
 import ScrollRevealProvider from "@/components/animation/ScrollRevealProvider";
 import { COMPANY_INFO } from "@/lib/companyInfo";
+import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(COMPANY_INFO.website),
-  icons: {
-    apple: "/logowoodland.png",
-    icon: "/logowoodland.png",
-    shortcut: "/logowoodland.png",
+  metadataBase: SITE_URL,
+  title: {
+    default: COMPANY_INFO.name,
+    template: "%s | Woodland",
   },
   openGraph: {
-    images: ["/logowoodland.png"],
+    images: [DEFAULT_OG_IMAGE],
     siteName: COMPANY_INFO.name,
     type: "website",
   },
   twitter: {
     card: "summary",
-    images: ["/logowoodland.png"],
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 

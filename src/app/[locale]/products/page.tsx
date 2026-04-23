@@ -4,6 +4,7 @@ import SectionDivider from "@/components/ui/SectionDivider";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import PageHero from "@/components/ui/PageHero";
 import { fetchVisibleProducts } from "@/lib/content";
+import { buildLocalizedMetadata } from "@/lib/metadata";
 import { getAllProducts } from "@/lib/staticData";
 import type { Locale } from "@/types";
 
@@ -28,10 +29,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "products.hero" });
 
-  return {
-    title: `${t("title")} | Woodland`,
+  return buildLocalizedMetadata({
+    locale,
+    path: "/products",
+    title: t("title"),
     description: t("subtitle"),
-  };
+  });
 }
 
 export default async function ProductsPage({

@@ -1,19 +1,52 @@
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import CtaBannerSection from "@/components/sections/home/CtaBannerSection";
+import StructuredData from "@/components/seo/StructuredData";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
-import SectionDivider from "@/components/ui/SectionDivider";
-import ProductCard from "@/components/ui/ProductCard";
 import NewsPreviewCard from "@/components/ui/NewsPreviewCard";
+import ProductCard from "@/components/ui/ProductCard";
+import SectionDivider from "@/components/ui/SectionDivider";
 import {
   fetchVisibleNews,
   fetchVisibleNewsBySlug,
   fetchVisibleProducts,
 } from "@/lib/content";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocalizedMetadata,
+  getAbsoluteUrl,
+  resolveSeoFields,
+} from "@/lib/metadata";
 import { getAllProducts, getNewsArticles } from "@/lib/staticData";
-import type { Locale } from "@/types";
+import type { Locale, NewsArticle } from "@/types";
+
+function buildArticleJsonLd(locale: Locale, article: NewsArticle) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    image: [getAbsoluteUrl(article.image)],
+    datePublished: article.publishDate,
+    dateModified: article.updatedAt || article.publishDate,
+    author: {
+      "@type": "Person",
+      name: article.author,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Woodland",
+      logo: {
+        "@type": "ImageObject",
+        url: getAbsoluteUrl("/logowoodland.png"),
+      },
+    },
+    description: article.excerpt,
+    articleSection: article.categoryLabel ?? article.category,
+    mainEntityOfPage: getAbsoluteUrl(`/${locale}/news/${article.slug}`),
+  };
+}
 
 export async function generateMetadata({
   params,
@@ -31,10 +64,20 @@ export async function generateMetadata({
     return { title: "Not Found" };
   }
 
-  return {
-    title: `${article.title} | Woodland`,
+  const seo = resolveSeoFields(article.seo, {
+    title: article.title,
     description: article.excerpt,
-  };
+  });
+
+  return buildLocalizedMetadata({
+    locale,
+    path: `/news/${article.slug}`,
+    title: seo.title,
+    description: seo.description,
+    keywords: seo.keywords,
+    image: article.image,
+    type: "article",
+  });
 }
 
 export default async function NewsDetailPage({
@@ -43,16 +86,17 @@ export default async function NewsDetailPage({
   params: Promise<{ slug: string; locale: Locale }>;
 }) {
   const { locale, slug } = await params;
-  const t = await getTranslations({ locale, namespace: "newsBase.detail" });
-  const tCommon = await getTranslations({ locale, namespace: "common" });
-  const tNav = await getTranslations({ locale, namespace: "nav" });
-  const fallbackArticles = getNewsArticles(locale);
-  const fallbackProducts = getAllProducts(locale);
-  const [resolvedArticle, newsArticles, products] = await Promise.all([
-    fetchVisibleNewsBySlug(slug, locale),
-    fetchVisibleNews(locale, 6),
-    fetchVisibleProducts(locale),
-  ]);
+  const [t, tCommon, tNav, fallbackArticles, fallbackProducts, resolvedArticle, newsArticles, products] =
+    await Promise.all([
+      getTranslations({ locale, namespace: "newsBase.detail" }),
+      getTranslations({ locale, namespace: "common" }),
+      getTranslations({ locale, namespace: "nav" }),
+      Promise.resolve(getNewsArticles(locale)),
+      Promise.resolve(getAllProducts(locale)),
+      fetchVisibleNewsBySlug(slug, locale),
+      fetchVisibleNews(locale, 6),
+      fetchVisibleProducts(locale),
+    ]);
   const article =
     resolvedArticle ??
     fallbackArticles.find((item) => item.slug === slug) ??
@@ -68,9 +112,29 @@ export default async function NewsDetailPage({
     .filter((item) => item.slug !== article.slug)
     .slice(0, 3);
   const recentProducts = recentProductsSource.slice(0, 3);
+  const publishDate = new Date(article.publishDate).toLocaleDateString(
+    locale === "vi" ? "vi-VN" : "en-GB",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  );
+  const breadcrumbItems = [
+    { label: tNav("home"), path: "/" },
+    { label: tNav("news"), path: "/news" },
+    { label: article.title, path: `/news/${article.slug}` },
+  ];
 
   return (
     <>
+      <StructuredData
+        data={[
+          buildBreadcrumbJsonLd(locale, breadcrumbItems),
+          buildArticleJsonLd(locale, article),
+        ]}
+      />
+
       <BreadcrumbBar
         items={[
           { label: tNav("home"), href: "/" },
@@ -79,48 +143,58 @@ export default async function NewsDetailPage({
         ]}
       />
 
-      <article className="bg-surface pb-20 pt-16">
-        <div className="mx-auto max-w-[1200px] px-6">
-          <div className="grid gap-10 xl:grid-cols-[0.88fr_1.12fr] xl:items-end">
-            <div className="border border-outline-variant/30 bg-white p-8 md:p-10">
-            <Link
-              className="mb-8 inline-block font-label text-xs font-bold uppercase tracking-widest text-primary transition-colors hover:text-secondary"
-              href="/news"
-            >
-              ← {tCommon("backToNews")}
-            </Link>
+      <article className="bg-surface pb-16 pt-8 sm:pb-20 sm:pt-10">
+        <div className="mx-auto max-w-[1120px] px-4 sm:px-6 lg:px-8">
+          <Link
+            className="inline-flex items-center gap-2 font-label text-xs font-bold uppercase tracking-[0.18em] text-on-surface-variant transition-colors hover:text-primary"
+            href="/news"
+          >
+            ← {tCommon("backToNews")}
+          </Link>
 
-            <div className="mb-6 flex flex-wrap items-center gap-3">
-              <span className="inline-flex bg-tertiary-fixed px-2.5 py-1 font-label text-[10px] font-bold uppercase tracking-widest text-on-tertiary-fixed">
-                {article.categoryLabel ?? article.category}
-              </span>
-              <span className="font-label text-[10px] font-bold uppercase tracking-[0.1em] text-outline">
-                {new Date(article.publishDate).toLocaleDateString(
-                  locale === "vi" ? "vi-VN" : "en-GB",
-                  {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-              </span>
-            </div>
+          <div className="mt-6 space-y-8">
+            <div className="border border-outline-variant/30 bg-white p-6 sm:p-8 lg:p-10">
+              <div className="flex flex-wrap items-center gap-3">
+                {(article.categoryLabel ?? article.category) ? (
+                  <span className="inline-flex bg-tertiary-fixed px-2.5 py-1 font-label text-[10px] font-bold uppercase tracking-widest text-on-tertiary-fixed">
+                    {article.categoryLabel ?? article.category}
+                  </span>
+                ) : null}
+                <span className="font-label text-[10px] font-bold uppercase tracking-[0.1em] text-outline">
+                  {publishDate}
+                </span>
+              </div>
 
-            <h1 className="font-headline text-4xl font-black uppercase leading-tight tracking-tight text-primary md:text-6xl">
-              {article.title}
-            </h1>
+              <h1 className="mt-6 font-headline text-4xl font-black uppercase leading-[1.05] tracking-tight text-primary md:text-6xl">
+                {article.title}
+              </h1>
 
-            <p className="mt-6 font-body text-base leading-8 text-on-surface-variant">
-              {article.excerpt}
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-6 border-t border-outline-variant/30 pt-6">
-              <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
-                {t("author")} • {article.author}
+              <p className="mt-6 font-body text-base leading-8 text-on-surface-variant md:text-lg">
+                {article.excerpt}
               </p>
+
+              <div className="mt-8 grid gap-4 border-t border-outline-variant/20 pt-6 sm:grid-cols-2">
+                <div className="border border-outline-variant/30 bg-surface-container-low px-4 py-4">
+                  <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
+                    {t("author")}
+                  </p>
+                  <p className="mt-2 font-body text-sm font-semibold text-primary">
+                    {article.author}
+                  </p>
+                </div>
+                <div className="border border-outline-variant/30 bg-surface-container-low px-4 py-4">
+                  <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
+                    {tNav("news")}
+                  </p>
+                  <p className="mt-2 font-body text-sm font-semibold text-primary">
+                    {article.categoryLabel ?? article.category}
+                  </p>
+                </div>
+              </div>
+
               {article.tags.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {article.tags.slice(0, 3).map((tag) => (
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {article.tags.map((tag) => (
                     <span
                       key={tag}
                       className="border border-outline-variant/30 px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-on-surface-variant"
@@ -131,10 +205,9 @@ export default async function NewsDetailPage({
                 </div>
               ) : null}
             </div>
-            </div>
 
             <div className="relative overflow-hidden border border-outline-variant/30 bg-white p-3 shadow-[0_24px_50px_rgba(18,55,31,0.08)]">
-              <div className="relative h-[320px] overflow-hidden md:h-[520px]">
+              <div className="relative aspect-[4/3] overflow-hidden sm:aspect-[16/10]">
                 <Image
                   alt={article.title}
                   className="object-cover"
@@ -147,16 +220,9 @@ export default async function NewsDetailPage({
             </div>
           </div>
 
-          <div className="mx-auto mt-14 grid max-w-[1200px] gap-10 xl:grid-cols-[0.9fr_0.1fr]">
-            <div className="border border-outline-variant/30 bg-white p-8 md:p-12">
-              <div
-                className="rich-content rich-content--editorial font-body text-lg leading-relaxed text-on-surface"
-                dangerouslySetInnerHTML={{ __html: article.content }}
-              />
-            </div>
-
-            <div className="hidden xl:block">
-              <div className="sticky top-28 border border-outline-variant/30 bg-surface-container-low p-5">
+          <div className="mt-10 space-y-6">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="border border-outline-variant/30 bg-surface-container-low px-5 py-5">
                 <p className="font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
                   Woodland
                 </p>
@@ -164,29 +230,41 @@ export default async function NewsDetailPage({
                   {article.categoryLabel ?? article.category}
                 </p>
               </div>
-            </div>
-          </div>
 
-          {article.tags.length > 0 ? (
-            <div className="mx-auto mt-10 max-w-[1200px] border-t border-outline-variant/20 pt-8">
-              <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-surface-container px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant"
-                  >
-                    {tag}
-                  </span>
-                ))}
+              <div className="border border-outline-variant/30 bg-white px-5 py-5">
+                <p className="font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-outline">
+                  {t("recentProducts")}
+                </p>
+                <p className="mt-3 font-body text-sm leading-7 text-on-surface-variant">
+                  {locale === "vi"
+                    ? "Xem thêm các dòng vật liệu Woodland để đối chiếu theo bài viết đang đọc."
+                    : "Explore Woodland material lines related to the article you are reading."}
+                </p>
+                <Link
+                  href="/products"
+                  className="mt-5 inline-flex items-center gap-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:text-secondary"
+                >
+                  {tNav("products")}
+                  <span>→</span>
+                </Link>
               </div>
             </div>
-          ) : null}
+
+            <div className="border border-outline-variant/30 bg-white p-6 sm:p-8 lg:p-10">
+              <div
+                className="rich-content rich-content--editorial font-body text-lg leading-relaxed text-on-surface"
+                dangerouslySetInnerHTML={{ __html: article.content }}
+              />
+            </div>
+          </div>
         </div>
       </article>
+
       <SectionDivider />
+
       {recentNews.length > 0 ? (
         <>
-          <section className="mx-auto max-w-[1440px] px-6 py-16">
+          <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
             <p className="mb-3 font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
               Woodland
             </p>
@@ -202,9 +280,10 @@ export default async function NewsDetailPage({
           <SectionDivider />
         </>
       ) : null}
+
       {recentProducts.length > 0 ? (
         <>
-          <section className="mx-auto max-w-[1440px] px-6 py-16">
+          <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
             <p className="mb-3 font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
               Woodland
             </p>
@@ -220,6 +299,7 @@ export default async function NewsDetailPage({
           <SectionDivider />
         </>
       ) : null}
+
       <CtaBannerSection />
     </>
   );

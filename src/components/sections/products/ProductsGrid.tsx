@@ -1,6 +1,7 @@
 "use client";
 
 import { useDeferredValue, useMemo, useState } from "react";
+import { SlidersHorizontal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import ProductCard from "@/components/ui/ProductCard";
 import ProductsFilterSidebar from "./ProductsFilterSidebar";
@@ -25,6 +26,7 @@ export default function ProductsGrid({
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const deferredSearchQuery = useDeferredValue(searchQuery);
 
   const categories = useMemo(
@@ -130,9 +132,11 @@ export default function ProductsGrid({
       <div className="flex flex-col gap-12 lg:flex-row">
         <ProductsFilterSidebar
           categories={categories}
+          isMobileOpen={mobileFiltersOpen}
           selectedCategories={selectedCategories}
           selectedThickness={selectedThickness}
           onCategoryChange={toggleCategory}
+          onClose={() => setMobileFiltersOpen(false)}
           onThicknessChange={setSelectedThickness}
           onReset={resetFilters}
         />
@@ -148,6 +152,14 @@ export default function ProductsGrid({
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <button
+                className="inline-flex items-center justify-center gap-2 border border-outline-variant/40 bg-white px-4 py-3 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant transition-colors hover:border-primary hover:text-primary lg:hidden"
+                onClick={() => setMobileFiltersOpen(true)}
+                type="button"
+              >
+                <SlidersHorizontal size={14} />
+                Bộ lọc
+              </button>
               <input
                 className="min-w-[240px] border border-outline-variant/40 bg-white px-4 py-3 font-body text-sm text-on-surface outline-none transition-colors focus:border-primary"
                 onChange={(event) => {

@@ -6,6 +6,7 @@ import {
   isAdminRequestAuthenticated,
 } from "@/lib/adminAuth";
 import { normalizeAdminEntityPayload } from "@/lib/adminEntityTransform";
+import { resolveAdminEntityRemoteMedia } from "@/lib/adminRemoteMedia";
 import { deleteHeroLocalMediaFile, isHeroLocalMediaUrl } from "@/lib/localMedia";
 
 import "@/models/Product";
@@ -85,15 +86,26 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ enti
   
   const Model = getModel(entity);
   if (!Model) {
-    return NextResponse.json({ error: `Entity ${entity} not found` }, { status: 404 });
+    return NextResponse.json(
+      { error: `Không tìm thấy module quản trị: ${entity}.` },
+      { status: 404 }
+    );
   }
 
   try {
     const data = await Model.findById(id);
-    if (!data) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (!data) {
+      return NextResponse.json(
+        { error: "Không tìm thấy bản ghi cần tải." },
+        { status: 404 }
+      );
+    }
     return NextResponse.json(data);
   } catch {
-    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Không thể tải dữ liệu quản trị." },
+      { status: 500 }
+    );
   }
 }
 
@@ -107,7 +119,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ enti
 
   const Model = getModel(entity);
   if (!Model) {
-    return NextResponse.json({ error: `Entity ${entity} not found` }, { status: 404 });
+    return NextResponse.json(
+      { error: `Không tìm thấy module quản trị: ${entity}.` },
+      { status: 404 }
+    );
   }
 
   try {
@@ -117,6 +132,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ enti
       "categories",
       "news",
       "home-settings",
+      "team",
     ].includes(entity.toLowerCase());
     let normalizedBody: unknown = body;
     let existingDocForCleanup: unknown = null;
@@ -125,7 +141,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ enti
       const existingDoc = await Model.findById(id);
 
       if (!existingDoc) {
-        return NextResponse.json({ error: "Not found" }, { status: 404 });
+        return NextResponse.json(
+          { error: "Không tìm thấy bản ghi cần cập nhật." },
+          { status: 404 }
+        );
       }
 
       existingDocForCleanup = existingDoc.toObject ? existingDoc.toObject() : existingDoc;
@@ -138,9 +157,14 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ enti
       normalizedBody = normalizeAdminEntityPayload(entity, mergedBody);
     }
 
+    const resolvedMediaBody = await resolveAdminEntityRemoteMedia(
+      entity,
+      normalizedBody
+    );
+
     const updatedDoc = await Model.findByIdAndUpdate(
       id,
-      normalizedBody as Record<string, unknown>,
+      resolvedMediaBody as Record<string, unknown>,
       {
       new: true,
       runValidators: true,
@@ -149,7 +173,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ enti
 
     if (entity.toLowerCase() === "home-settings" && existingDocForCleanup) {
       const previousUrls = extractHomeSettingsMediaUrls(existingDocForCleanup);
-      const nextUrls = new Set(extractHomeSettingsMediaUrls(normalizedBody));
+      const nextUrls = new Set(extractHomeSettingsMediaUrls(resolvedMediaBody));
 
       await Promise.all(
         previousUrls
@@ -163,7 +187,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ enti
     return NextResponse.json(
       {
         error:
-          error instanceof Error ? error.message : "Failed to update document",
+          error instanceof Error ? error.message : "Không thể cập nhật dữ liệu.",
       },
       { status: 500 }
     );
@@ -180,14 +204,22 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ e
 
   const Model = getModel(entity);
   if (!Model) {
-    return NextResponse.json({ error: `Entity ${entity} not found` }, { status: 404 });
+    return NextResponse.json(
+      { error: `Không tìm thấy module quản trị: ${entity}.` },
+      { status: 404 }
+    );
   }
 
   try {
     const existingDoc =
       entity.toLowerCase() === "home-settings" ? await Model.findById(id) : null;
     const deletedDoc = await Model.findByIdAndDelete(id);
-    if (!deletedDoc) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (!deletedDoc) {
+      return NextResponse.json(
+        { error: "Không tìm thấy bản ghi cần xóa." },
+        { status: 404 }
+      );
+    }
 
     if (existingDoc) {
       await Promise.all(
@@ -199,6 +231,9 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ e
     
     return NextResponse.json({ success: true });
   } catch {
-    return NextResponse.json({ error: "Failed to delete document" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Không thể xóa dữ liệu." },
+      { status: 500 }
+    );
   }
 }

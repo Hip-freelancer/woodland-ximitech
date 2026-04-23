@@ -15,10 +15,13 @@ import {
 } from "lucide-react";
 import AdminImageField from "@/components/admin/AdminImageField";
 import AdminNotice from "@/components/admin/AdminNotice";
+import AdminTranslateButton from "@/components/admin/AdminTranslateButton";
 import AdminVideoField from "@/components/admin/AdminVideoField";
-import { readAdminApiError } from "@/lib/adminClient";
+import { deleteAdminHeroVideo, readAdminApiError } from "@/lib/adminClient";
 import { DEFAULT_HOME_SETTINGS } from "@/lib/homeSettingsDefaults";
 import type { HomeHeroSlide, HomeHeroStat, HomeSettings } from "@/types";
+
+const LOCAL_HERO_MEDIA_PREFIX = "/uploads/hero-media/";
 
 interface NoticeState {
   message: string;
@@ -146,6 +149,55 @@ export default function AdminHomeSettingsPage() {
     }));
   };
 
+  const cleanupLocalHeroVideo = async (url: string) => {
+    if (!url.startsWith(LOCAL_HERO_MEDIA_PREFIX)) {
+      return;
+    }
+
+    try {
+      await deleteAdminHeroVideo(url);
+    } catch (error) {
+      setNotice({
+        message:
+          error instanceof Error
+            ? error.message
+            : "Không thể dọn video hero tạm thời.",
+        tone: "warning",
+      });
+    }
+  };
+
+  const changeSlideMediaType = (
+    targetOrder: number,
+    nextType: HomeHeroSlide["mediaType"]
+  ) => {
+    const currentSlide = formData.heroSlides.find(
+      (slide) => slide.order === targetOrder
+    );
+
+    if (!currentSlide || currentSlide.mediaType === nextType) {
+      return;
+    }
+
+    setFormData((current) => ({
+      ...current,
+      heroSlides: current.heroSlides.map((slide) =>
+        slide.order === targetOrder
+          ? {
+              ...slide,
+              mediaType: nextType,
+              mediaUrl: "",
+              posterUrl: "",
+            }
+          : slide
+      ),
+    }));
+
+    if (currentSlide.mediaType === "video") {
+      void cleanupLocalHeroVideo(currentSlide.mediaUrl);
+    }
+  };
+
   const moveSlide = (targetOrder: number, direction: -1 | 1) => {
     setFormData((current) => {
       const nextSlides = sortByOrder(current.heroSlides);
@@ -176,12 +228,20 @@ export default function AdminHomeSettingsPage() {
   };
 
   const handleRemoveSlide = (targetOrder: number) => {
+    const currentSlide = formData.heroSlides.find(
+      (slide) => slide.order === targetOrder
+    );
+
     setFormData((current) => ({
       ...current,
       heroSlides: current.heroSlides
         .filter((slide) => slide.order !== targetOrder)
         .map((slide, index) => ({ ...slide, order: index })),
     }));
+
+    if (currentSlide?.mediaType === "video") {
+      void cleanupLocalHeroVideo(currentSlide.mediaUrl);
+    }
   };
 
   const handleContactChange =
@@ -250,7 +310,7 @@ export default function AdminHomeSettingsPage() {
           Trang chủ
         </p>
         <h1 className="mt-3 font-headline text-3xl font-black uppercase tracking-tight text-primary">
-          Hero media và liên hệ nổi
+          Khu vực hero và liên hệ nổi
         </h1>
         <p className="mt-3 max-w-4xl font-body text-sm leading-6 text-on-surface-variant">
           Quản lý slider trung tâm của trang chủ theo style mới. Hero hỗ trợ ảnh
@@ -268,7 +328,7 @@ export default function AdminHomeSettingsPage() {
           </span>
           <div>
             <h2 className="font-headline text-2xl font-black uppercase tracking-tight text-primary">
-              Contact nổi
+              Liên hệ nổi
             </h2>
             <p className="font-body text-sm text-on-surface-variant">
               Hai nút mail và số điện thoại ở góc dưới sẽ lấy dữ liệu từ đây.
@@ -311,7 +371,7 @@ export default function AdminHomeSettingsPage() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h2 className="font-headline text-2xl font-black uppercase tracking-tight text-primary">
-              Slider media hero
+              Slider hero
             </h2>
             <p className="mt-2 font-body text-sm text-on-surface-variant">
               Có thể trộn ảnh và video trong cùng slider. Video nên có poster để tải nhanh hơn.
@@ -393,13 +453,7 @@ export default function AdminHomeSettingsPage() {
                         ? "border-primary bg-primary-fixed text-primary"
                         : "border-outline-variant bg-white text-on-surface-variant"
                     }`}
-                    onClick={() =>
-                      updateSlide(slide.order, (current) => ({
-                        ...current,
-                        mediaType: "image",
-                        posterUrl: "",
-                      }))
-                    }
+                    onClick={() => changeSlideMediaType(slide.order, "image")}
                     type="button"
                   >
                     <ImageIcon size={16} />
@@ -411,12 +465,7 @@ export default function AdminHomeSettingsPage() {
                         ? "border-primary bg-primary-fixed text-primary"
                         : "border-outline-variant bg-white text-on-surface-variant"
                     }`}
-                    onClick={() =>
-                      updateSlide(slide.order, (current) => ({
-                        ...current,
-                        mediaType: "video",
-                      }))
-                    }
+                    onClick={() => changeSlideMediaType(slide.order, "video")}
                     type="button"
                   >
                     <Video size={16} />
@@ -427,7 +476,7 @@ export default function AdminHomeSettingsPage() {
                 <div className="space-y-6">
                   {slide.mediaType === "image" ? (
                     <AdminImageField
-                      helperText="Ảnh có thể là URL ngoài hoặc tải lên R2."
+                      helperText="Ảnh có thể là URL ngoài hoặc tải lên R2. Link `https://woodland.vn/` sẽ được chuyển sang R2 khi lưu."
                       label="Ảnh nền"
                       onChange={(value) =>
                         updateSlide(slide.order, (current) => ({
@@ -451,8 +500,8 @@ export default function AdminHomeSettingsPage() {
                         value={slide.mediaUrl}
                       />
                       <AdminImageField
-                        helperText="Poster giúp video hiển thị mượt hơn trước khi phát."
-                        label="Poster video"
+                        helperText="Poster giúp video hiển thị mượt hơn trước khi phát. Link `https://woodland.vn/` sẽ được chuyển sang R2 khi lưu."
+                        label="Ảnh poster video"
                         onChange={(value) =>
                           updateSlide(slide.order, (current) => ({
                             ...current,
@@ -466,9 +515,21 @@ export default function AdminHomeSettingsPage() {
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <label className="space-y-2">
-                      <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                        Alt EN
-                      </span>
+                      <div className="flex items-end justify-between gap-3">
+                        <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                          Alt tiếng Anh
+                        </span>
+                        <AdminTranslateButton
+                          fieldLabel="alt slide hero"
+                          onTranslated={(value) =>
+                            updateSlide(slide.order, (current) => ({
+                              ...current,
+                              alt: { ...current.alt, en: value },
+                            }))
+                          }
+                          sourceValue={slide.alt.vi}
+                        />
+                      </div>
                       <input
                         className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
                         onChange={(event) =>
@@ -483,7 +544,7 @@ export default function AdminHomeSettingsPage() {
                     </label>
                     <label className="space-y-2">
                       <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                        Alt VI
+                        Alt tiếng Việt
                       </span>
                       <input
                         className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
@@ -541,7 +602,7 @@ export default function AdminHomeSettingsPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 <label className="space-y-2">
                   <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                    Value EN
+                    Giá trị tiếng Anh
                   </span>
                   <input
                     className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
@@ -557,7 +618,7 @@ export default function AdminHomeSettingsPage() {
                 </label>
                 <label className="space-y-2">
                   <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                    Value VI
+                    Giá trị tiếng Việt
                   </span>
                   <input
                     className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
@@ -573,7 +634,7 @@ export default function AdminHomeSettingsPage() {
                 </label>
                 <label className="space-y-2">
                   <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                    Label EN
+                    Nhãn tiếng Anh
                   </span>
                   <input
                     className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
@@ -589,7 +650,7 @@ export default function AdminHomeSettingsPage() {
                 </label>
                 <label className="space-y-2">
                   <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                    Label VI
+                    Nhãn tiếng Việt
                   </span>
                   <input
                     className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"

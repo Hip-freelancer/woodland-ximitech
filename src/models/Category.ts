@@ -1,6 +1,8 @@
+import { normalizeCategoryContentType, type CategoryContentType } from "@/lib/category";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICategory extends Document {
+  contentType: CategoryContentType;
   name: {
     en: string;
     vi: string;
@@ -24,7 +26,13 @@ const CategorySchema = new Schema<ICategory>(
       en: { type: String, required: true },
       vi: { type: String, required: true },
     },
-    slug: { type: String, required: true, unique: true },
+    contentType: {
+      type: String,
+      enum: ["product", "news"],
+      default: "product",
+      required: true,
+    },
+    slug: { type: String, required: true },
     image: { type: String, default: "" },
     isVisible: { type: Boolean, default: true },
     priority: { type: Number, default: 0 },
@@ -36,6 +44,15 @@ const CategorySchema = new Schema<ICategory>(
   },
   { timestamps: true }
 );
+
+CategorySchema.index(
+  { contentType: 1, slug: 1 },
+  { unique: true, partialFilterExpression: { slug: { $type: "string" } } }
+);
+
+CategorySchema.pre("validate", function normalizeContentTypeBeforeValidate() {
+  this.contentType = normalizeCategoryContentType(this.contentType);
+});
 
 export default mongoose.models.Category ||
   mongoose.model<ICategory>("Category", CategorySchema);

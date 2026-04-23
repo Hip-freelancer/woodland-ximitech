@@ -30,6 +30,10 @@ import {
   sortAdminList,
   type AdminListSortMode,
 } from "@/lib/adminListSort";
+import {
+  normalizeCategoryContentType,
+  type CategoryContentType,
+} from "@/lib/category";
 import { createSlug } from "@/lib/slug";
 
 interface LocalizedText {
@@ -45,6 +49,7 @@ interface SeoFields {
 
 interface AdminCategoryOption {
   _id: string;
+  contentType?: CategoryContentType;
   name: LocalizedText;
   slug: string;
 }
@@ -129,6 +134,20 @@ export default function AdminNewsPage() {
     () => sortAdminList(articles, sortMode),
     [articles, sortMode]
   );
+  const newsCategories = useMemo(
+    () =>
+      categories.filter(
+        (category) => normalizeCategoryContentType(category.contentType) === "news"
+      ),
+    [categories]
+  );
+  const categoryNameMap = useMemo(
+    () =>
+      new Map(
+        newsCategories.map((category) => [category.slug, category.name?.vi || category.slug])
+      ),
+    [newsCategories]
+  );
 
   const applyAutoSeo = (result: {
     seo?: {
@@ -190,6 +209,9 @@ export default function AdminNewsPage() {
 
       const articlesData = (await newsResponse.json()) as AdminNewsArticle[];
       const categoriesData = (await categoriesResponse.json()) as AdminCategoryOption[];
+      const nextNewsCategories = categoriesData.filter(
+        (category) => normalizeCategoryContentType(category.contentType) === "news"
+      );
 
       setArticles(articlesData);
       setCategories(categoriesData);
@@ -198,7 +220,7 @@ export default function AdminNewsPage() {
           ? current
           : {
               ...current,
-              category: categoriesData[0]?.slug ?? "",
+              category: nextNewsCategories[0]?.slug ?? "",
             }
       );
     } catch (error) {
@@ -224,14 +246,14 @@ export default function AdminNewsPage() {
 
   const resetEditor = () => {
     setEditingId(null);
-    setFormData(createEmptyForm(categories[0]?.slug ?? ""));
+    setFormData(createEmptyForm(newsCategories[0]?.slug ?? ""));
     setIsEditorOpen(false);
   };
 
   const openCreateEditor = () => {
     setNotice(null);
     setEditingId(null);
-    setFormData(createEmptyForm(categories[0]?.slug ?? ""));
+    setFormData(createEmptyForm(newsCategories[0]?.slug ?? ""));
     setIsEditorOpen(true);
   };
 
@@ -240,7 +262,7 @@ export default function AdminNewsPage() {
     setEditingId(article._id);
     setFormData({
       author: article.author ?? "Editorial",
-      category: article.category ?? categories[0]?.slug ?? "",
+      category: article.category ?? newsCategories[0]?.slug ?? "",
       content: {
         en: article.content?.en ?? "",
         vi: article.content?.vi ?? "",
@@ -433,6 +455,12 @@ export default function AdminNewsPage() {
       </div>
 
       {notice ? <AdminNotice message={notice.message} tone={notice.tone} /> : null}
+      {newsCategories.length === 0 ? (
+        <AdminNotice
+          message="Chưa có danh mục bài viết. Hãy tạo danh mục loại bài viết trước khi thêm bài mới."
+          tone="warning"
+        />
+      ) : null}
 
       {isEditorOpen ? (
         <div className="border border-outline-variant/40 bg-white p-6">
@@ -523,10 +551,18 @@ export default function AdminNewsPage() {
                   required
                   value={formData.category}
                 >
-                  {categories.length === 0 ? (
+                  {newsCategories.length === 0 ? (
                     <option value="">Chưa có danh mục</option>
                   ) : null}
-                  {categories.map((category) => (
+                  {formData.category &&
+                  !newsCategories.some(
+                    (category) => category.slug === formData.category
+                  ) ? (
+                    <option value={formData.category}>
+                      {formData.category} (không còn trong danh mục bài viết)
+                    </option>
+                  ) : null}
+                  {newsCategories.map((category) => (
                     <option key={category._id} value={category.slug}>
                       {category.name?.vi || category.slug}
                     </option>
@@ -912,7 +948,7 @@ export default function AdminNewsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 font-body text-sm text-on-surface-variant">
-                      {article.category}
+                      {categoryNameMap.get(article.category) || article.category}
                     </td>
                     <td className="px-6 py-4">
                       <AdminPriorityInput

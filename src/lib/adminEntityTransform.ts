@@ -1,4 +1,5 @@
 import { createSlug } from "@/lib/slug";
+import { normalizeCategoryContentType } from "@/lib/category";
 import { normalizeLocalizedRichText } from "@/lib/richText";
 
 interface LocalizedInput {
@@ -241,6 +242,7 @@ export function normalizeAdminEntityPayload(entity: string, payload: unknown) {
       const slug = getSlugFromLocalizedText(body.name, normalizeString(body.slug));
 
       return {
+        contentType: normalizeCategoryContentType(body.contentType),
         image: normalizeString(body.image),
         isVisible: normalizeBoolean(body.isVisible, true),
         name,

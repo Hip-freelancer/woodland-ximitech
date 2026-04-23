@@ -33,7 +33,7 @@ export default function AdminPriorityInput({
         type="button"
       >
         <Save size={12} />
-        {isSaving ? "Đang lưu" : "Save"}
+        {isSaving ? "Đang lưu" : "Lưu"}
       </button>
     </div>
   );

@@ -14,11 +14,26 @@ function isLikelyHtml(value: string) {
 function isEmptyQuillHtml(value: string) {
   const normalized = value
     .replace(/\u200B/g, "")
+    .replace(/\u00A0/g, "")
     .replace(/&nbsp;/gi, "")
     .replace(/\s+/g, "")
     .toLowerCase();
 
   return normalized === "" || normalized === "<p><br></p>" || normalized === "<div><br></div>";
+}
+
+function normalizeRichTextSpacing(value: string) {
+  return value
+    .replace(/\u00A0/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/>\s+</g, "><")
+    .trim();
+}
+
+function cleanHtmlBlocks(value: string) {
+  return normalizeRichTextSpacing(value)
+    .replace(/<p>\s*<\/p>/gi, "")
+    .replace(/<p><br><\/p>/gi, "");
 }
 
 export function normalizeRichTextHtml(value: unknown) {
@@ -29,10 +44,10 @@ export function normalizeRichTextHtml(value: unknown) {
   }
 
   if (isLikelyHtml(input)) {
-    return input;
+    return cleanHtmlBlocks(input);
   }
 
-  return input
+  return normalizeRichTextSpacing(input)
     .split(/\n{2,}/)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean)

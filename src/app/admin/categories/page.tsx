@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-
-// Icons
 import {
   ArrowDown,
   ArrowUp,
@@ -12,17 +10,14 @@ import {
   Pencil,
   Plus,
   Save,
+  Trash2,
   X,
 } from "lucide-react";
-
-// Admin UI
 import AdminAutoSeoButton from "@/components/admin/AdminAutoSeoButton";
 import AdminImageField from "@/components/admin/AdminImageField";
 import AdminNotice from "@/components/admin/AdminNotice";
 import AdminPriorityInput from "@/components/admin/AdminPriorityInput";
 import AdminTranslateButton from "@/components/admin/AdminTranslateButton";
-
-// Helpers
 import { formatAdminDate, readAdminApiError } from "@/lib/adminClient";
 import {
   getNextPrioritySortMode,
@@ -30,6 +25,10 @@ import {
   type AdminListSortMode,
 } from "@/lib/adminListSort";
 import { createSlug } from "@/lib/slug";
+import {
+  normalizeCategoryContentType,
+  type CategoryContentType,
+} from "@/lib/category";
 
 interface LocalizedText {
   en: string;
@@ -44,6 +43,7 @@ interface SeoFields {
 
 interface AdminCategory {
   _id: string;
+  contentType?: CategoryContentType;
   createdAt: string;
   image: string;
   isVisible: boolean;
@@ -55,6 +55,7 @@ interface AdminCategory {
 }
 
 interface CategoryFormState {
+  contentType: CategoryContentType;
   image: string;
   isVisible: boolean;
   name: LocalizedText;
@@ -68,8 +69,28 @@ interface NoticeState {
   tone: "error" | "success" | "warning";
 }
 
-function createEmptyForm(): CategoryFormState {
+const CONTENT_TYPE_OPTIONS: Array<{
+  description: string;
+  label: string;
+  value: CategoryContentType;
+}> = [
+  {
+    description: "Dùng cho sản phẩm, menu thư viện và bộ lọc catalog.",
+    label: "Danh mục sản phẩm",
+    value: "product",
+  },
+  {
+    description: "Dùng cho chuyên mục bài viết và trang tin tức.",
+    label: "Danh mục bài viết",
+    value: "news",
+  },
+];
+
+function createEmptyForm(
+  contentType: CategoryContentType = "product"
+): CategoryFormState {
   return {
+    contentType,
     image: "",
     isVisible: true,
     name: { en: "", vi: "" },
@@ -85,13 +106,19 @@ function resolveCategorySlug(name: LocalizedText) {
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<AdminCategory[]>([]);
-  const [formData, setFormData] = useState<CategoryFormState>(createEmptyForm);
+  const [activeContentType, setActiveContentType] =
+    useState<CategoryContentType>("product");
+  const [formData, setFormData] = useState<CategoryFormState>(() =>
+    createEmptyForm("product")
+  );
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [notice, setNotice] = useState<NoticeState | null>(null);
-  const [priorityDrafts, setPriorityDrafts] = useState<Record<string, number>>({});
+  const [priorityDrafts, setPriorityDrafts] = useState<Record<string, number>>(
+    {}
+  );
   const [savingPriorityId, setSavingPriorityId] = useState<string | null>(null);
   const [sortMode, setSortMode] = useState<AdminListSortMode>("created-desc");
 
@@ -99,9 +126,24 @@ export default function AdminCategoriesPage() {
     setNotice({ message, tone: "error" });
   };
 
-  const sortedCategories = useMemo(
-    () => sortAdminList(categories, sortMode),
-    [categories, sortMode]
+  const normalizedCategories = useMemo(
+    () =>
+      categories.map((category) => ({
+        ...category,
+        contentType: normalizeCategoryContentType(category.contentType),
+      })),
+    [categories]
+  );
+
+  const visibleCategories = useMemo(
+    () =>
+      sortAdminList(
+        normalizedCategories.filter(
+          (category) => category.contentType === activeContentType
+        ),
+        sortMode
+      ),
+    [activeContentType, normalizedCategories, sortMode]
   );
 
   const applyAutoSeo = (result: {
@@ -166,21 +208,25 @@ export default function AdminCategoriesPage() {
 
   const resetEditor = () => {
     setEditingId(null);
-    setFormData(createEmptyForm());
+    setFormData(createEmptyForm(activeContentType));
     setIsEditorOpen(false);
   };
 
   const openCreateEditor = () => {
     setNotice(null);
     setEditingId(null);
-    setFormData(createEmptyForm());
+    setFormData(createEmptyForm(activeContentType));
     setIsEditorOpen(true);
   };
 
   const openEditEditor = (category: AdminCategory) => {
+    const contentType = normalizeCategoryContentType(category.contentType);
+
     setNotice(null);
     setEditingId(category._id);
+    setActiveContentType(contentType);
     setFormData({
+      contentType,
       image: category.image ?? "",
       isVisible: category.isVisible ?? true,
       name: {
@@ -290,6 +336,40 @@ export default function AdminCategoriesPage() {
     }
   };
 
+  const deleteCategory = async (category: AdminCategory) => {
+    const confirmMessage =
+      category.contentType === "news"
+        ? "Xóa danh mục bài viết này khỏi hệ thống?"
+        : "Xóa danh mục sản phẩm này khỏi hệ thống?";
+
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    setNotice(null);
+
+    try {
+      const response = await fetch(`/api/admin/categories/${category._id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          await readAdminApiError(response, "Không thể xóa danh mục.")
+        );
+      }
+
+      await fetchCategories();
+      setNotice({ message: "Đã xóa danh mục.", tone: "success" });
+    } catch (error) {
+      setNotice({
+        message:
+          error instanceof Error ? error.message : "Không thể xóa danh mục.",
+        tone: "error",
+      });
+    }
+  };
+
   const getPriorityValue = (category: AdminCategory) =>
     priorityDrafts[category._id] ?? category.priority ?? 0;
 
@@ -338,8 +418,8 @@ export default function AdminCategoriesPage() {
                 Danh mục
               </h1>
               <p className="mt-2 max-w-2xl font-body text-sm leading-6 text-on-surface-variant">
-                Quản lý ảnh danh mục bằng link hoặc file tải lên, xem trước trực tiếp
-                và dịch nhanh tên tiếng Anh từ nội dung tiếng Việt.
+                Quản lý riêng danh mục sản phẩm và danh mục bài viết. Slug sẽ là
+                khóa dùng cho filter, menu và map dữ liệu public.
               </p>
             </div>
           </div>
@@ -355,6 +435,59 @@ export default function AdminCategoriesPage() {
         </button>
       </div>
 
+      <div className="grid gap-4 md:grid-cols-2">
+        {CONTENT_TYPE_OPTIONS.map((option) => {
+          const isActive = option.value === activeContentType;
+          const count = normalizedCategories.filter(
+            (category) => category.contentType === option.value
+          ).length;
+
+          return (
+            <button
+              key={option.value}
+              className={`border px-5 py-5 text-left transition-colors ${
+                isActive
+                  ? "border-primary bg-primary text-white"
+                  : "border-outline-variant/40 bg-white hover:border-secondary"
+              }`}
+              onClick={() => {
+                setActiveContentType(option.value);
+                if (!editingId) {
+                  setFormData(createEmptyForm(option.value));
+                }
+              }}
+              type="button"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p
+                    className={`font-label text-[10px] font-semibold uppercase tracking-[0.18em] ${
+                      isActive ? "text-white/72" : "text-secondary"
+                    }`}
+                  >
+                    {option.label}
+                  </p>
+                  <p
+                    className={`mt-2 font-body text-sm leading-6 ${
+                      isActive ? "text-white/82" : "text-on-surface-variant"
+                    }`}
+                  >
+                    {option.description}
+                  </p>
+                </div>
+                <span
+                  className={`font-headline text-3xl font-black ${
+                    isActive ? "text-white" : "text-primary"
+                  }`}
+                >
+                  {count}
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
       {notice ? <AdminNotice message={notice.message} tone={notice.tone} /> : null}
 
       {isEditorOpen ? (
@@ -365,7 +498,8 @@ export default function AdminCategoriesPage() {
                 {editingId ? "Chỉnh sửa danh mục" : "Tạo danh mục mới"}
               </h2>
               <p className="mt-2 font-body text-sm text-on-surface-variant">
-                Slug được sinh tự động từ tên tiếng Việt, nếu trống sẽ dùng tên tiếng Anh.
+                Slug được sinh tự động từ tên tiếng Việt, nếu trống sẽ dùng tên
+                tiếng Anh.
               </p>
             </div>
 
@@ -380,6 +514,40 @@ export default function AdminCategoriesPage() {
           </div>
 
           <form className="space-y-6" onSubmit={saveCategory}>
+            <div className="grid gap-4 md:grid-cols-2">
+              {CONTENT_TYPE_OPTIONS.map((option) => (
+                <label
+                  key={option.value}
+                  className={`flex cursor-pointer items-start gap-3 border px-4 py-4 transition-colors ${
+                    formData.contentType === option.value
+                      ? "border-primary/25 bg-primary/7"
+                      : "border-outline-variant/40 bg-surface hover:border-primary/35"
+                  }`}
+                >
+                  <input
+                    checked={formData.contentType === option.value}
+                    className="mt-1 h-4 w-4 accent-primary"
+                    name="contentType"
+                    onChange={() =>
+                      setFormData((current) => ({
+                        ...current,
+                        contentType: option.value,
+                      }))
+                    }
+                    type="radio"
+                  />
+                  <span>
+                    <span className="block font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface">
+                      {option.label}
+                    </span>
+                    <span className="mt-1 block font-body text-sm leading-6 text-on-surface-variant">
+                      {option.description}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </div>
+
             <div className="grid items-end gap-4 lg:grid-cols-2">
               <label className="block space-y-2">
                 <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
@@ -468,7 +636,7 @@ export default function AdminCategoriesPage() {
             </div>
 
             <AdminImageField
-              helperText="Có thể nhập link ảnh hoặc tải file từ máy. Ảnh sẽ được lưu đúng nguyên trạng sau khi lưu biểu mẫu."
+              helperText="Có thể nhập link ảnh hoặc tải file từ máy. Nếu dùng link `https://woodland.vn/`, hệ thống sẽ tự tải lại lên R2 khi lưu."
               label="Ảnh danh mục"
               onChange={(value) =>
                 setFormData((current) => ({
@@ -495,6 +663,7 @@ export default function AdminCategoriesPage() {
                   onError={showErrorNotice}
                   onGenerated={applyAutoSeo}
                   payload={{
+                    contentType: formData.contentType,
                     name: formData.name,
                     slug: formData.slug,
                   }}
@@ -502,53 +671,53 @@ export default function AdminCategoriesPage() {
               </div>
 
               <div className="grid items-end gap-4 lg:grid-cols-3">
-              <label className="block space-y-2">
-                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                  Tiêu đề SEO
-                </span>
-                <input
-                  className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
-                  onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      seo: { ...current.seo, title: event.target.value },
-                    }))
-                  }
-                  value={formData.seo.title}
-                />
-              </label>
+                <label className="block space-y-2">
+                  <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                    Tiêu đề SEO
+                  </span>
+                  <input
+                    className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
+                    onChange={(event) =>
+                      setFormData((current) => ({
+                        ...current,
+                        seo: { ...current.seo, title: event.target.value },
+                      }))
+                    }
+                    value={formData.seo.title}
+                  />
+                </label>
 
-              <label className="block space-y-2">
-                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                  Mô tả SEO
-                </span>
-                <input
-                  className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
-                  onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      seo: { ...current.seo, description: event.target.value },
-                    }))
-                  }
-                  value={formData.seo.description}
-                />
-              </label>
+                <label className="block space-y-2">
+                  <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                    Mô tả SEO
+                  </span>
+                  <input
+                    className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
+                    onChange={(event) =>
+                      setFormData((current) => ({
+                        ...current,
+                        seo: { ...current.seo, description: event.target.value },
+                      }))
+                    }
+                    value={formData.seo.description}
+                  />
+                </label>
 
-              <label className="block space-y-2">
-                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                  Từ khóa SEO
-                </span>
-                <input
-                  className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
-                  onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      seo: { ...current.seo, keywords: event.target.value },
-                    }))
-                  }
-                  value={formData.seo.keywords}
-                />
-              </label>
+                <label className="block space-y-2">
+                  <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                    Từ khóa SEO
+                  </span>
+                  <input
+                    className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
+                    onChange={(event) =>
+                      setFormData((current) => ({
+                        ...current,
+                        seo: { ...current.seo, keywords: event.target.value },
+                      }))
+                    }
+                    value={formData.seo.keywords}
+                  />
+                </label>
               </div>
             </div>
 
@@ -568,7 +737,9 @@ export default function AdminCategoriesPage() {
         <div className="flex flex-col gap-3 border-b border-outline-variant/40 bg-surface-container-low/40 px-6 py-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-1">
             <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-secondary">
-              Mặc định sắp xếp theo danh mục tạo gần nhất
+              {activeContentType === "product"
+                ? "Danh mục sản phẩm"
+                : "Danh mục bài viết"}
             </p>
             <p className="font-body text-xs text-on-surface-variant">
               FE đang ưu tiên hiển thị theo số nhỏ đến lớn. Ví dụ: 0 sẽ đứng
@@ -597,7 +768,9 @@ export default function AdminCategoriesPage() {
               <th className="px-6 py-4 text-left">
                 <button
                   className="inline-flex items-center gap-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant transition-colors hover:text-secondary"
-                  onClick={() => setSortMode((current) => getNextPrioritySortMode(current))}
+                  onClick={() =>
+                    setSortMode((current) => getNextPrioritySortMode(current))
+                  }
                   type="button"
                 >
                   Ưu tiên
@@ -631,20 +804,25 @@ export default function AdminCategoriesPage() {
               </tr>
             ) : null}
 
-            {!isLoading && categories.length === 0 ? (
+            {!isLoading && visibleCategories.length === 0 ? (
               <tr>
                 <td
                   className="px-6 py-10 text-center font-body text-sm text-on-surface-variant"
                   colSpan={6}
                 >
-                  Chưa có danh mục nào.
+                  {activeContentType === "product"
+                    ? "Chưa có danh mục sản phẩm nào."
+                    : "Chưa có danh mục bài viết nào."}
                 </td>
               </tr>
             ) : null}
 
             {!isLoading
-              ? sortedCategories.map((category) => (
-                  <tr key={category._id} className="hover:bg-surface-container-low/60">
+              ? visibleCategories.map((category) => (
+                  <tr
+                    key={category._id}
+                    className="hover:bg-surface-container-low/60"
+                  >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
                         <div className="h-14 w-14 shrink-0 overflow-hidden bg-surface-container">
@@ -710,14 +888,24 @@ export default function AdminCategoriesPage() {
                       {formatAdminDate(category.updatedAt)}
                     </td>
                     <td className="px-6 py-4">
-                      <button
-                        className="inline-flex items-center gap-2 border border-outline-variant px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant transition-colors hover:border-secondary hover:text-secondary"
-                        onClick={() => openEditEditor(category)}
-                        type="button"
-                      >
-                        <Pencil size={14} />
-                        Sửa
-                      </button>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          className="inline-flex items-center gap-2 border border-outline-variant px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant transition-colors hover:border-secondary hover:text-secondary"
+                          onClick={() => openEditEditor(category)}
+                          type="button"
+                        >
+                          <Pencil size={14} />
+                          Sửa
+                        </button>
+                        <button
+                          className="inline-flex items-center gap-2 border border-red-200 px-3 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-red-600 transition-colors hover:bg-red-50"
+                          onClick={() => void deleteCategory(category)}
+                          type="button"
+                        >
+                          <Trash2 size={14} />
+                          Xóa
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

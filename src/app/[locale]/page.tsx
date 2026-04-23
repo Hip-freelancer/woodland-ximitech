@@ -7,7 +7,24 @@ import NewsSection from "@/components/sections/home/NewsSection";
 import CtaBannerSection from "@/components/sections/home/CtaBannerSection";
 import { getFeaturedProducts, getNewsArticles } from "@/lib/staticData";
 import { fetchFeaturedProducts, fetchVisibleNews } from "@/lib/content";
+import { buildLocalizedMetadata, getDefaultLocaleDescription } from "@/lib/metadata";
 import type { Locale } from "@/types";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  const title = locale === "vi" ? "WOODLAND | Gỗ công nghiệp Woodland" : "WOODLAND | Industrial Wood Solutions";
+
+  return buildLocalizedMetadata({
+    locale,
+    path: "/",
+    title,
+    description: getDefaultLocaleDescription(locale),
+  });
+}
 
 export default async function HomePage({
   params,

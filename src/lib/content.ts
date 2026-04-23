@@ -6,6 +6,11 @@ import HomeSettingsModel from "@/models/HomeSettings";
 import NewsArticleModel from "@/models/NewsArticle";
 import ProductModel from "@/models/Product";
 import TeamMemberModel from "@/models/TeamMember";
+import {
+  categorySlugMatches,
+  normalizeCategoryContentType,
+  type CategoryContentType,
+} from "@/lib/category";
 import { DEFAULT_HOME_SETTINGS } from "@/lib/homeSettingsDefaults";
 import type {
   Category,
@@ -15,6 +20,7 @@ import type {
   Product,
   ProductMenuCategory,
   ProductMenuItem,
+  SeoFields,
   TeamMember,
 } from "@/types";
 
@@ -25,11 +31,13 @@ interface LocalizedValue {
 
 interface CategoryDocument {
   _id: unknown;
+  contentType?: CategoryContentType;
   createdAt?: Date | string;
   image?: string;
   isVisible?: boolean;
   name?: LocalizedValue;
   priority?: number;
+  seo?: SeoFields;
   slug?: string;
   updatedAt?: Date | string;
 }
@@ -57,6 +65,7 @@ interface ProductDocument {
   material?: LocalizedValue;
   name?: LocalizedValue;
   priority?: number;
+  seo?: SeoFields;
   series?: string;
   slug?: string;
   specifications?: Array<{
@@ -80,6 +89,7 @@ interface NewsDocument {
   isVisible?: boolean;
   priority?: number;
   publishDate?: Date | string;
+  seo?: SeoFields;
   slug?: string;
   tags?: string[];
   title?: LocalizedValue;
@@ -163,14 +173,39 @@ function stripHtml(input: string) {
 function serializeCategory(doc: CategoryDocument, locale: Locale): Category {
   return {
     _id: String(doc._id),
+    contentType: normalizeCategoryContentType(doc.contentType),
     createdAt: formatDate(doc.createdAt),
     image: doc.image ?? "",
     isVisible: doc.isVisible ?? true,
     name: localize(doc.name, locale),
     priority: doc.priority ?? 0,
+    seo: doc.seo,
     slug: doc.slug ?? "",
     updatedAt: formatDate(doc.updatedAt),
   };
+}
+
+function findCategoryByReference(
+  rawCategory: string,
+  categoryMap: Map<string, Category>
+) {
+  if (!rawCategory.trim()) {
+    return null;
+  }
+
+  const directMatch = categoryMap.get(rawCategory.trim());
+
+  if (directMatch) {
+    return directMatch;
+  }
+
+  for (const category of categoryMap.values()) {
+    if (categorySlugMatches(category.slug, rawCategory)) {
+      return category;
+    }
+  }
+
+  return null;
 }
 
 function serializeProduct(
@@ -199,7 +234,9 @@ function serializeProduct(
     availability: localize(doc.availability, locale),
     bonding: localize(doc.bonding, locale),
     category: doc.category ?? "",
-    categoryLabel: categoryMap.get(doc.category ?? "")?.name ?? (doc.category ?? ""),
+    categoryLabel:
+      findCategoryByReference(doc.category ?? "", categoryMap)?.name ??
+      (doc.category ?? ""),
     certifications: doc.certifications ?? [],
     createdAt: formatDate(doc.createdAt),
     description: localize(doc.description, locale),
@@ -213,6 +250,7 @@ function serializeProduct(
     name: localize(doc.name, locale),
     priority: doc.priority ?? 0,
     series: doc.series ?? "",
+    seo: doc.seo,
     slug: doc.slug ?? "",
     specifications: (doc.specifications ?? []).map((item) => ({
       attribute: localize(item.attribute, locale),
@@ -258,22 +296,7 @@ function resolveMenuCategorySlug(
     return null;
   }
 
-  if (categoryMap.has(normalizedCategory)) {
-    return normalizedCategory;
-  }
-
-  const loweredCategory = normalizedCategory.toLowerCase();
-
-  for (const category of categoryMap.values()) {
-    if (
-      category.slug.toLowerCase() === loweredCategory ||
-      category.name.toLowerCase() === loweredCategory
-    ) {
-      return category.slug;
-    }
-  }
-
-  return normalizedCategory;
+  return findCategoryByReference(normalizedCategory, categoryMap)?.slug ?? normalizedCategory;
 }
 
 function serializeNews(
@@ -288,7 +311,9 @@ function serializeNews(
     _id: String(doc._id),
     author: doc.author ?? "Editorial",
     category: doc.category ?? "",
-    categoryLabel: categoryMap.get(doc.category ?? "")?.name ?? (doc.category ?? ""),
+    categoryLabel:
+      findCategoryByReference(doc.category ?? "", categoryMap)?.name ??
+      (doc.category ?? ""),
     content,
     createdAt: formatDate(doc.createdAt),
     excerpt,
@@ -296,6 +321,7 @@ function serializeNews(
     isVisible: doc.isVisible ?? true,
     priority: doc.priority ?? 0,
     publishDate: formatDate(doc.publishDate),
+    seo: doc.seo,
     slug: doc.slug ?? "",
     tags: doc.tags ?? [],
     title: localize(doc.title, locale),
@@ -391,8 +417,27 @@ async function getVisibleCategoryMap(locale: Locale) {
   return new Map(serialized.map((item) => [item.slug, item]));
 }
 
-export async function fetchVisibleCategories(locale: Locale) {
+async function getVisibleCategoryMapByType(
+  locale: Locale,
+  contentType: CategoryContentType
+) {
   const categoryMap = await getVisibleCategoryMap(locale);
+  const filteredCategories = Array.from(categoryMap.values()).filter((category) => {
+    if (contentType === "product") {
+      return normalizeCategoryContentType(category.contentType) === "product";
+    }
+
+    return category.contentType === "news";
+  });
+
+  return new Map(filteredCategories.map((item) => [item.slug, item]));
+}
+
+export async function fetchVisibleCategories(
+  locale: Locale,
+  contentType: CategoryContentType = "product"
+) {
+  const categoryMap = await getVisibleCategoryMapByType(locale, contentType);
   return Array.from(categoryMap.values());
 }
 
@@ -410,7 +455,7 @@ export async function fetchVisibleProducts(locale: Locale) {
   await dbConnect();
 
   const [categoryMap, products] = await Promise.all([
-    getVisibleCategoryMap(locale),
+    getVisibleCategoryMapByType(locale, "product"),
     ProductModel.find({ isVisible: true })
       .sort({ priority: 1, createdAt: -1 })
       .lean(),
@@ -425,7 +470,7 @@ export async function fetchProductMenu(locale: Locale, limitPerCategory = 4) {
   await dbConnect();
 
   const [categoryMap, products] = await Promise.all([
-    getVisibleCategoryMap(locale),
+    getVisibleCategoryMapByType(locale, "product"),
     ProductModel.find({ isVisible: true })
       .sort({ priority: 1, createdAt: -1 })
       .lean(),
@@ -482,7 +527,7 @@ export async function fetchFeaturedProducts(locale: Locale, limit = 3) {
   await dbConnect();
 
   const [categoryMap, products] = await Promise.all([
-    getVisibleCategoryMap(locale),
+    getVisibleCategoryMapByType(locale, "product"),
     ProductModel.find({ featured: true, isVisible: true })
       .sort({ priority: 1, createdAt: -1 })
       .limit(limit)
@@ -498,7 +543,7 @@ export async function fetchVisibleProductBySlug(slug: string, locale: Locale) {
   await dbConnect();
 
   const [categoryMap, product] = await Promise.all([
-    getVisibleCategoryMap(locale),
+    getVisibleCategoryMapByType(locale, "product"),
     ProductModel.findOne({ isVisible: true, slug }).lean(),
   ]);
 
@@ -522,7 +567,7 @@ export async function fetchVisibleNews(locale: Locale, limit?: number) {
   }
 
   const [categoryMap, news] = await Promise.all([
-    getVisibleCategoryMap(locale),
+    getVisibleCategoryMapByType(locale, "news"),
     query.lean(),
   ]);
 
@@ -535,7 +580,7 @@ export async function fetchVisibleNewsBySlug(slug: string, locale: Locale) {
   await dbConnect();
 
   const [categoryMap, article] = await Promise.all([
-    getVisibleCategoryMap(locale),
+    getVisibleCategoryMapByType(locale, "news"),
     NewsArticleModel.findOne({ isVisible: true, slug }).lean(),
   ]);
 

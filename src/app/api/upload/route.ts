@@ -1,19 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import {
   createAdminApiUnauthorizedResponse,
   isAdminRequestAuthenticated,
 } from "@/lib/adminAuth";
-
-// Configure AWS SDK for Cloudflare R2
-const s3Client = new S3Client({
-  region: "auto",
-  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-  credentials: {
-    accessKeyId: process.env.R2_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || "",
-  },
-});
+import { createR2ObjectKey, uploadBufferToR2 } from "@/lib/r2";
 
 export async function POST(req: NextRequest) {
   if (!isAdminRequestAuthenticated(req)) {
@@ -33,20 +23,11 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
 
     // Generate unique filename
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-
-    // Upload to Cloudflare R2
-    await s3Client.send(
-      new PutObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME,
-        Key: filename,
-        Body: buffer,
-        ContentType: file.type,
-      })
-    );
-
-    const publicUrl = `${process.env.R2_PUBLIC_DOMAIN}/${filename}`;
+    const publicUrl = await uploadBufferToR2({
+      body: buffer,
+      contentType: file.type,
+      key: createR2ObjectKey(file.name, "admin-images"),
+    });
 
     return NextResponse.json({ url: publicUrl });
   } catch (error) {

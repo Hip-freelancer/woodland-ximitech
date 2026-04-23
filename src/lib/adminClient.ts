@@ -56,6 +56,66 @@ export async function uploadAdminHeroVideo(file: File, previousUrl = "") {
   return data.url;
 }
 
+export async function deleteAdminHeroVideo(url: string) {
+  const response = await fetch("/api/admin/home-media", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ url }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      await readAdminApiError(response, "Không thể xóa video hero tạm thời.")
+    );
+  }
+}
+
+export interface AdminBackupDataSet {
+  categories: Record<string, unknown>[];
+  contacts: Record<string, unknown>[];
+  "home-settings": Record<string, unknown>[];
+  news: Record<string, unknown>[];
+  products: Record<string, unknown>[];
+  projects: Record<string, unknown>[];
+  team: Record<string, unknown>[];
+}
+
+export interface AdminBackupPayload {
+  data: AdminBackupDataSet;
+  exportedAt: string;
+  version: number;
+}
+
+export async function exportAdminBackup() {
+  const response = await fetch("/api/admin/backup");
+
+  if (!response.ok) {
+    throw new Error(
+      await readAdminApiError(response, "Không thể xuất dữ liệu backup.")
+    );
+  }
+
+  return (await response.json()) as AdminBackupPayload;
+}
+
+export async function importAdminBackupData(backup: AdminBackupPayload) {
+  const response = await fetch("/api/admin/backup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(backup),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      await readAdminApiError(response, "Không thể nhập dữ liệu backup.")
+    );
+  }
+}
+
 interface AutoSeoAdminInput {
   module: string;
   payload: Record<string, unknown>;

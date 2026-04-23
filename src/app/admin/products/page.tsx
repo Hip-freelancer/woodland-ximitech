@@ -20,6 +20,8 @@ import {
 import AdminAutoSeoButton from "@/components/admin/AdminAutoSeoButton";
 import AdminGalleryField from "@/components/admin/AdminGalleryField";
 import AdminNotice from "@/components/admin/AdminNotice";
+import AdminProductApplicationsEditor from "@/components/admin/AdminProductApplicationsEditor";
+import AdminProductSpecificationsEditor from "@/components/admin/AdminProductSpecificationsEditor";
 import AdminPriorityInput from "@/components/admin/AdminPriorityInput";
 import AdminTranslateButton from "@/components/admin/AdminTranslateButton";
 import RichEditor from "@/components/admin/RichEditor";
@@ -31,6 +33,10 @@ import {
   sortAdminList,
   type AdminListSortMode,
 } from "@/lib/adminListSort";
+import {
+  normalizeCategoryContentType,
+  type CategoryContentType,
+} from "@/lib/category";
 import { createSlug } from "@/lib/slug";
 
 interface LocalizedText {
@@ -46,6 +52,7 @@ interface SeoFields {
 
 interface AdminCategoryOption {
   _id: string;
+  contentType?: CategoryContentType;
   image?: string;
   name: LocalizedText;
   slug: string;
@@ -92,7 +99,7 @@ interface AdminProduct {
 }
 
 interface ProductFormState {
-  applicationsJson: string;
+  applications: ProductApplication[];
   availability: LocalizedText;
   bonding: LocalizedText;
   category: string;
@@ -109,7 +116,7 @@ interface ProductFormState {
   seo: SeoFields;
   series: string;
   slug: string;
-  specificationsJson: string;
+  specifications: ProductSpecification[];
   thicknessText: string;
 }
 
@@ -120,7 +127,7 @@ interface NoticeState {
 
 function createEmptyForm(category = ""): ProductFormState {
   return {
-    applicationsJson: "[]",
+    applications: [],
     availability: { en: "In Stock", vi: "Còn Hàng" },
     bonding: { en: "", vi: "" },
     category,
@@ -137,17 +144,13 @@ function createEmptyForm(category = ""): ProductFormState {
     seo: { title: "", description: "", keywords: "" },
     series: "",
     slug: "",
-    specificationsJson: "[]",
+    specifications: [],
     thicknessText: "",
   };
 }
 
 function resolveProductSlug(name: LocalizedText) {
   return createSlug(name.vi || name.en);
-}
-
-function stringifyJson(value: unknown) {
-  return JSON.stringify(value ?? [], null, 2);
 }
 
 export default function AdminProductsPage() {
@@ -170,6 +173,23 @@ export default function AdminProductsPage() {
   const sortedProducts = useMemo(
     () => sortAdminList(products, sortMode),
     [products, sortMode]
+  );
+  const productCategories = useMemo(
+    () =>
+      categories.filter(
+        (category) => normalizeCategoryContentType(category.contentType) === "product"
+      ),
+    [categories]
+  );
+  const categoryNameMap = useMemo(
+    () =>
+      new Map(
+        productCategories.map((category) => [
+          category.slug,
+          category.name?.vi || category.slug,
+        ])
+      ),
+    [productCategories]
   );
 
   const applyAutoSeo = (result: {
@@ -228,6 +248,9 @@ export default function AdminProductsPage() {
 
       const productsData = (await productsResponse.json()) as AdminProduct[];
       const categoriesData = (await categoriesResponse.json()) as AdminCategoryOption[];
+      const nextProductCategories = categoriesData.filter(
+        (category) => normalizeCategoryContentType(category.contentType) === "product"
+      );
 
       setProducts(productsData);
       setCategories(categoriesData);
@@ -236,7 +259,7 @@ export default function AdminProductsPage() {
           ? current
           : {
               ...current,
-              category: categoriesData[0]?.slug ?? "",
+              category: nextProductCategories[0]?.slug ?? "",
             }
       );
     } catch (error) {
@@ -262,14 +285,14 @@ export default function AdminProductsPage() {
 
   const resetEditor = () => {
     setEditingId(null);
-    setFormData(createEmptyForm(categories[0]?.slug ?? ""));
+    setFormData(createEmptyForm(productCategories[0]?.slug ?? ""));
     setIsEditorOpen(false);
   };
 
   const openCreateEditor = () => {
     setNotice(null);
     setEditingId(null);
-    setFormData(createEmptyForm(categories[0]?.slug ?? ""));
+    setFormData(createEmptyForm(productCategories[0]?.slug ?? ""));
     setIsEditorOpen(true);
   };
 
@@ -277,7 +300,7 @@ export default function AdminProductsPage() {
     setNotice(null);
     setEditingId(product._id);
     setFormData({
-      applicationsJson: stringifyJson(product.applications),
+      applications: product.applications ?? [],
       availability: {
         en: product.availability?.en ?? "",
         vi: product.availability?.vi ?? "",
@@ -319,7 +342,7 @@ export default function AdminProductsPage() {
       },
       series: product.series ?? "",
       slug: product.slug ?? "",
-      specificationsJson: stringifyJson(product.specifications),
+      specifications: product.specifications ?? [],
       thicknessText: (product.thickness ?? []).join(", "),
     });
     setIsEditorOpen(true);
@@ -358,7 +381,7 @@ export default function AdminProductsPage() {
     try {
       const response = await fetch(url, {
         body: JSON.stringify({
-          applicationsJson: formData.applicationsJson,
+          applications: formData.applications,
           availability: formData.availability,
           bonding: formData.bonding,
           category: formData.category,
@@ -375,7 +398,7 @@ export default function AdminProductsPage() {
           seo: formData.seo,
           series: formData.series,
           slug: formData.slug,
-          specificationsJson: formData.specificationsJson,
+          specifications: formData.specifications,
           thicknessText: formData.thicknessText,
         }),
         headers: {
@@ -512,6 +535,12 @@ export default function AdminProductsPage() {
       </div>
 
       {notice ? <AdminNotice message={notice.message} tone={notice.tone} /> : null}
+      {productCategories.length === 0 ? (
+        <AdminNotice
+          message="Chưa có danh mục sản phẩm. Hãy tạo danh mục loại sản phẩm trước khi thêm sản phẩm mới."
+          tone="warning"
+        />
+      ) : null}
 
       {isEditorOpen ? (
         <div className="border border-outline-variant/40 bg-white p-6">
@@ -604,10 +633,18 @@ export default function AdminProductsPage() {
                   required
                   value={formData.category}
                 >
-                  {categories.length === 0 ? (
+                  {productCategories.length === 0 ? (
                     <option value="">Chưa có danh mục</option>
                   ) : null}
-                  {categories.map((category) => (
+                  {formData.category &&
+                  !productCategories.some(
+                    (category) => category.slug === formData.category
+                  ) ? (
+                    <option value={formData.category}>
+                      {formData.category} (không còn trong danh mục sản phẩm)
+                    </option>
+                  ) : null}
+                  {productCategories.map((category) => (
                     <option key={category._id} value={category.slug}>
                       {category.name?.vi || category.slug}
                     </option>
@@ -984,41 +1021,29 @@ export default function AdminProductsPage() {
               </div>
             </div>
 
-            <div className="grid items-end gap-4 lg:grid-cols-2">
-              <label className="block space-y-2">
-                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                  JSON thông số kỹ thuật
-                </span>
-                <textarea
-                  className="min-h-40 w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
-                  onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      specificationsJson: event.target.value,
-                    }))
-                  }
-                  value={formData.specificationsJson}
-                />
-              </label>
+            <AdminProductSpecificationsEditor
+              items={formData.specifications}
+              onChange={(value) =>
+                setFormData((current) => ({
+                  ...current,
+                  specifications: value,
+                }))
+              }
+              onError={showErrorNotice}
+            />
 
-              <label className="block space-y-2">
-                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
-                  JSON ứng dụng
-                </span>
-                <textarea
-                  className="min-h-40 w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
-                  onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      applicationsJson: event.target.value,
-                    }))
-                  }
-                  value={formData.applicationsJson}
-                />
-              </label>
-            </div>
+            <AdminProductApplicationsEditor
+              items={formData.applications}
+              onChange={(value) =>
+                setFormData((current) => ({
+                  ...current,
+                  applications: value,
+                }))
+              }
+              onError={showErrorNotice}
+            />
 
-              <div className="grid items-end gap-4 lg:grid-cols-3">
+            <div className="grid items-end gap-4 lg:grid-cols-3">
               <label className="block space-y-2">
                 <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
                   Tiêu đề SEO
@@ -1220,7 +1245,9 @@ export default function AdminProductsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 font-body text-sm text-on-surface-variant">
-                      {product.category || "Chưa gán danh mục"}
+                      {categoryNameMap.get(product.category) ||
+                        product.category ||
+                        "Chưa gán danh mục"}
                     </td>
                     <td className="px-6 py-4">
                       <AdminPriorityInput

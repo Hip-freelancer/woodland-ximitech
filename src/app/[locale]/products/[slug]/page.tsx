@@ -1,26 +1,229 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { ArrowLeft, ArrowRight, Download } from "lucide-react";
-import Badge from "@/components/ui/Badge";
 import CtaBannerSection from "@/components/sections/home/CtaBannerSection";
 import ProductDetailGallery from "@/components/sections/products/ProductDetailGallery";
+import StructuredData from "@/components/seo/StructuredData";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
+import Badge from "@/components/ui/Badge";
+import NewsPreviewCard from "@/components/ui/NewsPreviewCard";
+import ProductCard from "@/components/ui/ProductCard";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { COMPANY_INFO } from "@/lib/companyInfo";
-import ProductCard from "@/components/ui/ProductCard";
-import NewsPreviewCard from "@/components/ui/NewsPreviewCard";
 import {
   fetchVisibleNews,
   fetchVisibleProductBySlug,
   fetchVisibleProducts,
 } from "@/lib/content";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocalizedMetadata,
+  getAbsoluteUrl,
+  resolveSeoFields,
+} from "@/lib/metadata";
 import { getAllProducts, getNewsArticles } from "@/lib/staticData";
-import type { Locale, NewsArticle, Product } from "@/types";
+import type { Locale, Product } from "@/types";
 
 interface ProductDetailPageProps {
   params: Promise<{ slug: string; locale: Locale }>;
+}
+
+function stripHtml(input: string) {
+  return input
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function resolveProductSummary(product: Product, t: Awaited<ReturnType<typeof getTranslations>>) {
+  const summaryItems = [
+    {
+      label: t("attributes.material"),
+      value: product.material,
+    },
+    {
+      label: t("attributes.thickness"),
+      value: product.thickness.length > 0 ? `${product.thickness.join(", ")}mm` : "",
+    },
+    {
+      label: t("attributes.grade"),
+      value: product.grade,
+    },
+    {
+      label: t("attributes.bonding"),
+      value: product.bonding,
+    },
+    {
+      label: t("attributes.dimensions"),
+      value: product.dimensions.join(", "),
+    },
+  ].filter((item) => item.value.trim().length > 0);
+
+  const technicalCards = [
+    {
+      label: t("availability"),
+      value: product.availability,
+    },
+    {
+      label: t("certification"),
+      value: product.certifications.join(", "),
+    },
+  ].filter((item) => item.value.trim().length > 0);
+
+  return { summaryItems, technicalCards };
+}
+
+function buildProductJsonLd(locale: Locale, product: Product) {
+  const productPath = `/products/${product.slug}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    image:
+      product.galleryImages.length > 0
+        ? product.galleryImages.map((image) => getAbsoluteUrl(image))
+        : [getAbsoluteUrl(product.image)],
+    description: stripHtml(product.description),
+    brand: {
+      "@type": "Brand",
+      name: "Woodland",
+    },
+    category: product.categoryLabel ?? product.category,
+    sku: product.slug,
+    url: getAbsoluteUrl(`/${locale}${productPath}`),
+    offers: product.availability
+      ? {
+          "@type": "Offer",
+          availability: "https://schema.org/InStock",
+          url: getAbsoluteUrl(`/${locale}${productPath}`),
+        }
+      : undefined,
+  };
+}
+
+function TechnicalDataSection({
+  product,
+  t,
+}: {
+  product: Product;
+  t: Awaited<ReturnType<typeof getTranslations>>;
+}) {
+  const rows = product.specifications.filter(
+    (row) =>
+      row.attribute.trim() ||
+      row.specification.trim() ||
+      row.tolerance.trim() ||
+      row.standard.trim()
+  );
+
+  const fallbackFacts = [
+    {
+      label: t("attributes.material"),
+      value: product.material,
+    },
+    {
+      label: t("attributes.grade"),
+      value: product.grade,
+    },
+    {
+      label: t("attributes.bonding"),
+      value: product.bonding,
+    },
+    {
+      label: t("attributes.dimensions"),
+      value: product.dimensions.join(", "),
+    },
+    {
+      label: t("attributes.thickness"),
+      value: product.thickness.length > 0 ? `${product.thickness.join(", ")}mm` : "",
+    },
+  ].filter((item) => item.value.trim().length > 0);
+
+  return (
+    <section className="relative overflow-hidden bg-primary py-14 sm:py-16 grain-overlay">
+      <div className="relative z-10 mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+        <p className="mb-4 font-label text-[10px] font-semibold uppercase tracking-widest text-primary-fixed">
+          {t("technicalData.subtitle")}
+        </p>
+        <h2 className="font-headline text-3xl font-black uppercase leading-none tracking-tight text-white md:text-4xl">
+          {t("technicalData.title")}
+        </h2>
+
+        {rows.length > 0 ? (
+          <div className="mt-10 overflow-hidden border border-white/12 bg-white/6 backdrop-blur-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[680px]">
+                <thead>
+                  <tr className="border-b border-white/28">
+                    {[
+                      t("technicalData.attribute"),
+                      t("technicalData.specification"),
+                      t("technicalData.tolerance"),
+                      t("technicalData.standard"),
+                    ].map((heading) => (
+                      <th
+                        key={heading}
+                        className="px-6 py-4 text-left font-label text-[10px] font-semibold uppercase tracking-widest text-white/72"
+                      >
+                        {heading}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, index) => (
+                    <tr
+                      key={`${row.attribute}-${row.standard}-${index}`}
+                      className="border-b border-white/20 transition-colors duration-200 hover:bg-white/6"
+                    >
+                      <td className="px-6 py-5 font-label text-xs font-semibold uppercase tracking-widest text-white">
+                        {row.attribute}
+                      </td>
+                      <td className="px-6 py-5 font-body text-sm text-white/88">
+                        {row.specification}
+                      </td>
+                      <td className="px-6 py-5 font-body text-sm text-white/82">
+                        {row.tolerance || "—"}
+                      </td>
+                      <td className="px-6 py-5 font-body text-sm text-white/82">
+                        {row.standard || "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ) : fallbackFacts.length > 0 ? (
+          <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            {fallbackFacts.map((item) => (
+              <div
+                key={item.label}
+                className="border border-white/12 bg-white/8 px-5 py-5 backdrop-blur-sm"
+              >
+                <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64">
+                  {item.label}
+                </p>
+                <p className="mt-3 font-body text-sm leading-7 text-white">
+                  {item.value}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-10 border border-dashed border-white/20 bg-white/8 px-6 py-12 text-center font-body text-sm text-white/78">
+            {t("updating")}
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }
 
 export async function generateMetadata({
@@ -39,106 +242,35 @@ export async function generateMetadata({
     return { title: "Not Found" };
   }
 
-  return {
-    title: `${product.name} | Woodland`,
-    description: product.description.replace(/<[^>]+>/g, "").slice(0, 160),
-  };
+  const seo = resolveSeoFields(product.seo, {
+    title: product.name,
+    description: stripHtml(product.description).slice(0, 160),
+  });
+
+  return buildLocalizedMetadata({
+    locale,
+    path: `/products/${product.slug}`,
+    title: seo.title,
+    description: seo.description,
+    keywords: seo.keywords,
+  });
 }
 
-function TechnicalDataTable({ product }: { product: Product }) {
-  const t = useTranslations("productDetail.technicalData");
-  const tDetail = useTranslations("productDetail");
-
-  const rows =
-    product.specifications.length > 0
-      ? product.specifications
-      : [
-          {
-            attribute: tDetail("attributes.grade"),
-            specification: product.grade,
-            tolerance: "±0",
-            standard: "Ref.",
-          },
-          {
-            attribute: tDetail("attributes.material"),
-            specification: product.material,
-            tolerance: "—",
-            standard: "Ref.",
-          },
-          {
-            attribute: tDetail("attributes.bonding"),
-            specification: product.bonding,
-            tolerance: "—",
-            standard: "Ref.",
-          },
-          {
-            attribute: tDetail("attributes.dimensions"),
-            specification: product.dimensions[0] ?? tDetail("updating"),
-            tolerance: "±2mm",
-            standard: "Ref.",
-          },
-          {
-            attribute: tDetail("attributes.thickness"),
-            specification: product.thickness.length
-              ? `${product.thickness.join(", ")}mm`
-              : tDetail("updating"),
-            tolerance: "±0.1mm",
-            standard: "Ref.",
-          },
-        ];
-
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-white/28">
-            {[t("attribute"), t("specification"), t("tolerance"), t("standard")].map(
-              (heading) => (
-                <th
-                  key={heading}
-                  className="px-6 py-4 text-left font-label text-[10px] font-semibold uppercase tracking-widest text-white/72"
-                >
-                  {heading}
-                </th>
-              )
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr
-              key={`${row.attribute}-${row.standard}`}
-              className="border-b border-white/20 transition-colors duration-200 hover:bg-white/6"
-            >
-              <td className="px-6 py-5 font-label text-xs font-semibold uppercase tracking-widest text-white">
-                {row.attribute}
-              </td>
-              <td className="px-6 py-5 font-body text-sm text-white/88">
-                {row.specification}
-              </td>
-              <td className="px-6 py-5 font-body text-sm text-white/82">
-                {row.tolerance}
-              </td>
-              <td className="px-6 py-5 font-body text-sm text-white/82">
-                {row.standard}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
+export default async function ProductDetailPage({
+  params,
+}: ProductDetailPageProps) {
   const { locale, slug } = await params;
   const fallbackProducts = getAllProducts(locale);
   const fallbackNews = getNewsArticles(locale);
-  const [resolvedProduct, products, articles] = await Promise.all([
-    fetchVisibleProductBySlug(slug, locale),
-    fetchVisibleProducts(locale),
-    fetchVisibleNews(locale, 6),
-  ]);
+  const [t, tCommon, tNav, resolvedProduct, products, articles] =
+    await Promise.all([
+      getTranslations({ locale, namespace: "productDetail" }),
+      getTranslations({ locale, namespace: "common" }),
+      getTranslations({ locale, namespace: "nav" }),
+      fetchVisibleProductBySlug(slug, locale),
+      fetchVisibleProducts(locale),
+      fetchVisibleNews(locale, 6),
+    ]);
   const product =
     resolvedProduct ??
     fallbackProducts.find((item) => item.slug === slug) ??
@@ -154,34 +286,22 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
     .filter((item) => item.slug !== product.slug)
     .slice(0, 3);
   const recentNews = recentNewsSource.slice(0, 3);
-
-  return (
-    <ProductDetailContent
-      locale={locale}
-      product={product}
-      recentNews={recentNews}
-      recentProducts={recentProducts}
-    />
-  );
-}
-
-function ProductDetailContent({
-  locale,
-  product,
-  recentNews,
-  recentProducts,
-}: {
-  locale: Locale;
-  product: Product;
-  recentNews: NewsArticle[];
-  recentProducts: Product[];
-}) {
-  const t = useTranslations("productDetail");
-  const tCommon = useTranslations("common");
-  const tNav = useTranslations("nav");
+  const { summaryItems, technicalCards } = resolveProductSummary(product, t);
+  const breadcrumbItems = [
+    { label: tNav("home"), path: "/" },
+    { label: tNav("products"), path: "/products" },
+    { label: product.name, path: `/products/${product.slug}` },
+  ];
 
   return (
     <>
+      <StructuredData
+        data={[
+          buildBreadcrumbJsonLd(locale, breadcrumbItems),
+          buildProductJsonLd(locale, product),
+        ]}
+      />
+
       <BreadcrumbBar
         items={[
           { label: tNav("home"), href: "/" },
@@ -190,7 +310,7 @@ function ProductDetailContent({
         ]}
       />
 
-      <section className="mx-auto max-w-[1440px] px-6 py-8">
+      <section className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
         <Link
           className="inline-flex items-center gap-1 font-label text-xs font-bold uppercase tracking-[0.16em] text-on-surface-variant transition-colors hover:text-primary"
           href="/products"
@@ -200,8 +320,8 @@ function ProductDetailContent({
         </Link>
       </section>
 
-      <section className="mx-auto max-w-[1440px] px-6 pb-16">
-        <div className="grid grid-cols-1 gap-12 xl:grid-cols-[1.15fr_0.85fr]">
+      <section className="mx-auto max-w-[1120px] px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="space-y-8">
           <ProductDetailGallery
             images={
               product.galleryImages.length > 0
@@ -211,145 +331,83 @@ function ProductDetailContent({
             productName={product.name}
           />
 
-          <div className="xl:sticky xl:top-24 xl:self-start">
-            <div className="border border-outline-variant/30 bg-white p-8 shadow-[0_24px_50px_rgba(18,55,31,0.08)]">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge label={product.series} variant="green" />
-                <span className="inline-flex border border-outline-variant/50 px-2.5 py-1 font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-outline">
-                  {product.categoryLabel ?? product.category}
-                </span>
+          <div>
+            <div className="overflow-hidden border border-outline-variant/30 bg-white shadow-[0_24px_50px_rgba(18,55,31,0.08)]">
+              <div className="border-b border-outline-variant/20 bg-surface-container-low/70 px-6 py-5 sm:px-8">
+                <div className="flex flex-wrap items-center gap-2">
+                  {product.series ? <Badge label={product.series} variant="green" /> : null}
+                  {(product.categoryLabel ?? product.category) ? (
+                    <span className="inline-flex border border-outline-variant/50 px-2.5 py-1 font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-outline">
+                      {product.categoryLabel ?? product.category}
+                    </span>
+                  ) : null}
+                </div>
+
+                <h1 className="mt-5 pt-[0.18em] pb-[0.12em] font-headline text-3xl font-black uppercase leading-[1.12] tracking-tight text-primary [text-wrap:balance] sm:text-4xl lg:text-5xl">
+                  {product.name}
+                </h1>
+
+                {(product.availability || product.series) && technicalCards.length > 0 ? (
+                  <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-outline-variant/20 pt-5">
+                    {technicalCards.map((item) => (
+                      <div key={item.label} className="min-w-[180px]">
+                        <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
+                          {item.label}
+                        </p>
+                        <p className="mt-2 font-body text-sm font-semibold text-primary">
+                          {item.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
 
-              <h1 className="mt-5 pt-[0.18em] pb-[0.12em] font-headline text-4xl font-black uppercase leading-[1.16] tracking-tight text-primary [text-wrap:balance] md:text-5xl">
-                {product.name}
-              </h1>
+              <div className="px-6 py-6 sm:px-8 sm:py-8">
+                {summaryItems.length > 0 ? (
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {summaryItems.map((item) => (
+                      <div
+                        key={item.label}
+                        className="border border-outline-variant/30 bg-surface-container-low px-4 py-4"
+                      >
+                        <p className="font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-outline">
+                          {item.label}
+                        </p>
+                        <p className="mt-2 font-body text-sm font-semibold text-primary">
+                          {item.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
 
-              <div className="mt-4 flex flex-wrap items-center gap-5 border-b border-outline-variant/30 pb-6">
-                <span className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
-                  {product.series || t("attributes.grade")}
-                </span>
-                <span className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
-                  {product.availability || t("inStock")}
-                </span>
-              </div>
+                <div
+                  className="rich-content mt-7 font-body text-base leading-8 text-on-surface-variant"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
 
-              <div className="mt-6 grid grid-cols-2 gap-3">
-                <div className="border border-outline-variant/30 bg-surface-container-low px-4 py-4">
-                  <p className="font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-outline">
-                    {t("attributes.material")}
-                  </p>
-                  <p className="mt-2 font-body text-sm font-semibold text-primary">
-                    {product.material || t("updating")}
-                  </p>
-                </div>
-                <div className="border border-outline-variant/30 bg-surface-container-low px-4 py-4">
-                  <p className="font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-outline">
-                    {t("attributes.thickness")}
-                  </p>
-                  <p className="mt-2 font-body text-sm font-semibold text-primary">
-                    {product.thickness.length > 0
-                      ? `${product.thickness.join(", ")}mm`
-                      : t("updating")}
-                  </p>
-                </div>
-              </div>
-
-              <div
-                className="rich-content mt-7 font-body text-base leading-8 text-on-surface-variant"
-                dangerouslySetInnerHTML={{ __html: product.description }}
-              />
-
-              <div className="mt-8 grid gap-3 md:grid-cols-3">
-                <div className="border border-outline-variant/30 bg-surface-container-low px-4 py-4">
-                  <p className="font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-outline">
-                    {t("attributes.grade")}
-                  </p>
-                  <p className="mt-2 font-body text-sm font-semibold text-primary">
-                    {product.grade || t("updating")}
-                  </p>
-                </div>
-                <div className="border border-outline-variant/30 bg-surface-container-low px-4 py-4">
-                  <p className="font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-outline">
-                    {t("attributes.bonding")}
-                  </p>
-                  <p className="mt-2 font-body text-sm font-semibold text-primary">
-                    {product.bonding || t("updating")}
-                  </p>
-                </div>
-                <div className="border border-outline-variant/30 bg-surface-container-low px-4 py-4">
-                  <p className="font-label text-[10px] font-semibold uppercase tracking-[0.16em] text-outline">
-                    {t("attributes.dimensions")}
-                  </p>
-                  <p className="mt-2 font-body text-sm font-semibold text-primary">
-                    {product.dimensions[0] || t("updating")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  className="flex items-center justify-center gap-2 bg-primary px-6 py-4 font-label text-xs font-semibold uppercase tracking-widest text-on-primary transition-colors duration-300 hover:bg-secondary"
-                  href="/contact"
-                >
-                  {t("contactQuote")}
-                  <ArrowRight size={14} />
-                </Link>
-                <a
-                  className="flex items-center justify-center gap-2 border border-primary px-6 py-4 font-label text-xs font-semibold uppercase tracking-widest text-primary transition-colors duration-300 hover:bg-primary hover:text-on-primary"
-                  href={COMPANY_INFO.website}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <Download size={14} />
-                  {t("downloadCatalog")}
-                </a>
-              </div>
-
-              <div className="mt-8 space-y-4 border-t border-outline-variant/30 pt-6">
-                <div className="flex justify-between gap-4">
-                  <span className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant">
-                    {t("availability")}
-                  </span>
-                  <span className="text-right font-body text-sm font-semibold text-secondary">
-                    {product.availability || t("inStock")}
-                  </span>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant">
-                    {t("certification")}
-                  </span>
-                  <div className="flex flex-wrap justify-end gap-1">
-                    {product.certifications.length > 0 ? (
-                      product.certifications.map((certification) => (
+                {product.certifications.length > 0 ? (
+                  <div className="mt-8 border-t border-outline-variant/20 pt-6">
+                    <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
+                      {t("certification")}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {product.certifications.map((certification) => (
                         <Badge key={certification} label={certification} />
-                      ))
-                    ) : (
-                      <span className="font-body text-sm text-on-surface-variant">
-                        {t("updating")}
-                      </span>
-                    )}
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span className="font-label text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant">
-                    {t("attributes.dimensions")}
-                  </span>
-                  <span className="text-right font-body text-sm text-on-surface-variant">
-                    {product.dimensions[0] ?? t("updating")}
-                  </span>
-                </div>
-              </div>
+                ) : null}
 
-              <div className="mt-8 border-t border-outline-variant/30 pt-6">
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div className="border border-outline-variant/30 bg-primary px-5 py-5 text-white">
-                    <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-fixed">
-                      Woodland
-                    </p>
-                    <p className="mt-3 font-body text-sm leading-7 text-white/78">
-                      {t("cta.subtitle")}
-                    </p>
-                  </div>
+                <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                  <Link
+                    className="flex items-center justify-center gap-2 bg-primary px-6 py-4 font-label text-xs font-semibold uppercase tracking-widest text-on-primary transition-colors duration-300 hover:bg-secondary"
+                    href="/contact"
+                  >
+                    {t("contactQuote")}
+                    <ArrowRight size={14} />
+                  </Link>
                   <div className="border border-outline-variant/30 bg-surface-container-low px-5 py-5">
                     <p className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
                       {t("contactCardLabel")}
@@ -374,11 +432,12 @@ function ProductDetailContent({
         </div>
       </section>
 
-      <SectionDivider />
+      <TechnicalDataSection product={product} t={t} />
 
       {product.applications.length > 0 ? (
         <>
-          <section className="mx-auto max-w-[1440px] px-6 py-16">
+          <SectionDivider />
+          <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
             <p className="mb-3 font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
               Woodland
             </p>
@@ -417,28 +476,14 @@ function ProductDetailContent({
               ))}
             </div>
           </section>
-          <SectionDivider />
         </>
       ) : null}
 
-      <section className="relative overflow-hidden bg-primary py-16 grain-overlay">
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6">
-          <p className="mb-4 font-label text-[10px] font-semibold uppercase tracking-widest text-primary-fixed">
-            {t("technicalData.subtitle")}
-          </p>
-          <h2 className="mb-10 font-headline text-3xl font-black uppercase leading-none tracking-tight text-white">
-            {t("technicalData.title")}
-          </h2>
-          <div className="overflow-hidden border border-white/12 bg-white/6 backdrop-blur-sm">
-            <TechnicalDataTable product={product} />
-          </div>
-        </div>
-      </section>
-
       <SectionDivider />
+
       {recentProducts.length > 0 ? (
         <>
-          <section className="mx-auto max-w-[1440px] px-6 py-16">
+          <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
             <p className="mb-3 font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
               Woodland
             </p>
@@ -458,9 +503,10 @@ function ProductDetailContent({
           <SectionDivider />
         </>
       ) : null}
+
       {recentNews.length > 0 ? (
         <>
-          <section className="mx-auto max-w-[1440px] px-6 py-16">
+          <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
             <p className="mb-3 font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
               Woodland
             </p>
@@ -484,6 +530,7 @@ function ProductDetailContent({
           <SectionDivider />
         </>
       ) : null}
+
       <CtaBannerSection />
     </>
   );

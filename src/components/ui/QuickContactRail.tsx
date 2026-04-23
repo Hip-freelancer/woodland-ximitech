@@ -26,15 +26,15 @@ function subscribe(onStoreChange: () => void) {
 
 function getClientSnapshot() {
   if (typeof window === "undefined") {
-    return true;
+    return false;
   }
 
   const savedValue = window.localStorage.getItem(QUICK_CONTACT_STORAGE_KEY);
-  return savedValue !== "false";
+  return savedValue === "true";
 }
 
 function getServerSnapshot() {
-  return true;
+  return false;
 }
 
 function FacebookIcon({ className = "" }: { className?: string }) {
@@ -173,14 +173,23 @@ export default function QuickContactRail({
         aria-label={
           locale === "vi" ? "Mở hoặc đóng liên hệ nhanh" : "Toggle quick contact"
         }
-        className="flex h-[64px] w-[64px] items-center justify-center rounded-[22px] bg-primary text-white shadow-[0_18px_42px_rgba(18,55,31,0.24)] ring-4 ring-white/10 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary md:h-[72px] md:w-[72px] md:rounded-[24px]"
+        className={`flex items-center justify-center gap-3 bg-primary text-white shadow-[0_18px_42px_rgba(18,55,31,0.24)] ring-4 ring-white/10 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary ${
+          contactOpen
+            ? "h-[64px] w-[64px] rounded-[22px] md:h-[72px] md:w-[72px] md:rounded-[24px]"
+            : "min-h-[56px] rounded-full px-5 py-3 md:min-h-[60px] md:px-6"
+        }`}
         onClick={toggleContactOpen}
         type="button"
       >
         {contactOpen ? (
           <X size={28} className="md:h-[34px] md:w-[34px]" />
         ) : (
-          <PhoneCall size={24} className="md:h-[28px] md:w-[28px]" />
+          <>
+            <PhoneCall size={20} className="md:h-[22px] md:w-[22px]" />
+            <span className="font-label text-[10px] font-semibold uppercase tracking-[0.18em] md:text-[11px]">
+              {locale === "vi" ? "Liên hệ" : "Contact us"}
+            </span>
+          </>
         )}
       </button>
     </div>

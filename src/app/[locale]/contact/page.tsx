@@ -6,6 +6,7 @@ import Badge from "@/components/ui/Badge";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import SectionDivider from "@/components/ui/SectionDivider";
 import PageHero from "@/components/ui/PageHero";
+import { buildLocalizedMetadata } from "@/lib/metadata";
 import type { Locale } from "@/types";
 
 const CERTIFICATIONS = [
@@ -41,10 +42,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "contact.hero" });
 
-  return {
-    title: `${t("title")} | Woodland`,
+  return buildLocalizedMetadata({
+    locale,
+    path: "/contact",
+    title: t("title"),
     description: t("subtitle"),
-  };
+  });
 }
 
 export default async function ContactPage({

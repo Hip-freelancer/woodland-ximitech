@@ -103,3 +103,33 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  if (!isAdminRequestAuthenticated(req)) {
+    return createAdminApiUnauthorizedResponse();
+  }
+
+  try {
+    const body = (await req.json().catch(() => null)) as
+      | { url?: unknown }
+      | null;
+    const url = typeof body?.url === "string" ? body.url.trim() : "";
+
+    if (!url) {
+      return NextResponse.json(
+        { error: "Thiếu đường dẫn video cần xóa." },
+        { status: 400 }
+      );
+    }
+
+    await deleteHeroLocalMediaFile(url);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Home hero video delete error:", error);
+    return NextResponse.json(
+      { error: "Không thể xóa video hero tạm thời." },
+      { status: 500 }
+    );
+  }
+}

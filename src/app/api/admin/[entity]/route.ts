@@ -6,6 +6,7 @@ import {
   isAdminRequestAuthenticated,
 } from "@/lib/adminAuth";
 import { normalizeAdminEntityPayload } from "@/lib/adminEntityTransform";
+import { resolveAdminEntityRemoteMedia } from "@/lib/adminRemoteMedia";
 
 // Dynamically import models
 import "@/models/Product";
@@ -61,14 +62,20 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ enti
   
   const Model = getModel(entity);
   if (!Model) {
-    return NextResponse.json({ error: `Entity ${entity} not found` }, { status: 404 });
+    return NextResponse.json(
+      { error: `Không tìm thấy module quản trị: ${entity}.` },
+      { status: 404 }
+    );
   }
 
   try {
     const data = await Model.find({}).sort(getSort(entity));
     return NextResponse.json(data);
   } catch {
-    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Không thể tải dữ liệu quản trị." },
+      { status: 500 }
+    );
   }
 }
 
@@ -82,19 +89,28 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ ent
 
   const Model = getModel(entity);
   if (!Model) {
-    return NextResponse.json({ error: `Entity ${entity} not found` }, { status: 404 });
+    return NextResponse.json(
+      { error: `Không tìm thấy module quản trị: ${entity}.` },
+      { status: 404 }
+    );
   }
 
   try {
     const body = await req.json();
     const normalizedBody = normalizeAdminEntityPayload(entity, body);
-    const newDoc = await Model.create(normalizedBody as Record<string, unknown>);
+    const resolvedMediaBody = await resolveAdminEntityRemoteMedia(
+      entity,
+      normalizedBody
+    );
+    const newDoc = await Model.create(
+      resolvedMediaBody as Record<string, unknown>
+    );
     return NextResponse.json(newDoc, { status: 201 });
   } catch (error: unknown) {
     return NextResponse.json(
       {
         error:
-          error instanceof Error ? error.message : "Failed to create document",
+          error instanceof Error ? error.message : "Không thể tạo dữ liệu mới.",
       },
       { status: 500 }
     );

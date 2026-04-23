@@ -14,6 +14,8 @@ Tài liệu này ghi lại các thay đổi UI/UX mới ở frontend để Backe
 - Một số block tại `about`
 - Trang `sales-team`
 - `footer`
+- `quick contact rail`
+- `home hero admin`
 
 ## Sản phẩm
 
@@ -33,7 +35,8 @@ Frontend đang ưu tiên các trường sau để tạo cảm giác catalog rõ 
 Layout hiện tại có:
 
 - khối tổng quan catalog ở đầu trang
-- sidebar filter sticky
+- desktop dùng sidebar filter sticky
+- mobile dùng nút mở filter và panel trượt từ cạnh phải
 - card sản phẩm lớn hơn, nhấn mạnh ảnh, grade, category, material, thickness
 
 Không có field mới bắt buộc từ backend cho block này.
@@ -57,16 +60,27 @@ Frontend đang ưu tiên:
 
 Layout mới dùng:
 
-- gallery trái với thumbnail click được
-- panel thông tin phải dạng sticky
-- summary specs ở khối hero phải
+- flow 1 cột từ trên xuống dưới, không còn chia 2 cột ở phần hero
+- gallery nằm trước phần thông tin chi tiết và thumbnail vẫn click được
+- panel thông tin không còn sticky sidebar trên desktop
+- summary specs nằm trong khối thông tin chính và chỉ render dữ liệu thật có trong DB
 - CTA/contact block rõ hơn
 - section applications nếu sản phẩm có dữ liệu ứng dụng
-- section technical data nhịp rõ hơn
+- section technical data chỉ dùng:
+  - `specifications` nếu có
+  - nếu chưa có `specifications` thì dùng chính các field thật như `material`, `grade`, `bonding`, `dimensions`, `thickness`
+  - không còn fallback sang bảng thông số “giả”
 - block `recent products`
 - block `recent news`
 
 `galleryImages` hiện rất quan trọng vì đã được đẩy lên thành gallery thumbnail thực tế. Nếu backend chưa có, frontend fallback về `image`.
+
+`applications` hiện đã được dùng đúng thứ tự `order` từ admin, mỗi item cần:
+
+- `image`
+- `title`
+- `subtitle`
+- `order`
 
 ## Tin tức
 
@@ -90,9 +104,11 @@ Layout mới của trang danh sách:
 
 Layout mới dùng:
 
-- hero editorial gồm category, date, title, excerpt
-- ảnh cover lớn theo kiểu feature article
-- phần body nằm trong khối nội dung riêng
+- flow 1 cột cho toàn bộ article detail
+- hero editorial gồm category, date, title, excerpt, author
+- ảnh cover lớn theo kiểu feature article nằm trong cùng trục dọc với intro
+- meta cards được đưa vào giữa intro và body thay vì sidebar desktop
+- phần body nằm trong một khối nội dung duy nhất để ưu tiên đọc liên tục
 - tag/meta tách ra rõ hơn
 - related sections ở cuối trang đồng bộ với product detail
 
@@ -108,6 +124,22 @@ Các section ở home đang dùng lại data cũ nhưng theo bố cục mạnh h
 - `news`: 1 bài featured + 2 bài phụ
 
 Không có model mới bắt buộc.
+
+### Hero và contact nổi
+
+Frontend public hiện đang đọc `home-settings` thật từ DB cho:
+
+- `heroSlides`
+- `heroStats`
+- `contactPhone`
+- `contactEmail`
+
+Lưu ý UI:
+
+- quick contact rail mặc định ở trạng thái thu gọn
+- CTA đóng là pill có chữ `Liên hệ` hoặc `Contact us`
+- các nút liên hệ chỉ bung ra sau khi người dùng bấm
+- hero hỗ trợ cả ảnh và video, nhưng video local chỉ dùng cho render, không nằm trong backup JSON
 
 ## About
 
@@ -143,6 +175,23 @@ Footer đã được đổi sang hướng light corporate:
 - map nằm thành panel riêng để cân bố cục
 - hàng dưới chia card điều hướng, nhóm sản phẩm, direct channels rõ hơn
 - dùng các field contact ổn định từ `companyInfo`
+
+## Mobile Notes
+
+Các tối ưu mobile hiện đã được áp vào các route chính:
+
+- `products`: filter panel riêng cho mobile
+- `products/[slug]`: spacing gọn hơn, các section bám dữ liệu thật
+- `news/[slug]`: intro + cover + content chia nhịp rõ hơn trên màn hình hẹp
+- `quick contact rail`: đóng gọn để không che nội dung
+
+Backend không cần field mới riêng cho mobile, nhưng cần giữ dữ liệu ngắn gọn và nhất quán hơn ở:
+
+- `excerpt`
+- `categoryLabel`
+- `series`
+- `availability`
+- `heroStats`
 
 ## Gợi ý dữ liệu thật nên có trong backend
 

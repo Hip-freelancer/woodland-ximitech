@@ -4,6 +4,7 @@ import CtaBannerSection from "@/components/sections/home/CtaBannerSection";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import PageHero from "@/components/ui/PageHero";
 import { fetchVisibleNews } from "@/lib/content";
+import { buildLocalizedMetadata } from "@/lib/metadata";
 import { getNewsArticles } from "@/lib/staticData";
 import type { Locale } from "@/types";
 
@@ -15,10 +16,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "newsBase.hero" });
 
-  return {
-    title: `${t("title")} | Woodland`,
+  return buildLocalizedMetadata({
+    locale,
+    path: "/news",
+    title: t("title"),
     description: t("subtitle"),
-  };
+  });
 }
 
 export default async function NewsPage({

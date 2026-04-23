@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import PageHero from "@/components/ui/PageHero";
 import SectionDivider from "@/components/ui/SectionDivider";
+import { buildLocalizedMetadata } from "@/lib/metadata";
 import { getGalleryItems } from "@/lib/staticData";
 import type { Locale } from "@/types";
 
@@ -14,10 +15,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "about.gallery" });
 
-  return {
-    title: `${t("title")} | Woodland`,
+  return buildLocalizedMetadata({
+    locale,
+    path: "/gallery",
+    title: t("title"),
     description: t("subtitle"),
-  };
+  });
 }
 
 export default async function GalleryPage({

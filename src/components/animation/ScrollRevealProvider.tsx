@@ -42,16 +42,7 @@ export default function ScrollRevealProvider({
               [
                 "main section",
                 "main article",
-                "main h1",
-                "main h2",
-                "main h3",
-                "main h4",
-                "main h5",
-                "main h6",
-                "main p",
-                "main li",
                 "main figure",
-                "main img",
               ].join(","),
             ),
           )
@@ -66,19 +57,28 @@ export default function ScrollRevealProvider({
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-
           const el = entry.target as HTMLElement;
-          el.classList.add("is-in");
+          const repeat = parseBool(el.dataset.animRepeat, true);
 
-          const repeat = parseBool(el.dataset.animRepeat, false);
-          if (!repeat) observer.unobserve(el);
+          if (entry.isIntersecting) {
+            el.classList.add("is-in");
+
+            if (!repeat) {
+              observer.unobserve(el);
+            }
+
+            continue;
+          }
+
+          if (repeat) {
+            el.classList.remove("is-in");
+          }
         }
       },
       {
         root: null,
-        threshold: 0.15,
-        rootMargin: "0px 0px -10% 0px",
+        threshold: 0.01,
+        rootMargin: "12% 0px 18% 0px",
       },
     );
 
@@ -153,7 +153,7 @@ function getAutoDelayMs(el: HTMLElement) {
 
   const siblings = Array.from(
     parent.querySelectorAll<HTMLElement>(
-      ":scope > section, :scope > article, :scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6, :scope > p, :scope > li, :scope > figure, :scope > img, :scope > [data-anim], :scope > .anim",
+      ":scope > section, :scope > article, :scope > figure, :scope > [data-anim], :scope > .anim",
     ),
   );
 
@@ -176,7 +176,7 @@ function getAutoIndex(el: HTMLElement) {
 
   const siblings = Array.from(
     parent.querySelectorAll<HTMLElement>(
-      ":scope > section, :scope > article, :scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6, :scope > p, :scope > li, :scope > figure, :scope > img, :scope > [data-anim], :scope > .anim",
+      ":scope > section, :scope > article, :scope > figure, :scope > [data-anim], :scope > .anim",
     ),
   );
 
@@ -194,4 +194,3 @@ function getVariantFromIndex(idx: number) {
 
   return variants[idx % variants.length];
 }
-
