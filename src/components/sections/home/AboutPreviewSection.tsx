@@ -4,53 +4,60 @@ import { Link } from "@/i18n/navigation";
 
 export default function AboutPreviewSection() {
   const t = useTranslations("home.about");
+  const tCommon = useTranslations("common");
 
   return (
-    <section className="py-32 px-12 max-w-[1440px] mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-        <div className="relative group aspect-[4/5] w-full overflow-hidden">
-          <div className="absolute -top-12 -left-12 w-48 h-48 bg-tertiary-fixed -z-10" />
+    <section className="mx-auto max-w-[1440px] px-6 py-24 md:py-32">
+      <div className="grid grid-cols-1 gap-10 xl:grid-cols-[0.95fr_1.05fr] xl:items-center">
+        <div className="relative overflow-hidden border border-outline-variant/30 bg-surface-container-low p-3 shadow-[0_24px_50px_rgba(18,55,31,0.08)]">
+          <div className="relative aspect-[4/5] overflow-hidden bg-white">
           <Image
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw-Hp6--4boMLamw7bgoEEXH5_Dl7hSKXvdGtNXx4OZgA1jhBDXXcrh-aXNEzqHbv_6nOGn5-rl7iDu00O5OOWpVMF5R3G-5cWdvclIL0Evskc5ZgpuVF78fQIrKqKrostyJal4YUfUXErC3tJAB8W8ZeKXrIYKB3LDzBTTpI77OULFulHRRG9vr2G6fR4sPq7pZ_Vll0txlvK61in-zgJMKPl6jedEJbhiP_u0LFq20e0V71bNhZMHoYyCtQnZ9Ra1gfspZ-sd0pX"
             alt="Woodland factory"
             fill
             className="object-cover"
           />
-          <div className="absolute bottom-12 -right-12 bg-primary-container p-12 text-on-primary shadow-2xl max-w-sm hidden md:block grain-overlay">
-            <h3 className="font-headline font-bold text-2xl uppercase mb-4 tracking-tight">
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent" />
+          </div>
+
+          <div className="absolute bottom-7 left-7 hidden max-w-sm border border-white/14 bg-primary/92 p-8 text-on-primary shadow-[0_24px_50px_rgba(18,55,31,0.24)] md:block">
+            <p className="font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-primary-fixed">
+              {t("badge")}
+            </p>
+            <h3 className="mt-3 font-headline text-2xl font-black uppercase tracking-tight text-white">
               {t("legacyTitle")}
             </h3>
-            <p className="font-body text-sm opacity-80 leading-loose">
+            <p className="mt-3 font-body text-sm leading-7 text-white/78">
               {t("legacyDescription")}
             </p>
           </div>
         </div>
 
-        <div className="space-y-12">
-          <span className="text-xs font-label uppercase tracking-[0.3em] text-secondary font-bold">
+        <div className="border border-outline-variant/30 bg-white p-8 md:p-10 xl:p-14">
+          <p className="text-xs font-label font-bold uppercase tracking-[0.3em] text-secondary">
             {t("badge")}
-          </span>
-          <h2 className="pt-[0.2em] font-headline font-black text-5xl text-primary uppercase tracking-tighter leading-none">
+          </p>
+          <h2 className="pt-[0.2em] font-headline text-4xl font-black uppercase leading-none tracking-tighter text-primary md:text-5xl">
             {t("title")}
           </h2>
-          <p className="font-body text-lg text-on-surface-variant leading-relaxed max-w-xl">
+          <p className="mt-6 max-w-2xl font-body text-base leading-8 text-on-surface-variant md:text-lg">
             {t("description")}
           </p>
 
-          <div className="flex gap-12 pt-2">
-            <div>
-              <p className="font-headline font-bold text-4xl text-primary mb-1">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="border border-outline-variant/30 bg-surface-container-low px-6 py-6">
+              <p className="font-headline text-4xl font-black text-primary">
                 {t("stat1Value")}
               </p>
-              <p className="text-xs font-label uppercase tracking-widest text-outline">
+              <p className="mt-2 text-xs font-label uppercase tracking-widest text-outline">
                 {t("stat1Label")}
               </p>
             </div>
-            <div>
-              <p className="font-headline font-bold text-4xl text-primary mb-1">
+            <div className="border border-outline-variant/30 bg-surface-container-low px-6 py-6">
+              <p className="font-headline text-4xl font-black text-primary">
                 {t("stat2Value")}
               </p>
-              <p className="text-xs font-label uppercase tracking-widest text-outline">
+              <p className="mt-2 text-xs font-label uppercase tracking-widest text-outline">
                 {t("stat2Label")}
               </p>
             </div>
@@ -58,9 +65,10 @@ export default function AboutPreviewSection() {
 
           <Link
             href="/about"
-            className="font-headline font-bold uppercase text-sm tracking-widest text-primary hover:text-secondary transition-colors border-b-2 border-primary pb-1 inline-block"
+            className="mt-8 inline-flex items-center gap-2 bg-primary px-6 py-4 font-label text-xs font-semibold uppercase tracking-widest text-on-primary transition-colors duration-300 hover:bg-secondary"
           >
-            Learn More →
+            {tCommon("learnMore")}
+            <span>→</span>
           </Link>
         </div>
       </div>

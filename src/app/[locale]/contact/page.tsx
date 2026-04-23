@@ -1,16 +1,20 @@
+import { getTranslations } from "next-intl/server";
 import { useTranslations } from "next-intl";
 import ContactForm from "@/components/sections/contact/ContactForm";
 import ContactInfoPanel from "@/components/sections/contact/ContactInfoPanel";
 import Badge from "@/components/ui/Badge";
+import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import SectionDivider from "@/components/ui/SectionDivider";
 import PageHero from "@/components/ui/PageHero";
+import type { Locale } from "@/types";
 
 const CERTIFICATIONS = [
-  "FSC-C000000",
-  "PEFC-CERTIFIED",
-  "ISO-14001",
-  "EPD-VERIFIED",
-  "BREEAM-A+",
+  "Plywood nhập khẩu",
+  "Plywood Melamine",
+  "Plywood Việt Nam",
+  "Gỗ Cao Su Ghép Finger",
+  "Plywood Phủ Veneer",
+  "Ván MDF",
 ];
 
 function CertificationsSection() {
@@ -29,13 +33,39 @@ function CertificationsSection() {
   );
 }
 
-export default function ContactPage() {
-  const tForm = useTranslations("contact.form");
-  const tHero = useTranslations("contact.hero");
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact.hero" });
+
+  return {
+    title: `${t("title")} | Woodland`,
+    description: t("subtitle"),
+  };
+}
+
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+  const tForm = await getTranslations({ locale, namespace: "contact.form" });
+  const tHero = await getTranslations({ locale, namespace: "contact.hero" });
 
   return (
     <>
-      <PageHero label="Contact" title={tHero("title")} description={tHero("subtitle")} />
+      <BreadcrumbBar
+        items={[
+          { label: tNav("home"), href: "/" },
+          { label: tNav("contact") },
+        ]}
+      />
+      <PageHero label="Woodland" title={tHero("title")} description={tHero("subtitle")} />
       <SectionDivider />
 
       <section className="max-w-[1440px] mx-auto px-6 py-16">

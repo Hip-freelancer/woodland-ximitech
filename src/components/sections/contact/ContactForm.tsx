@@ -86,7 +86,7 @@ export default function ContactForm() {
               onChange={handleChange}
               placeholder={label}
               className={inputClass}
-              required={name === "fullName" || name === "email"}
+              required={name === "fullName" || name === "phone" || name === "email"}
             />
           </div>
         ))}

@@ -2,12 +2,13 @@
   "nav": {
     "home": "Trang chủ",
     "about": "Giới thiệu",
+    "gallery": "Hình ảnh",
     "products": "Sản phẩm",
     "projects": "Dự án",
     "news": "Tin tức",
     "contact": "Liên hệ",
-    "getQuote": "Yêu cầu báo giá",
-    "salesTeam": "Đội ngũ kinh doanh",
+    "getQuote": "Liên hệ Woodland",
+    "salesTeam": "Hỗ trợ kinh doanh",
     "productMenu": {
       "eyebrow": "Danh mục nổi bật",
       "title": "Thư viện sản phẩm",
@@ -21,119 +22,181 @@
   },
   "home": {
     "hero": {
-      "title": "Ván Ép Cao Cấp cho Thị Trường Toàn Cầu",
-      "subtitle": "Khai thác bền vững. Chế tác chính xác. Được định nghĩa bởi kiến trúc.",
+      "title": "CÔNG TY TNHH WOODLAND",
+      "subtitle": "Nhà cung cấp gỗ công nghiệp chất lượng quốc tế tại Việt Nam, mang đến giải pháp vật liệu tối ưu cho nội thất cao cấp, sản xuất xuất khẩu và công trình quy mô lớn.",
       "viewProducts": "Xem sản phẩm",
-      "ourProcess": "Quy trình của chúng tôi"
+      "ourProcess": "Giới thiệu"
     },
     "about": {
-      "badge": "Thành lập 1974",
-      "title": "Được Thiết Kế cho Kiến Trúc",
-      "description": "Woodland là nhà sản xuất ván ép cấp kiến trúc cao cấp, cung cấp cho các nhà thiết kế, nhà thầu và nhà phân phối xuất khẩu tại hơn 42 thị trường toàn cầu.",
-      "legacyTitle": "Nửa thế kỷ chính xác",
-      "legacyDescription": "Từ năm 1974, Woodland hoạt động tại giao điểm của khoa học lâm nghiệp và thiết kế công nghiệp — sản xuất các vật liệu mà kiến trúc sư và kỹ sư tin tưởng.",
-      "stat1Value": "42+",
-      "stat1Label": "Thị trường xuất khẩu",
-      "stat2Value": "1.2M",
-      "stat2Label": "SqM công suất hàng năm"
+      "badge": "Giới thiệu về chúng tôi",
+      "title": "CÔNG TY TNHH WOODLAND",
+      "description": "WOODLAND tự hào là nhà cung cấp gỗ công nghiệp đẳng cấp quốc tế tại Việt Nam, mang đến giải pháp vật liệu tối ưu cho các dự án từ nội thất cao cấp đến xây dựng và sản xuất quy mô lớn. Với cam kết về chất lượng, dịch vụ tận tâm và năng lực cung ứng mạnh, sản phẩm của chúng tôi sẵn sàng đáp ứng các tiêu chuẩn khắt khe tại Mỹ, Châu Âu, Nhật Bản và Hàn Quốc.",
+      "legacyTitle": "CÔNG TY TNHH WOODLAND",
+      "legacyDescription": "Chuyên cung cấp sản phẩm gỗ công nghiệp",
+      "stat1Value": "500,000+",
+      "stat1Label": "m³ cung ứng mỗi năm",
+      "stat2Value": "10,000m²",
+      "stat2Label": "Kho xưởng tại Bình Dương"
     },
     "featuredProducts": {
+      "eyebrow": "CÔNG TY TNHH WOODLAND",
       "title": "Sản Phẩm Nổi Bật",
-      "subtitle": "Vật liệu kỹ thuật cho các ứng dụng đòi hỏi cao",
-      "viewAll": "Xem tất cả sản phẩm"
+      "subtitle": "Sản phẩm nổi bật từ Woodland",
+      "viewAll": "Xem tất cả sản phẩm",
+      "contactItem": "Liên hệ >>"
     },
-    "whyChooseUs": {
-      "title": "Tại Sao Chọn Woodland",
-      "items": {
-        "eco": {
-          "title": "Chứng nhận Sinh thái",
-          "description": "Gỗ được chứng nhận FSC & PEFC từ rừng được quản lý có trách nhiệm."
+    "productLibrary": {
+      "eyebrow": "CÔNG TY TNHH WOODLAND",
+      "title": "Sản Phẩm Của Chúng Tôi",
+      "contactItem": "Liên hệ >>",
+      "viewAll": "Xem toàn bộ sản phẩm",
+      "items": [
+        "Woodland và xu hướng “Xanh hoá vật liệu” cùng Plywood Melamine cao cấp",
+        "Plywood Phủ Veneer Walnut",
+        "Plywood Marine Đạt Chuẩn tại Woodland",
+        "Plywood Full Birch Vượt Khổ",
+        "Plywood Melamine nhập khẩu",
+        "Plywood Marine tiêu chuẩn Carb P2",
+        "Plywood Poplar 100% Carb P2",
+        "Plywood Full Birch Nhập Khẩu"
+      ]
+    },
+    "operations": {
+      "eyebrow": "CÔNG TY TNHH WOODLAND",
+      "title": "Năng Lực Hoạt Động",
+      "items": [
+        {
+          "title": "Quy Mô Và Khả Năng Cung Ứng",
+          "description": "Với năng lực cung cấp hơn 500,000 m³ gỗ công nghiệp mỗi năm, WOODLAND tự hào là một trong những đơn vị dẫn đầu về chất lượng và quy mô trên thị trường."
         },
-        "precision": {
-          "title": "Phay Chính Xác",
-          "description": "Kiểm soát dung sai 0.1mm trên tất cả các dây chuyền sản xuất."
+        {
+          "title": "Sản Phẩm Đa Dạng",
+          "description": "Chúng tôi chuyên cung cấp các loại sản phẩm gỗ công nghiệp như Plywood (ván ép), Gỗ ghép, MDF, Ván Okal, đáp ứng đa dạng nhu cầu của khách hàng trong nước và quốc tế."
         },
-        "quality": {
-          "title": "Phòng Kiểm Nghiệm",
-          "description": "Quy trình kiểm tra 24 điểm nội bộ cho mỗi lô hàng."
+        {
+          "title": "Kho Xưởng Hiện Đại",
+          "description": "WOODLAND đầu tư 10,000m² diện tích kho xưởng đạt chuẩn, 5 xe tải trọng 10 tấn và 3 xe nâng công suất lớn, đảm bảo khả năng lưu trữ và vận chuyển hiệu quả."
         },
-        "logistics": {
-          "title": "Logistics Toàn Cầu",
-          "description": "Xuất khẩu trực tiếp đến 42+ thị trường với đầy đủ tài liệu hải quan."
+        {
+          "title": "Giao Hàng Toàn Quốc",
+          "description": "WOODLAND sở hữu đội ngũ vận chuyển nội bộ cùng với sự hợp tác cùng các đối tác vận tải đường sắt, đường biển và hàng không để đảm bảo giao hàng nhanh chóng đến mọi tỉnh thành từ Hà Nội, Hải Phòng, Quảng Bình, Đà Nẵng, Bình Dương, Hồ Chí Minh đến Cần Thơ."
+        },
+        {
+          "title": "Cam Kết Chất Lượng",
+          "description": "Tại WOODLAND, kiểm soát chất lượng là quy trình quan trọng được áp dụng nghiêm ngặt trong mỗi khâu sản xuất. Chúng tôi xây dựng mối quan hệ bền chặt với các nhà cung cấp đáng tin cậy để đảm bảo nguồn nguyên liệu đầu vào luôn đạt chuẩn chất lượng và giá thành hợp lý."
+        },
+        {
+          "title": "Đội Ngũ Nhân Viên Tận Tâm",
+          "description": "WOODLAND hiện có hơn 50 nhân viên tham gia trong các bộ phận như Sales, Marketing, Quản lý, Kế toán, Kho bãi và Vận chuyển. Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ nhanh, đúng nhu cầu và đồng hành cùng khách hàng trong suốt quá trình làm việc."
         }
-      }
+      ]
     },
     "projects": {
-      "title": "Dự Án Tiêu Biểu",
-      "subtitle": "Woodland tại hiện trường",
-      "viewAll": "Xem tất cả dự án"
+      "title": "Hồ Sơ Và Hình Ảnh Nổi Bật",
+      "subtitle": "Hồ sơ năng lực, kho xưởng và hình ảnh sản phẩm",
+      "viewAll": "Xem thêm"
     },
     "news": {
-      "title": "Tin Tức Mới Nhất",
-      "subtitle": "Thông tin ngành và cập nhật công ty",
+      "eyebrow": "CÔNG TY TNHH WOODLAND",
+      "title": "Tin Tức Nổi Bật",
+      "subtitle": "Bài viết tư vấn, kiến thức vật liệu và cập nhật từ Woodland",
       "readMore": "Đọc thêm",
       "viewAll": "Xem tất cả tin tức"
     },
     "cta": {
-      "title": "Sẵn Sàng Tìm Nguồn Ván Ép Cao Cấp?",
-      "subtitle": "Liên hệ đội ngũ xuất khẩu của chúng tôi để biết giá cả, mẫu hàng và tài liệu kỹ thuật.",
-      "button": "Liên hệ Đội Xuất Khẩu"
+      "title": "Hãy Đến Với WOODLAND",
+      "subtitle": "Nơi mang lại giải pháp gỗ công nghiệp chất lượng quốc tế, nâng cao giá trị cho dự án, nội thất và công trình của bạn.",
+      "button": "Liên hệ ngay"
     }
   },
   "about": {
     "hero": {
-      "title": "Được Định Nghĩa bởi Kiến Trúc",
-      "subtitle": "Thành lập 1974",
-      "description": "Từ nguyên liệu thô đến kiệt tác — ván ép được chế tác chính xác cho kiến trúc toàn cầu."
+      "title": "CÔNG TY TNHH WOODLAND",
+      "subtitle": "Giới thiệu",
+      "description": "WOODLAND chuyên cung cấp các dòng gỗ công nghiệp như plywood, gỗ ghép, MDF và ván Okal, đáp ứng đa dạng nhu cầu cho nội thất, xây dựng, sản xuất và xuất khẩu."
     },
     "vision": {
-      "title": "Tầm Nhìn",
-      "description": "Trở thành thương hiệu gỗ kiến trúc được tin tưởng nhất thế giới — nơi khoa học vật liệu gặp gỡ tham vọng thiết kế."
+      "title": "Sứ Mệnh & Tầm Nhìn",
+      "description": "WOODLAND hướng đến mục tiêu trở thành nhà cung cấp gỗ công nghiệp chất lượng quốc tế hàng đầu tại Việt Nam, phát triển bền vững thông qua cải tiến công nghệ, kiểm soát chất lượng nghiêm ngặt và đặt trải nghiệm khách hàng lên hàng đầu."
     },
     "mission": {
-      "title": "Sứ Mệnh",
-      "description": "Chúng tôi sản xuất các vật liệu ván ép chính xác cho phép kiến trúc sư thực hiện các công trình táo bạo, bền lâu với vật liệu bền vững."
+      "title": "Chất Lượng Đảm Bảo – Uy Tín Hàng Đầu",
+      "description": "Mỗi sản phẩm tại WOODLAND đều được kiểm tra kỹ lưỡng từ khâu chọn nguyên liệu, sản xuất đến hoàn thiện. Chúng tôi cam kết mang đến chất lượng ổn định, độ bền cao, hiệu quả kinh tế và sự yên tâm cho khách hàng trong từng lô hàng."
+    },
+    "portfolio": {
+      "title": "Danh Mục Sản Phẩm Chủ Lực",
+      "description": "WOODLAND cung cấp nhiều nhóm gỗ công nghiệp để phục vụ các nhu cầu từ thi công nội thất, sản xuất xuất khẩu đến các công trình yêu cầu cao về độ ổn định và thẩm mỹ.",
+      "items": [
+        {
+          "title": "Plywood Marine",
+          "description": "Dòng ván ép chống nước chuyên dụng cho các công trình ngoài trời hoặc môi trường ẩm ướt, có khả năng chống nước và chống mục vượt trội, đảm bảo độ bền lâu dài cho các dự án yêu cầu cao về chất lượng."
+        },
+        {
+          "title": "Plywood Melamine",
+          "description": "Bề mặt phủ melamine chống xước, chống thấm và dễ vệ sinh, phù hợp cho nội thất hiện đại và các thiết kế đòi hỏi tính thẩm mỹ cao."
+        },
+        {
+          "title": "Plywood Uốn Cong",
+          "description": "Được thiết kế để dễ dàng uốn cong, phù hợp cho các thiết kế nội thất sáng tạo, đặc biệt là các chi tiết bo cong, mềm mại và khác biệt."
+        }
+      ]
+    },
+    "operations": {
+      "title": "Hệ Thống Cơ Sở Hạ Tầng Bền Vững",
+      "description": "WOODLAND đầu tư kho xưởng quy mô lớn cùng hệ thống vận hành hỗ trợ bảo quản, bốc xếp và giao hàng nhanh chóng cho khách hàng trong nước và quốc tế, đặc biệt tại các thị trường yêu cầu tiến độ và chất lượng ổn định.",
+      "highlights": [
+        "Kho xưởng khoảng 10,000m² tại Bình Dương.",
+        "Trang bị 5 xe tải trọng 10 tấn và 3 xe nâng công suất lớn.",
+        "Hệ thống vận hành giúp tối ưu thời gian giao hàng, bốc xếp và bảo quản hàng hóa."
+      ]
+    },
+    "team": {
+      "title": "Đội Ngũ Nhân Sự Tận Tâm & Chuyên Nghiệp",
+      "description": "WOODLAND sở hữu đội ngũ hơn 50 nhân sự ở các bộ phận sales, marketing, quản lý, kế toán, kho bãi và vận chuyển. Chúng tôi luôn sẵn sàng tư vấn nhanh, hỗ trợ đúng nhu cầu, phản hồi kịp thời và đồng hành lâu dài cùng khách hàng."
     },
     "values": {
-      "title": "Giá Trị Cốt Lõi",
-      "sustainability": {
-        "title": "Bền Vững",
-        "description": "Được chứng nhận FSC & PEFC. Chuỗi cung ứng theo dõi carbon."
-      },
-      "quality": {
-        "title": "Chất Lượng",
-        "description": "Sản xuất GRADE A+ với quy trình QA 24 điểm."
-      },
-      "export": {
-        "title": "Xuất Khẩu Xuất Sắc",
-        "description": "Logistics trực tiếp đến 42+ thị trường trên toàn thế giới."
-      }
+      "title": "Năng Lực Hoạt Động",
+      "items": [
+        {
+          "title": "Quy Mô Cung Ứng",
+          "description": "Năng lực cung cấp hơn 500,000 m³ gỗ công nghiệp mỗi năm cho nhiều nhu cầu trong nước và quốc tế."
+        },
+        {
+          "title": "Danh Mục Đa Dạng",
+          "description": "Plywood nhập khẩu, plywood melamine, plywood Việt Nam, gỗ ghép finger, plywood phủ veneer và ván MDF."
+        },
+        {
+          "title": "Giao Hàng Chủ Động",
+          "description": "Kết hợp đội xe nội bộ và nhiều đối tác logistics để phản hồi nhanh và giao hàng đúng tiến độ."
+        }
+      ]
     },
     "history": {
-      "title": "Lịch Sử Của Chúng Tôi",
-      "milestones": {
-        "1974": {
-          "title": "Nền Móng",
-          "description": "Được thành lập như một xưởng cưa khu vực ở Tây Bắc Thái Bình Dương, Woodland bắt đầu với tầm nhìn cung cấp gỗ mềm cấp cao cho các kiến trúc sư địa phương."
+      "title": "Hình Ảnh Hoạt Động",
+      "items": [
+        {
+          "title": "Kho Xưởng Và Vận Hành",
+          "description": "Không gian lưu trữ, bốc xếp và điều phối hàng hóa được đầu tư bài bản để phục vụ nhu cầu cung ứng liên tục."
         },
-        "1998": {
-          "title": "Vươn Ra Toàn Cầu",
-          "description": "Woodland mở rộng hoạt động để phục vụ các thị trường quốc tế, thiết lập mạng lưới phân phối khắp châu Âu và châu Á-Thái Bình Dương."
+        {
+          "title": "Sản Phẩm Và Ứng Dụng",
+          "description": "Hình ảnh thực tế từ các dòng plywood, gỗ ghép và vật liệu chủ lực đang được WOODLAND phân phối."
         },
-        "2024": {
-          "title": "Chính Xác Kỹ Thuật Số",
-          "description": "Ra mắt kiểm tra chất lượng dựa trên AI và theo dõi chuỗi cung ứng thời gian thực cho tất cả đơn hàng xuất khẩu toàn cầu."
+        {
+          "title": "Đội Ngũ Đồng Hành",
+          "description": "Nhân sự và quy trình hỗ trợ khách hàng được tổ chức linh hoạt để tư vấn, báo giá và giao hàng nhanh chóng."
         }
-      }
+      ]
     },
     "gallery": {
-      "title": "Sàn Sản Xuất"
+      "title": "Hình Ảnh Woodland",
+      "subtitle": "Kho xưởng, sản phẩm và hình ảnh vận hành thực tế từ Woodland trên website cũ."
     }
   },
   "products": {
     "hero": {
-      "title": "Gỗ Kiến Trúc",
-      "subtitle": "Ván ép cấp công nghiệp được thiết kế cho các ứng dụng đòi hỏi cao"
+      "title": "Sản Phẩm",
+      "subtitle": "Plywood nhập khẩu, plywood melamine, gỗ cao su ghép finger, MDF và các dòng vật liệu chủ lực của Woodland"
     },
     "filters": {
       "title": "Lọc",
@@ -150,8 +213,25 @@
       "priceDesc": "Giá: Cao đến Thấp"
     },
     "results": "sản phẩm được tìm thấy",
+    "specificationLabel": "Quy cách",
+    "updating": "Đang cập nhật",
     "viewDetails": "Xem Chi Tiết",
     "noProducts": "Không tìm thấy sản phẩm phù hợp với bộ lọc của bạn.",
+    "catalog": {
+      "title": "Thư Viện Vật Liệu Công Nghiệp",
+      "description": "Xem nhanh các nhóm vật liệu chủ lực của Woodland với bộ lọc rõ ràng hơn và đi thẳng tới từng trang chi tiết sản phẩm.",
+      "reset": "Đặt Lại",
+      "clearFilters": "Xóa Bộ Lọc",
+      "searchPlaceholder": "Tìm theo tên sản phẩm, vật liệu...",
+      "helper": "Woodland sắp xếp vật liệu theo nhóm sản phẩm và độ dày cơ bản để đội mua hàng dễ quét catalog và chốt nhu cầu nhanh hơn.",
+      "stats": {
+        "items": "Mục Catalog",
+        "categories": "Danh Mục",
+        "visible": "Đang Hiển Thị",
+        "thickness": "Độ Dày",
+        "all": "Tất Cả"
+      }
+    },
     "pagination": {
       "previous": "Trước",
       "next": "Tiếp"
@@ -159,58 +239,83 @@
   },
   "productDetail": {
     "contactQuote": "Liên Hệ Báo Giá",
-    "downloadCatalog": "Tải Catalog",
+    "downloadCatalog": "Xem Thêm Trên Woodland",
     "availability": "Tình Trạng",
     "inStock": "Còn Hàng",
     "certification": "Chứng Nhận",
+    "updating": "Đang cập nhật",
     "technicalData": {
-      "title": "Dữ Liệu Kỹ Thuật",
-      "subtitle": "Thông Số Chính Xác",
+      "title": "Thông Tin Kỹ Thuật",
+      "subtitle": "Thông số tham khảo",
       "attribute": "Thuộc Tính",
       "specification": "Thông Số",
       "tolerance": "Dung Sai",
       "standard": "Tiêu Chuẩn"
     },
-    "applications": {
-      "title": "Được Thiết Kế cho Sự Xuất Sắc Cấu Trúc",
-      "subtitle": "Ứng Dụng"
+    "attributes": {
+      "grade": "Phân Loại",
+      "material": "Vật Liệu",
+      "bonding": "Liên Kết",
+      "dimensions": "Kích Thước",
+      "thickness": "Độ Dày"
     },
+    "applications": {
+      "title": "Ứng Dụng Phù Hợp",
+      "subtitle": "Gợi ý sử dụng"
+    },
+    "contactCardLabel": "Liên Hệ Trực Tiếp",
     "cta": {
-      "title": "Mở Rộng Công Trình Tiếp Theo",
-      "subtitle": "Yêu cầu bộ mẫu hoặc gói thông số kỹ thuật đầy đủ từ đội ngũ xuất khẩu của chúng tôi.",
-      "button": "Yêu Cầu Bộ Mẫu"
+      "title": "Cần Tư Vấn Vật Liệu Phù Hợp?",
+      "subtitle": "Liên hệ Woodland để được tư vấn nhanh về chủng loại, độ dày, quy cách và phương án cung ứng phù hợp cho dự án của bạn.",
+      "button": "Liên Hệ Woodland"
+    },
+    "recentProducts": {
+      "title": "Sản Phẩm Gần Đây",
+      "subtitle": "Tham khảo thêm các dòng vật liệu Woodland đang được quan tâm."
+    },
+    "recentNews": {
+      "title": "Tin Tức Gần Đây",
+      "subtitle": "Xem thêm các bài viết mới về vật liệu, ứng dụng và cập nhật từ Woodland."
     }
   },
   "contact": {
     "hero": {
-      "title": "Đối Tác Kiến Trúc",
-      "subtitle": "Liên hệ đội ngũ kỹ thuật của chúng tôi để có giải pháp tùy chỉnh và tài liệu xuất khẩu."
+      "title": "Liên Hệ",
+      "subtitle": "Liên hệ với WOODLAND để được tư vấn nhanh về sản phẩm, kho hàng, giao nhận và giải pháp vật liệu phù hợp."
     },
     "form": {
-      "title": "Liên Hệ Chúng Tôi",
-      "fullName": "Họ và Tên",
-      "workEmail": "Email Công Việc",
+      "title": "Để Lại Thông Tin",
+      "fullName": "Họ Và Tên",
+      "workEmail": "Email",
       "phone": "Số Điện Thoại",
-      "company": "Công Ty / Tổ Chức",
-      "message": "Tin Nhắn",
-      "submit": "Gửi Tin Nhắn",
+      "company": "Tiêu Đề / Công Ty",
+      "message": "Nội Dung",
+      "submit": "Gửi Liên Hệ",
       "submitting": "Đang gửi...",
       "successTitle": "Đã Gửi Tin Nhắn",
-      "successMessage": "Cảm ơn bạn. Đội ngũ xuất khẩu của chúng tôi sẽ phản hồi trong vòng 24 giờ.",
+      "successMessage": "Cảm ơn bạn. Woodland sẽ phản hồi trong thời gian sớm nhất qua hotline hoặc email đã cung cấp.",
       "errorMessage": "Có lỗi xảy ra. Vui lòng thử lại."
     },
     "info": {
-      "headquarters": "Trụ Sở Chính",
-      "address": "882 Timberline Industrial Way, Sustainable District, OR 97201",
-      "phone": "Điện Thoại",
-      "email": "Email"
+      "headquarters": "Địa Chỉ Liên Hệ",
+      "address": "Trụ sở chính: 121/62 Phạm Ngọc Thạch, Tổ 73, Khu 5, P. Hiệp Thành, TP. Thủ Dầu Một, Bình Dương",
+      "phone": "Hotline / Giao Nhận",
+      "email": "Email / Website"
     },
-    "certifications": "Chứng Nhận & Tiêu Chuẩn"
+    "certifications": "Nhóm sản phẩm chính"
   },
   "salesTeam": {
     "hero": {
-      "title": "Kiến Trúc Sư Bán Hàng",
-      "subtitle": "Hướng dẫn chuyên nghiệp từ thông số đến giao hàng — đội ngũ của chúng tôi kết nối kiến thức kỹ thuật với logistics toàn cầu."
+      "title": "Đội Ngũ Hỗ Trợ Kinh Doanh",
+      "subtitle": "Liên hệ trực tiếp với Woodland để được tư vấn sản phẩm, báo giá, kho hàng và phương án giao hàng phù hợp."
+    },
+    "page": {
+      "title": "Kết Nối Trực Tiếp Với Đội Ngũ Kinh Doanh Woodland",
+      "description": "Trang này tập trung các đầu mối phụ trách báo giá, đơn hàng, khu vực giao nhận và hỗ trợ nhanh cho từng nhóm khách hàng của Woodland.",
+      "empty": "Đội ngũ hỗ trợ đang được cập nhật. Vui lòng liên hệ Woodland qua trang liên hệ để nhận phản hồi nhanh.",
+      "ctaDescription": "Gửi yêu cầu tập trung cho Woodland nếu bạn cần báo giá tổng hợp, tư vấn vật liệu hoặc phương án cung ứng cho dự án.",
+      "deskLabel": "Bàn hỗ trợ kinh doanh",
+      "directLabel": "Liên hệ tổng"
     },
     "contact": {
       "directLine": "Đường Dây Trực Tiếp",
@@ -219,52 +324,62 @@
       "zalo": "Zalo"
     },
     "support": {
-      "title": "Cần Tư Vấn Kỹ Thuật?",
-      "subtitle": "Kết nối với đội ngũ kỹ thuật của chúng tôi để được hỗ trợ thông số và giải pháp tùy chỉnh.",
-      "button": "Liên Hệ Kỹ Thuật"
+      "title": "Cần Hỗ Trợ Báo Giá?",
+      "subtitle": "Kết nối với Woodland để được hỗ trợ nhanh về chủng loại, số lượng, kho hàng và thời gian giao hàng.",
+      "button": "Liên Hệ Woodland"
     }
   },
   "footer": {
-    "description": "Nhà sản xuất ván ép kiến trúc cao cấp cung cấp cho thị trường toàn cầu từ năm 1974.",
+    "description": "WOODLAND tự hào là nhà cung cấp gỗ công nghiệp chất lượng quốc tế tại Việt Nam với năng lực cung ứng mạnh, dịch vụ tận tâm và hệ thống kho xưởng tại Bình Dương.",
     "navigation": "Điều Hướng",
-    "legal": "Pháp Lý",
-    "privacy": "Chính Sách Bảo Mật",
-    "terms": "Điều Khoản Sử Dụng",
-    "cookies": "Cookies",
-    "copyright": "© 2024 Woodland Industrial. Mọi quyền được bảo lưu.",
-    "newsletter": {
-      "title": "Cập Nhật Ngành",
-      "placeholder": "email@cuaban.com",
-      "button": "Đăng Ký"
-    }
+    "productsTitle": "Nhóm Sản Phẩm",
+    "contactTitle": "Thông Tin Liên Hệ",
+    "mapTitle": "Vị Trí Woodland",
+    "mapDescription": "Kho xưởng và điểm liên hệ chính của Woodland tại Bình Dương.",
+    "directChannel": "Kênh liên hệ trực tiếp",
+    "productGroups": [
+      "Plywood nhập khẩu",
+      "Plywood Melamine",
+      "Plywood Việt Nam",
+      "Gỗ Cao Su Ghép Finger",
+      "Plywood Phủ Veneer",
+      "Ván MDF"
+    ],
+    "websiteLabel": "Website:",
+    "copyright": "© 2025 CÔNG TY TNHH WOODLAND. All rights reserved."
   },
   "common": {
     "learnMore": "Tìm Hiểu Thêm",
     "viewAll": "Xem Tất Cả",
     "loading": "Đang tải...",
     "error": "Đã xảy ra lỗi",
-    "backToProducts": "Quay lại Sản Phẩm"
+    "backToProducts": "Quay lại Sản Phẩm",
+    "backToNews": "Quay lại Tin Tức",
+    "backToTop": "Lên đầu trang"
   },
   "newsBase": {
     "hero": {
-      "title": "Tin Tức & Thông Tin",
-      "subtitle": "Kiến thức ngành và cập nhật công ty."
+      "title": "Tin Tức",
+      "subtitle": "Bài viết tư vấn vật liệu, kiến thức plywood và cập nhật từ Woodland."
     },
     "filters": {
       "all": "Tất cả",
-      "company": "Công ty",
-      "industry": "Ngành",
-      "sustainability": "Bền vững"
+      "company": "Thương hiệu",
+      "industry": "Tư vấn vật liệu",
+      "sustainability": "Xu hướng xanh"
     },
     "list": {
       "readMore": "Đọc bài viết",
-      "noResults": "Không tìm thấy bài viết nào."
+      "noResults": "Không tìm thấy bài viết nào.",
+      "searchPlaceholder": "Tìm theo tiêu đề, nội dung, danh mục..."
     },
     "detail": {
       "backToList": "Quay lại Tin Tức",
       "share": "Chia sẻ",
       "related": "Bài Viết Liên Quan",
-      "author": "Được viết bởi Ban biên tập Woodland"
+      "author": "Tác giả",
+      "recentNews": "Tin Tức Gần Đây",
+      "recentProducts": "Sản Phẩm Gần Đây"
     }
   }
 }

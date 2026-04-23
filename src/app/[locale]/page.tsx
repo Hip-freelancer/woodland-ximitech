@@ -1,11 +1,11 @@
 import HeroSection from "@/components/sections/home/HeroSection";
 import AboutPreviewSection from "@/components/sections/home/AboutPreviewSection";
 import FeaturedProductsSection from "@/components/sections/home/FeaturedProductsSection";
-import WhyChooseUsSection from "@/components/sections/home/WhyChooseUsSection";
-import ProjectsSection from "@/components/sections/home/ProjectsSection";
+import ProductLibrarySection from "@/components/sections/home/ProductLibrarySection";
+import OperationsSection from "@/components/sections/home/OperationsSection";
 import NewsSection from "@/components/sections/home/NewsSection";
 import CtaBannerSection from "@/components/sections/home/CtaBannerSection";
-import { PROJECTS } from "@/lib/staticData";
+import { getFeaturedProducts, getNewsArticles } from "@/lib/staticData";
 import { fetchFeaturedProducts, fetchVisibleNews } from "@/lib/content";
 import type { Locale } from "@/types";
 
@@ -19,15 +19,19 @@ export default async function HomePage({
     fetchFeaturedProducts(locale),
     fetchVisibleNews(locale, 3),
   ]);
+  const resolvedFeaturedProducts =
+    featuredProducts.length > 0 ? featuredProducts : getFeaturedProducts(locale);
+  const resolvedNewsArticles =
+    newsArticles.length > 0 ? newsArticles : getNewsArticles(locale);
 
   return (
     <>
-      <HeroSection />
+      <HeroSection locale={locale} />
       <AboutPreviewSection />
-      <FeaturedProductsSection products={featuredProducts} />
-      <WhyChooseUsSection />
-      <ProjectsSection projects={PROJECTS} />
-      <NewsSection articles={newsArticles} />
+      <FeaturedProductsSection products={resolvedFeaturedProducts} />
+      <ProductLibrarySection />
+      <OperationsSection />
+      <NewsSection articles={resolvedNewsArticles} />
       <CtaBannerSection />
     </>
   );

@@ -7,15 +7,6 @@
   box-sizing: border-box;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  padding-top: 0.2em !important;
-}
-
 html,
 body {
   width: 100%;
@@ -379,22 +370,80 @@ html:lang(vi) .rich-content h6 {
 .rich-content p,
 .rich-content li,
 .rich-content blockquote {
+  color: #334155;
+  line-height: 1.9;
   white-space: pre-wrap;
 }
 
 .rich-content ul,
 .rich-content ol {
+  display: grid;
+  gap: 0.75rem;
   padding-left: 1.5rem;
 }
 
 .rich-content img {
+  border: 1px solid rgba(148, 163, 184, 0.22);
   display: block;
   height: auto;
-  margin: 1.5rem 0;
+  margin: 2rem 0;
   max-width: 100%;
 }
 
 .rich-content a {
   color: #2f7a53;
   text-decoration: underline;
+}
+
+.rich-content blockquote {
+  border-left: 3px solid rgba(31, 111, 58, 0.28);
+  margin: 2rem 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+}
+
+.rich-content hr {
+  border: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+  margin: 2rem 0;
+}
+
+.rich-content--editorial > * + * {
+  margin-top: 1.35rem;
+}
+
+.rich-content--editorial h1,
+.rich-content--editorial h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1;
+  margin-top: 2.5rem;
+}
+
+.rich-content--editorial h3 {
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  line-height: 1.08;
+  margin-top: 2.25rem;
+}
+
+.rich-content--editorial h4,
+.rich-content--editorial h5,
+.rich-content--editorial h6 {
+  font-size: 1.1rem;
+  line-height: 1.2;
+  margin-top: 2rem;
+}
+
+.rich-content--editorial p,
+.rich-content--editorial li {
+  color: #334155;
+  font-size: 1.07rem;
+  line-height: 1.95;
+}
+
+.rich-content--editorial p + p {
+  margin-top: 1.15rem;
+}
+
+.rich-content--editorial img {
+  box-shadow: 0 24px 50px rgba(18, 55, 31, 0.08);
+  margin: 2.5rem auto;
 }

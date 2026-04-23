@@ -124,6 +124,7 @@ export default function HeaderClient({
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [desktopProductsOpen, setDesktopProductsOpen] = useState(false);
   const hasProductMenu = productMenu.length > 0;
 
   const toggleLocale = () => {
@@ -138,16 +139,23 @@ export default function HeaderClient({
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl shadow-sm">
-      <div className="relative mx-auto flex w-full max-w-[1920px] items-center justify-between px-6 py-4 md:px-8">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-surface/92 backdrop-blur-xl shadow-sm">
+      <div className="relative mx-auto flex w-full max-w-[1920px] items-center justify-between px-5 py-1.5 md:px-8">
         <Link
           href="/"
-          className="font-headline text-2xl font-black uppercase tracking-tighter text-primary"
+          className="relative block h-[50px] w-[50px] shrink-0 md:h-[58px] md:w-[58px]"
         >
-          Woodland
+          <Image
+            alt="Woodland"
+            className="object-contain"
+            fill
+            priority
+            sizes="58px"
+            src="/logowoodland.png"
+          />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {navLinks.map(({ key, href }) => {
             const baseClass = `font-headline text-sm font-bold uppercase tracking-widest pb-1 transition-colors duration-300 ${
               isActiveLink(pathname, href)
@@ -164,7 +172,12 @@ export default function HeaderClient({
             }
 
             return (
-              <div key={key} className="group/product relative flex items-center">
+              <div
+                key={key}
+                className="relative flex items-center"
+                onMouseEnter={() => setDesktopProductsOpen(true)}
+                onMouseLeave={() => setDesktopProductsOpen(false)}
+              >
                 <Link
                   href={href}
                   className={`${baseClass} inline-flex items-center gap-2`}
@@ -172,11 +185,19 @@ export default function HeaderClient({
                   {t(key)}
                   <ChevronDown
                     size={16}
-                    className="transition-transform duration-300 group-hover/product:rotate-180 group-focus-within/product:rotate-180"
+                    className={`transition-transform duration-300 ${
+                      desktopProductsOpen ? "rotate-180" : ""
+                    }`}
                   />
                 </Link>
 
-                <div className="pointer-events-none invisible absolute left-1/2 top-full z-50 w-[min(1180px,calc(100vw-2rem))] -translate-x-1/2 translate-y-2 pt-5 opacity-0 transition-all duration-300 group-hover/product:pointer-events-auto group-hover/product:visible group-hover/product:translate-y-0 group-hover/product:opacity-100 group-focus-within/product:pointer-events-auto group-focus-within/product:visible group-focus-within/product:translate-y-0 group-focus-within/product:opacity-100">
+                <div
+                  className={`absolute left-1/2 top-full z-50 w-[min(1180px,calc(100vw-2rem))] -translate-x-1/2 pt-5 transition-all duration-300 ${
+                    desktopProductsOpen
+                      ? "pointer-events-auto visible translate-y-0 opacity-100"
+                      : "pointer-events-none invisible translate-y-2 opacity-0"
+                  }`}
+                >
                   <div className="overflow-hidden border border-outline-variant/50 bg-surface-container-lowest px-8 py-8 shadow-[0_24px_60px_rgba(18,55,31,0.12)]">
                     <div className="mb-6 flex items-center justify-between gap-6 border-b border-outline-variant/40 pb-5">
                       <div>
@@ -223,7 +244,7 @@ export default function HeaderClient({
           })}
         </nav>
 
-        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5">
           <button
             onClick={toggleLocale}
             className="hidden items-center gap-1.5 text-xs font-label font-semibold uppercase tracking-widest text-on-surface-variant transition-colors duration-300 hover:text-primary md:flex"
@@ -234,7 +255,7 @@ export default function HeaderClient({
 
           <Link
             href="/contact"
-            className="hidden bg-primary px-6 py-2.5 font-headline text-xs font-bold uppercase tracking-wider text-on-primary transition-colors duration-300 hover:bg-secondary md:block"
+            className="hidden bg-primary px-5 py-2 font-headline text-[11px] font-bold uppercase tracking-[0.18em] text-on-primary transition-colors duration-300 hover:bg-secondary md:block"
           >
             {t("getQuote")}
           </Link>

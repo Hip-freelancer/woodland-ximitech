@@ -15,7 +15,7 @@ export default function PageHero({ label, title, description }: PageHeroProps) {
             {label}
           </p>
         )}
-        <h1 className="font-headline font-black text-5xl md:text-7xl uppercase text-white leading-none tracking-tight">
+        <h1 className="pt-[0.1em] pb-[0.08em] font-headline font-black text-5xl md:text-7xl uppercase text-white leading-[1.04] tracking-tight">
           {title}
         </h1>
         {description && (

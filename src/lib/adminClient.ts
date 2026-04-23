@@ -28,6 +28,34 @@ export async function uploadAdminImage(file: File) {
   return data.url;
 }
 
+export async function uploadAdminHeroVideo(file: File, previousUrl = "") {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  if (previousUrl) {
+    formData.append("previousUrl", previousUrl);
+  }
+
+  const response = await fetch("/api/admin/home-media", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      await readAdminApiError(response, "Không thể tải video hero lên.")
+    );
+  }
+
+  const data = (await response.json()) as { url?: string };
+
+  if (!data.url) {
+    throw new Error("Máy chủ không trả về đường dẫn video hero.");
+  }
+
+  return data.url;
+}
+
 interface AutoSeoAdminInput {
   module: string;
   payload: Record<string, unknown>;

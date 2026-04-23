@@ -8,9 +8,11 @@ import { usePathname } from "next/navigation";
 import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
 
 const navItems = [
+  { name: "Trang chủ", href: "/admin/home-settings" },
   { name: "Sản phẩm", href: "/admin/products" },
   { name: "Danh mục", href: "/admin/categories" },
   { name: "Bài viết (Tin tức)", href: "/admin/news" },
+  { name: "Đội ngũ kinh doanh", href: "/admin/team" },
   { name: "Liên hệ", href: "/admin/contacts" },
 ];
 

@@ -5,25 +5,27 @@ export default function AboutHeroSection() {
 
   return (
     <section
-      className="relative min-h-[70vh] flex items-end pb-20 overflow-hidden"
+      className="relative flex min-h-[76vh] items-end overflow-hidden pb-20"
       style={{
         backgroundImage:
-          "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBnlS2xBYQYwZqLef1lV9u_XW9a_4JHdSmIoUrBjd2-Ku-K-95lpHGr9pMcFgNhZTYjZKlbZnBTzGOR3rJPNxl5VP6My8MIegv_6ORlRe3yZuxt8WxuMZSeJnhtOa370M_UWp6A0BCqdYoW4OCfsU0jVFqeyMl_aAumB0ot5wJnVZOx72UXg_4mRAx1l38a4oNYEMffV4ShwX6Wwe-QYURjLE5Vbh1pONqrcy-ioP0wK7FHw-GqyNA-SdCh8PNWiffC6xgOcbI1FWtO')",
+          "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDI2hGXUi0ar6R1YdGBVByYkkyEg61Zf7PtN7NAySiLt5CeVYiXqCqkQLm3ehNaLJWbub4zlD5Xy9mgB7KKhjxGIZnlf0dLGxOhERXH3b7jFMqXY8BGuZ0uUWez76H9NvBK2bWbZQVGLEl1OqUUn_zLs5HP-gBqhnnZkDcWQtXE4eOEp05JUav0COCt3gYBqTmeemmDM9FL6AY3tpRR2mWdTOtq2uHs8Lpu7ezv-1sCH0I2xb5hXJA6L8tIxSBZuPAdOcoFNV3gJ6Cr')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/50 to-transparent" />
-      <div className="relative z-10 max-w-[1440px] mx-auto px-6 w-full">
-        <p className="font-label text-xs font-semibold uppercase tracking-widest text-primary-fixed mb-4">
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/92 via-primary/58 to-primary/15" />
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6">
+        <div className="max-w-4xl border border-white/12 bg-black/12 p-8 backdrop-blur-[2px] md:p-12">
+        <p className="mb-4 font-label text-xs font-semibold uppercase tracking-widest text-primary-fixed">
           {t("subtitle")}
         </p>
-        <h1 className="font-headline font-black text-5xl md:text-7xl uppercase text-white leading-none tracking-tight mb-6">
+        <h1 className="mb-6 font-headline text-5xl font-black uppercase leading-none tracking-tight text-white md:text-7xl">
           {t("title")}
         </h1>
-        <p className="font-body text-base text-white/70 max-w-xl">
+        <p className="max-w-2xl font-body text-base leading-8 text-white/74 md:text-lg">
           {t("description")}
         </p>
+        </div>
       </div>
     </section>
   );

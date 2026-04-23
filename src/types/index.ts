@@ -64,6 +64,9 @@ export interface TeamMember {
   whatsapp: string;
   zalo: string;
   order: number;
+  isVisible?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Project {
@@ -120,6 +123,39 @@ export interface ApiResponse<T> {
   total?: number;
   page?: number;
   limit?: number;
+}
+
+export interface LocalizedText {
+  en: string;
+  vi: string;
+}
+
+export interface HomeHeroSlide {
+  _id?: string;
+  mediaType: "image" | "video";
+  mediaUrl: string;
+  posterUrl?: string;
+  alt: LocalizedText;
+  order: number;
+  isVisible: boolean;
+}
+
+export interface HomeHeroStat {
+  _id?: string;
+  value: LocalizedText;
+  label: LocalizedText;
+  order: number;
+  isVisible: boolean;
+}
+
+export interface HomeSettings {
+  _id: string;
+  contactEmail: string;
+  contactPhone: string;
+  heroSlides: HomeHeroSlide[];
+  heroStats: HomeHeroStat[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type Locale = "en" | "vi";

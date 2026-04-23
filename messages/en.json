@@ -2,12 +2,13 @@
   "nav": {
     "home": "Home",
     "about": "About",
+    "gallery": "Gallery",
     "products": "Products",
     "projects": "Projects",
     "news": "News",
     "contact": "Contact",
-    "getQuote": "Get a Quote",
-    "salesTeam": "Sales Team",
+    "getQuote": "Contact Woodland",
+    "salesTeam": "Sales Support",
     "productMenu": {
       "eyebrow": "Featured Collections",
       "title": "Product Library",
@@ -21,119 +22,181 @@
   },
   "home": {
     "hero": {
-      "title": "Premium Plywood for Global Markets",
-      "subtitle": "Sustainably harvested. Precision-engineered. Architecturally defined.",
+      "title": "WOODLAND COMPANY LIMITED",
+      "subtitle": "An international-standard industrial wood supplier in Vietnam, delivering material solutions for premium interiors, export manufacturing and large-scale construction projects.",
       "viewProducts": "View Products",
-      "ourProcess": "Our Process"
+      "ourProcess": "About Us"
     },
     "about": {
-      "badge": "Est. 1974",
-      "title": "Engineered for Architecture",
-      "description": "Woodland is a premium manufacturer of architectural-grade plywood, supplying specifiers, contractors, and export distributors in over 42 global markets.",
-      "legacyTitle": "Half a century of precision",
-      "legacyDescription": "Since 1974, Woodland has operated at the intersection of forestry science and industrial design—producing substrates that architects and engineers trust.",
-      "stat1Value": "42+",
-      "stat1Label": "Export markets",
-      "stat2Value": "1.2M",
-      "stat2Label": "SqM annual capacity"
+      "badge": "About Us",
+      "title": "WOODLAND COMPANY LIMITED",
+      "description": "WOODLAND is proud to be an international-standard industrial wood supplier in Vietnam, delivering material solutions for projects ranging from premium interiors to manufacturing and large-scale construction. With strong supply capacity, dedicated service and stable quality, our products are ready to meet demanding standards in the United States, Europe, Japan and Korea.",
+      "legacyTitle": "WOODLAND COMPANY LIMITED",
+      "legacyDescription": "Specializing in industrial wood products",
+      "stat1Value": "500,000+",
+      "stat1Label": "m³ supplied annually",
+      "stat2Value": "10,000m²",
+      "stat2Label": "Warehouse area"
     },
     "featuredProducts": {
+      "eyebrow": "WOODLAND COMPANY LIMITED",
       "title": "Featured Products",
-      "subtitle": "Engineered substrates for demanding applications",
-      "viewAll": "View All Products"
+      "subtitle": "Highlighted products from Woodland",
+      "viewAll": "View All Products",
+      "contactItem": "Contact >>"
     },
-    "whyChooseUs": {
-      "title": "Why Specify Woodland",
-      "items": {
-        "eco": {
-          "title": "Eco-Certified",
-          "description": "FSC & PEFC certified timber from responsibly managed forests."
+    "productLibrary": {
+      "eyebrow": "WOODLAND COMPANY LIMITED",
+      "title": "Our Products",
+      "contactItem": "Contact >>",
+      "viewAll": "Browse all products",
+      "items": [
+        "Woodland and the green material trend with premium melamine plywood",
+        "Walnut veneered plywood",
+        "Marine plywood at Woodland",
+        "Oversized full birch plywood",
+        "Imported melamine plywood",
+        "Marine plywood CARB P2 standard",
+        "Poplar plywood 100% CARB P2",
+        "Imported full birch plywood"
+      ]
+    },
+    "operations": {
+      "eyebrow": "WOODLAND COMPANY LIMITED",
+      "title": "Operating Capacity",
+      "items": [
+        {
+          "title": "Scale And Supply Capacity",
+          "description": "With the ability to supply more than 500,000 m³ of industrial wood annually, WOODLAND is proud to be one of the leading suppliers in both quality and scale."
         },
-        "precision": {
-          "title": "Precision Milling",
-          "description": "0.1mm tolerance control across all production lines."
+        {
+          "title": "Diverse Product Range",
+          "description": "We specialize in industrial wood products such as plywood, finger-joint wood, MDF and particle board, serving a wide range of domestic and international needs."
         },
-        "quality": {
-          "title": "Quality Lab",
-          "description": "24-point in-house testing protocol for every batch."
+        {
+          "title": "Modern Warehousing",
+          "description": "WOODLAND invests in 10,000m² of standard warehouse space, 5 trucks with 10-ton capacity and 3 heavy-duty forklifts to ensure effective storage and transport."
         },
-        "logistics": {
-          "title": "Global Logistics",
-          "description": "Direct export to 42+ markets with full customs documentation."
+        {
+          "title": "Nationwide Delivery",
+          "description": "WOODLAND operates its own delivery team and works with rail, sea and air transport partners to deliver quickly to provinces and cities across Vietnam."
+        },
+        {
+          "title": "Quality Commitment",
+          "description": "At WOODLAND, quality control is applied strictly across every production stage. We maintain strong relationships with trusted suppliers to keep raw materials at the right quality and cost level."
+        },
+        {
+          "title": "Dedicated Team",
+          "description": "WOODLAND currently has more than 50 employees across Sales, Marketing, Management, Accounting, Warehousing and Transport. Our team is ready to support customers quickly and accurately throughout the working process."
         }
-      }
+      ]
     },
     "projects": {
-      "title": "Projects Showcase",
-      "subtitle": "Woodland in the field",
-      "viewAll": "View All Projects"
+      "title": "Featured Profiles And Visuals",
+      "subtitle": "Company profile, warehouse operations and product imagery",
+      "viewAll": "Explore More"
     },
     "news": {
-      "title": "Latest News",
-      "subtitle": "Industry insights and company updates",
+      "eyebrow": "WOODLAND COMPANY LIMITED",
+      "title": "Featured News",
+      "subtitle": "Material insights, plywood knowledge and Woodland updates",
       "readMore": "Read More",
       "viewAll": "View All News"
     },
     "cta": {
-      "title": "Ready to Source Premium Plywood?",
-      "subtitle": "Contact our export team for pricing, samples, and technical documentation.",
-      "button": "Contact Export Team"
+      "title": "Work With Woodland",
+      "subtitle": "A partner delivering international-standard industrial wood solutions that add value to your interiors, products and projects.",
+      "button": "Contact Us"
     }
   },
   "about": {
     "hero": {
-      "title": "Architecturally Defined",
-      "subtitle": "Est. 1974",
-      "description": "From raw material to masterpiece — precision-engineered plywood for global architecture."
+      "title": "WOODLAND COMPANY LIMITED",
+      "subtitle": "About",
+      "description": "WOODLAND supplies plywood, finger-joint wood, MDF and particle board for interior fit-out, construction, manufacturing and export needs."
     },
     "vision": {
-      "title": "Vision",
-      "description": "To be the world's most trusted architectural timber brand — where material science meets design ambition."
+      "title": "Vision And Mission",
+      "description": "WOODLAND aims to become a leading international-standard industrial wood supplier in Vietnam through sustainable growth, technology improvement, strict quality control and customer-first service."
     },
     "mission": {
-      "title": "Mission",
-      "description": "We manufacture precision-engineered plywood substrates that enable architects to realise bold, lasting structures with sustainable materials."
+      "title": "Quality Assurance And Trusted Service",
+      "description": "Every product at WOODLAND is checked carefully from raw material selection through finishing. We commit to stable quality, durability, cost efficiency and long-term confidence in every shipment."
+    },
+    "portfolio": {
+      "title": "Main Product Portfolio",
+      "description": "WOODLAND supplies multiple industrial wood groups for interior fit-out, export manufacturing and projects requiring stability and visual quality.",
+      "items": [
+        {
+          "title": "Marine Plywood",
+          "description": "A water-resistant plywood line for outdoor projects or humid environments, offering strong resistance to moisture and decay for long-lasting performance."
+        },
+        {
+          "title": "Melamine Plywood",
+          "description": "Its melamine surface helps resist scratches, moisture and dirt, making it a practical choice for modern interiors and visually demanding applications."
+        },
+        {
+          "title": "Flexible Plywood",
+          "description": "Designed to bend easily, this plywood is suitable for creative interior designs and curved details that require softer and more distinctive lines."
+        }
+      ]
+    },
+    "operations": {
+      "title": "Sustainable Infrastructure System",
+      "description": "WOODLAND invests in large-scale warehousing and operating systems to preserve goods, handle loading efficiently and respond quickly to both domestic and export demand.",
+      "highlights": [
+        "Around 10,000m² of warehouse area in Binh Duong.",
+        "Equipped with 5 trucks with 10-ton capacity and 3 heavy-duty forklifts.",
+        "An operating system focused on fast delivery, efficient handling and proper goods preservation."
+      ]
+    },
+    "team": {
+      "title": "Dedicated And Professional Team",
+      "description": "WOODLAND has more than 50 staff across sales, marketing, management, accounting, warehousing and transport. The team is ready to advise quickly, respond accurately and support customers with timely follow-up over the long term."
     },
     "values": {
-      "title": "Core Values",
-      "sustainability": {
-        "title": "Sustainability",
-        "description": "FSC & PEFC certified. Carbon-tracked supply chain."
-      },
-      "quality": {
-        "title": "Quality",
-        "description": "GRADE A+ production with 24-point QA protocol."
-      },
-      "export": {
-        "title": "Export Excellence",
-        "description": "Direct logistics to 42+ markets worldwide."
-      }
+      "title": "Operating Capacity",
+      "items": [
+        {
+          "title": "Supply Capacity",
+          "description": "More than 500,000 m³ of industrial wood can be supplied annually for domestic and export demand."
+        },
+        {
+          "title": "Diverse Categories",
+          "description": "Imported plywood, melamine plywood, Vietnam plywood, finger-joint wood, veneered plywood and MDF."
+        },
+        {
+          "title": "Delivery Readiness",
+          "description": "An internal transport team and logistics partners help Woodland respond quickly and deliver on schedule."
+        }
+      ]
     },
     "history": {
-      "title": "Our History",
-      "milestones": {
-        "1974": {
-          "title": "Founding Roots",
-          "description": "Established as a regional sawmill in the Pacific Northwest, Woodland began with a vision to supply premium-grade softwood to local architects."
+      "title": "Operational Visuals",
+      "items": [
+        {
+          "title": "Warehousing And Operations",
+          "description": "Storage, handling and dispatch spaces are organized to support continuous supply and faster fulfillment."
         },
-        "1998": {
-          "title": "Global Reach",
-          "description": "Woodland expanded operations to serve international markets, establishing distribution networks across Europe and Asia-Pacific."
+        {
+          "title": "Products And Applications",
+          "description": "Real product images from plywood, finger-joint wood and other key material groups supplied by WOODLAND."
         },
-        "2024": {
-          "title": "Digital Precision",
-          "description": "Launched AI-driven quality inspection and real-time supply chain tracking for all global export orders."
+        {
+          "title": "People And Service",
+          "description": "Customer support, quotation handling and delivery coordination are structured for fast response and clear communication."
         }
-      }
+      ]
     },
     "gallery": {
-      "title": "Manufacturing Floor"
+      "title": "Woodland Gallery",
+      "subtitle": "Warehouse, products and operational visuals adapted from the original Woodland website."
     }
   },
   "products": {
     "hero": {
-      "title": "Architectural Timber",
-      "subtitle": "Industrial-grade plywood engineered for demanding applications"
+      "title": "Products",
+      "subtitle": "Imported plywood, melamine plywood, finger-joint rubberwood, MDF and Woodland's key material lines"
     },
     "filters": {
       "title": "Filter",
@@ -150,8 +213,25 @@
       "priceDesc": "Price: High to Low"
     },
     "results": "products found",
+    "specificationLabel": "Specification",
+    "updating": "Updating",
     "viewDetails": "View Details",
     "noProducts": "No products found matching your filters.",
+    "catalog": {
+      "title": "Industrial Material Library",
+      "description": "Browse Woodland's main material groups with clearer filters and move directly into each product detail page.",
+      "reset": "Reset",
+      "clearFilters": "Clear Filters",
+      "searchPlaceholder": "Search by product name, material...",
+      "helper": "Woodland organizes materials by core category and thickness so buyers can scan the catalog faster and move into consultation sooner.",
+      "stats": {
+        "items": "Catalog Items",
+        "categories": "Categories",
+        "visible": "Visible Now",
+        "thickness": "Thickness",
+        "all": "All"
+      }
+    },
     "pagination": {
       "previous": "Previous",
       "next": "Next"
@@ -159,58 +239,83 @@
   },
   "productDetail": {
     "contactQuote": "Contact for Quote",
-    "downloadCatalog": "Download Catalog",
+    "downloadCatalog": "View More on Woodland",
     "availability": "Availability",
     "inStock": "In Stock",
     "certification": "Certification",
+    "updating": "Updating",
     "technicalData": {
-      "title": "Technical Data",
-      "subtitle": "Precision Specifications",
+      "title": "Technical Information",
+      "subtitle": "Reference specifications",
       "attribute": "Attribute",
       "specification": "Specification",
       "tolerance": "Tolerance",
       "standard": "Standard"
     },
-    "applications": {
-      "title": "Designed for Structural Excellence",
-      "subtitle": "Applications"
+    "attributes": {
+      "grade": "Grade",
+      "material": "Material",
+      "bonding": "Bonding",
+      "dimensions": "Dimensions",
+      "thickness": "Thickness"
     },
+    "applications": {
+      "title": "Suitable Applications",
+      "subtitle": "Recommended usage"
+    },
+    "contactCardLabel": "Direct Contact",
     "cta": {
-      "title": "Scale Your Next Build",
-      "subtitle": "Request a sample kit or full specification package from our export team.",
-      "button": "Request Sample Kit"
+      "title": "Need Material Advice?",
+      "subtitle": "Contact Woodland for quick support on product type, thickness, dimensions and supply planning for your project.",
+      "button": "Contact Woodland"
+    },
+    "recentProducts": {
+      "title": "Recent Products",
+      "subtitle": "Explore more Woodland material lines that buyers are currently reviewing."
+    },
+    "recentNews": {
+      "title": "Recent News",
+      "subtitle": "Read newer articles on materials, applications and updates from Woodland."
     }
   },
   "contact": {
     "hero": {
-      "title": "Architectural Partnerships",
-      "subtitle": "Contact our technical team for bespoke solutions and export documentation."
+      "title": "Contact",
+      "subtitle": "Reach Woodland for fast consultation on products, warehouse availability, delivery support and suitable material options."
     },
     "form": {
-      "title": "Get in Touch",
+      "title": "Leave Your Information",
       "fullName": "Full Name",
-      "workEmail": "Work Email",
+      "workEmail": "Email",
       "phone": "Phone Number",
-      "company": "Company / Firm",
+      "company": "Subject / Company",
       "message": "Message",
-      "submit": "Send Message",
+      "submit": "Send Contact",
       "submitting": "Sending...",
       "successTitle": "Message Sent",
-      "successMessage": "Thank you. Our export team will respond within 24 hours.",
+      "successMessage": "Thank you. Woodland will get back to you shortly via the phone number or email you provided.",
       "errorMessage": "Something went wrong. Please try again."
     },
     "info": {
-      "headquarters": "Headquarters",
-      "address": "882 Timberline Industrial Way, Sustainable District, OR 97201",
-      "phone": "Phone",
-      "email": "Email"
+      "headquarters": "Contact Address",
+      "address": "Head office: 121/62 Pham Ngoc Thach Street, Group 73, Area 5, Hiep Thanh Ward, Thu Dau Mot City, Binh Duong",
+      "phone": "Hotline / Delivery",
+      "email": "Email / Website"
     },
-    "certifications": "Certifications & Standards"
+    "certifications": "Main Product Groups"
   },
   "salesTeam": {
     "hero": {
-      "title": "Our Sales Architects",
-      "subtitle": "Expert guidance from specification to delivery — our team bridges technical knowledge with global logistics."
+      "title": "Sales Support Team",
+      "subtitle": "Contact Woodland directly for product advice, quotations, warehouse support and delivery planning."
+    },
+    "page": {
+      "title": "Connect Directly With Woodland's Sales Team",
+      "description": "This page brings together the contacts responsible for quotations, orders, delivery regions and quick support across Woodland's main customer groups.",
+      "empty": "The support team is being updated. Please contact Woodland through the contact page for a quick response.",
+      "ctaDescription": "Send a centralized request to Woodland if you need a combined quotation, material consultation or supply planning for your project.",
+      "deskLabel": "Sales support desk",
+      "directLabel": "Central contact"
     },
     "contact": {
       "directLine": "Direct Line",
@@ -219,52 +324,62 @@
       "zalo": "Zalo"
     },
     "support": {
-      "title": "Technical Deep Dive?",
-      "subtitle": "Connect with our engineering team for specification support and custom solutions.",
-      "button": "Contact Engineering"
+      "title": "Need A Quotation?",
+      "subtitle": "Reach Woodland for fast support on product type, quantity, warehouse availability and delivery lead time.",
+      "button": "Contact Woodland"
     }
   },
   "footer": {
-    "description": "Premium architectural plywood manufacturer supplying global markets since 1974.",
+    "description": "WOODLAND is an international-standard industrial wood supplier in Vietnam with strong supply capacity, dedicated service and warehouse operations in Binh Duong.",
     "navigation": "Navigation",
-    "legal": "Legal",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Use",
-    "cookies": "Cookies",
-    "copyright": "© 2024 Woodland Industrial. All rights reserved.",
-    "newsletter": {
-      "title": "Industry Updates",
-      "placeholder": "your@email.com",
-      "button": "Subscribe"
-    }
+    "productsTitle": "Product Groups",
+    "contactTitle": "Contact Information",
+    "mapTitle": "Woodland Location",
+    "mapDescription": "Main warehouse and contact point of Woodland in Binh Duong.",
+    "directChannel": "Direct channels",
+    "productGroups": [
+      "Imported Plywood",
+      "Melamine Plywood",
+      "Vietnam Plywood",
+      "Finger-Joint Rubberwood",
+      "Veneered Plywood",
+      "MDF"
+    ],
+    "websiteLabel": "Website:",
+    "copyright": "© 2025 WOODLAND COMPANY LIMITED. All rights reserved."
   },
   "common": {
     "learnMore": "Learn More",
     "viewAll": "View All",
     "loading": "Loading...",
     "error": "An error occurred",
-    "backToProducts": "Back to Products"
+    "backToProducts": "Back to Products",
+    "backToNews": "Back to News",
+    "backToTop": "Back to top"
   },
   "newsBase": {
     "hero": {
-      "title": "News & Insights",
-      "subtitle": "Industry knowledge and company updates."
+      "title": "News",
+      "subtitle": "Material insights, plywood knowledge and updates from Woodland."
     },
     "filters": {
       "all": "All",
-      "company": "Company",
-      "industry": "Industry",
-      "sustainability": "Sustainability"
+      "company": "Brand",
+      "industry": "Material Insights",
+      "sustainability": "Green Trend"
     },
     "list": {
       "readMore": "Read Article",
-      "noResults": "No articles found."
+      "noResults": "No articles found.",
+      "searchPlaceholder": "Search by title, excerpt, category..."
     },
     "detail": {
       "backToList": "Back to News",
       "share": "Share Article",
       "related": "Related Articles",
-      "author": "Written by Woodland Editorial"
+      "author": "Written by",
+      "recentNews": "Recent News",
+      "recentProducts": "Recent Products"
     }
   }
 }

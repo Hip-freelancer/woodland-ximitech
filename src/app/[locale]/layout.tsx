@@ -6,12 +6,15 @@ import { routing } from "@/i18n/routing";
 import DocumentLocale from "@/components/layout/DocumentLocale";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import BackToTopButton from "@/components/ui/BackToTopButton";
+import QuickContactRail from "@/components/ui/QuickContactRail";
+import { fetchHomeSettings } from "@/lib/content";
 import type { Locale } from "@/types";
 
 export const metadata: Metadata = {
-  title: "Woodland — Premium Architectural Plywood",
+  title: "WOODLAND | Gỗ công nghiệp Woodland",
   description:
-    "Premium plywood manufacturer supplying global markets since 1974.",
+    "WOODLAND cung cấp plywood, gỗ ghép, MDF và các dòng gỗ công nghiệp cho nội thất, xây dựng và sản xuất.",
 };
 
 interface LocaleLayoutProps {
@@ -29,7 +32,10 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const messages = await getMessages();
+  const [messages, homeSettings] = await Promise.all([
+    getMessages(),
+    fetchHomeSettings(),
+  ]);
 
   return (
     <NextIntlClientProvider messages={messages}>
@@ -37,6 +43,11 @@ export default async function LocaleLayout({
       <Header locale={locale as Locale} />
       <main className="pt-16">{children}</main>
       <Footer />
+      <QuickContactRail
+        locale={locale as Locale}
+        settings={homeSettings}
+      />
+      <BackToTopButton />
     </NextIntlClientProvider>
   );
 }

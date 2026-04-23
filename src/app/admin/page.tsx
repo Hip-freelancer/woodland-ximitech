@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Boxes, FolderOpen, MessageSquare, Newspaper } from "lucide-react";
+import { Boxes, FolderOpen, MessageSquare, Newspaper, Users } from "lucide-react";
 import AdminNotice from "@/components/admin/AdminNotice";
 
 interface DashboardStats {
@@ -9,6 +9,7 @@ interface DashboardStats {
   contacts: number;
   news: number;
   products: number;
+  team: number;
 }
 
 export default function AdminPage() {
@@ -17,6 +18,7 @@ export default function AdminPage() {
     contacts: 0,
     news: 0,
     products: 0,
+    team: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -28,28 +30,31 @@ export default function AdminPage() {
     }
 
     try {
-      const [productsResponse, categoriesResponse, newsResponse, contactsResponse] =
+      const [productsResponse, categoriesResponse, newsResponse, contactsResponse, teamResponse] =
         await Promise.all([
           fetch("/api/admin/products"),
           fetch("/api/admin/categories"),
           fetch("/api/admin/news"),
           fetch("/api/admin/contacts"),
+          fetch("/api/admin/team"),
         ]);
 
       if (
         !productsResponse.ok ||
         !categoriesResponse.ok ||
         !newsResponse.ok ||
-        !contactsResponse.ok
+        !contactsResponse.ok ||
+        !teamResponse.ok
       ) {
         throw new Error("Không thể tải số liệu tổng quan.");
       }
 
-      const [products, categories, news, contacts] = await Promise.all([
+      const [products, categories, news, contacts, team] = await Promise.all([
         productsResponse.json(),
         categoriesResponse.json(),
         newsResponse.json(),
         contactsResponse.json(),
+        teamResponse.json(),
       ]);
 
       setStats({
@@ -57,6 +62,7 @@ export default function AdminPage() {
         contacts: contacts.length,
         news: news.length,
         products: products.length,
+        team: team.length,
       });
     } catch (error) {
       setErrorMessage(
@@ -90,6 +96,11 @@ export default function AdminPage() {
       icon: <Newspaper size={20} />,
       label: "Bài viết",
       value: stats.news,
+    },
+    {
+      icon: <Users size={20} />,
+      label: "Đội ngũ sale",
+      value: stats.team,
     },
     {
       icon: <MessageSquare size={20} />,

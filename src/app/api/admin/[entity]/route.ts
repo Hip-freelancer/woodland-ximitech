@@ -14,6 +14,7 @@ import "@/models/NewsArticle";
 import "@/models/Contact";
 import "@/models/Project";
 import "@/models/TeamMember";
+import "@/models/HomeSettings";
 
 const getModel = (entityName: string) => {
   const models: { [key: string]: string } = {
@@ -22,7 +23,8 @@ const getModel = (entityName: string) => {
     news: "NewsArticle",
     contacts: "Contact",
     projects: "Project",
-    team: "TeamMember"
+    team: "TeamMember",
+    "home-settings": "HomeSettings",
   };
   
   const modelName = models[entityName.toLowerCase()];
@@ -42,6 +44,8 @@ const getSort = (
       return { submittedAt: "desc", createdAt: "desc" };
     case "team":
       return { order: "asc", createdAt: "desc" };
+    case "home-settings":
+      return { updatedAt: "desc" };
     default:
       return { createdAt: "desc" };
   }

@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { COMPANY_INFO, PRIMARY_ADDRESS } from "@/lib/companyInfo";
 
 export default function ContactInfoPanel() {
   const t = useTranslations("contact.info");
@@ -13,9 +13,10 @@ export default function ContactInfoPanel() {
         </p>
         <div className="flex gap-3">
           <MapPin size={16} className="text-secondary mt-0.5 shrink-0" />
-          <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-            {t("address")}
-          </p>
+          <div className="space-y-2 font-body text-sm leading-relaxed text-on-surface-variant">
+            <p>{PRIMARY_ADDRESS}</p>
+            <p>{COMPANY_INFO.warehouseAddress}</p>
+          </div>
         </div>
       </div>
 
@@ -27,16 +28,16 @@ export default function ContactInfoPanel() {
           <Phone size={16} className="text-secondary mt-0.5 shrink-0" />
           <div className="space-y-1">
             <a
-              href="tel:+18005550000"
+              href={`tel:${COMPANY_INFO.hotline.replace(/\s+/g, "")}`}
               className="block font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
             >
-              +1 (800) 555-WOOD
+              {COMPANY_INFO.hotline}
             </a>
             <a
-              href="tel:+15035550192"
+              href={`tel:${COMPANY_INFO.secondaryPhone.replace(/\s+/g, "")}`}
               className="block font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
             >
-              +1 (503) 555-0192
+              {COMPANY_INFO.secondaryPhone}
             </a>
           </div>
         </div>
@@ -50,32 +51,31 @@ export default function ContactInfoPanel() {
           <Mail size={16} className="text-secondary mt-0.5 shrink-0" />
           <div className="space-y-1">
             <a
-              href="mailto:exports@woodland.com"
+              href={`mailto:${COMPANY_INFO.email}`}
               className="block font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
             >
-              exports@woodland.com
+              {COMPANY_INFO.email}
             </a>
             <a
-              href="mailto:press@woodland.com"
+              href={COMPANY_INFO.website}
               className="block font-body text-sm text-on-surface-variant hover:text-primary transition-colors"
             >
-              press@woodland.com
+              {COMPANY_INFO.website}
             </a>
           </div>
         </div>
       </div>
 
-      <div className="relative aspect-video overflow-hidden">
-        <Image
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyjKTqABoGof0NcA1RSJ-fwA51tdr-MUCc7UTbDwS6E4jDGKM9biuOnml_WwSR5YTJ_0pNCXA-DI9lwfa1zkPJ0uBRS4as6CF0e2qLLhIT-332UJQ0bSk1tXDmcNXsos9ZIAMIqvJhrtxc4nTle6FVImCKzHkUaFPFO7sSH-fj8WkQpjk43lzI8qEO9Ma-jGINr2RtUwVirdG9Iwio-e6fJvJzbNLfNfgd6yt5Q2hhYJMN6FJ3yMYpJEwwu8WFZ0e4gcMuG4UXQFB5"
-          alt="Woodland factory"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute bottom-4 left-4 bg-primary/80 backdrop-blur-sm px-3 py-2">
-          <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-white">
-            Portland, OR — HQ
-          </p>
+      <div className="overflow-hidden border border-outline-variant/40 bg-surface-container-lowest">
+        <div className="relative aspect-video">
+          <iframe
+            allowFullScreen
+            className="absolute inset-0 h-full w-full"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.1121240935627!2d106.7468828!3d11.0302137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174db4fddc324f9%3A0x95995226c1887fcf!2sWoodLand!5e0!3m2!1svi!2s!4v1776923463617!5m2!1svi!2s"
+            title="Woodland location map"
+          />
         </div>
       </div>
     </div>

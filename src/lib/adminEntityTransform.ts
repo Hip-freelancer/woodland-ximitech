@@ -26,6 +26,35 @@ interface ProductApplicationInput {
   image?: unknown;
 }
 
+interface HomeHeroSlideInput {
+  alt?: LocalizedInput;
+  isVisible?: unknown;
+  mediaType?: unknown;
+  mediaUrl?: unknown;
+  order?: unknown;
+  posterUrl?: unknown;
+}
+
+interface HomeHeroStatInput {
+  isVisible?: unknown;
+  label?: LocalizedInput;
+  order?: unknown;
+  value?: LocalizedInput;
+}
+
+interface TeamMemberInput {
+  email?: unknown;
+  image?: unknown;
+  isVisible?: unknown;
+  name?: LocalizedInput;
+  order?: unknown;
+  phone?: unknown;
+  region?: LocalizedInput;
+  title?: LocalizedInput;
+  whatsapp?: unknown;
+  zalo?: unknown;
+}
+
 function asRecord(value: unknown) {
   return typeof value === "object" && value !== null
     ? (value as Record<string, unknown>)
@@ -150,6 +179,52 @@ function normalizeProductApplications(value: unknown) {
     );
 }
 
+function normalizeHomeHeroSlides(value: unknown) {
+  return parseJsonArray<HomeHeroSlideInput>(value)
+    .map((item, index) => ({
+      alt: normalizeLocalizedText(item.alt),
+      isVisible: normalizeBoolean(item.isVisible, true),
+      mediaType: normalizeString(item.mediaType) === "video" ? "video" : "image",
+      mediaUrl: normalizeString(item.mediaUrl),
+      order: normalizeNumber(item.order, index),
+      posterUrl: normalizeString(item.posterUrl),
+    }))
+    .filter((item) => item.mediaUrl)
+    .sort((left, right) => left.order - right.order);
+}
+
+function normalizeHomeHeroStats(value: unknown) {
+  return parseJsonArray<HomeHeroStatInput>(value)
+    .map((item, index) => ({
+      isVisible: normalizeBoolean(item.isVisible, true),
+      label: normalizeLocalizedText(item.label),
+      order: normalizeNumber(item.order, index),
+      value: normalizeLocalizedText(item.value),
+    }))
+    .filter(
+      (item) =>
+        item.value.en || item.value.vi || item.label.en || item.label.vi
+    )
+    .sort((left, right) => left.order - right.order);
+}
+
+function normalizeTeamMember(value: unknown) {
+  const input = asRecord(value) as TeamMemberInput;
+
+  return {
+    email: normalizeString(input.email),
+    image: normalizeString(input.image),
+    isVisible: normalizeBoolean(input.isVisible, true),
+    name: normalizeLocalizedText(input.name),
+    order: normalizeNumber(input.order, 0),
+    phone: normalizeString(input.phone),
+    region: normalizeLocalizedText(input.region),
+    title: normalizeLocalizedText(input.title),
+    whatsapp: normalizeString(input.whatsapp),
+    zalo: normalizeString(input.zalo),
+  };
+}
+
 function getSlugFromLocalizedText(value: unknown, fallback = "") {
   const localized = normalizeLocalizedText(value);
   const source = localized.vi || localized.en || fallback;
@@ -233,6 +308,19 @@ export function normalizeAdminEntityPayload(entity: string, payload: unknown) {
         ),
         thickness: normalizeNumberList(body.thickness ?? body.thicknessText),
       };
+    }
+
+    case "home-settings": {
+      return {
+        contactEmail: normalizeString(body.contactEmail),
+        contactPhone: normalizeString(body.contactPhone),
+        heroSlides: normalizeHomeHeroSlides(body.heroSlides ?? body.heroSlidesJson),
+        heroStats: normalizeHomeHeroStats(body.heroStats ?? body.heroStatsJson),
+      };
+    }
+
+    case "team": {
+      return normalizeTeamMember(body);
     }
 
     default:

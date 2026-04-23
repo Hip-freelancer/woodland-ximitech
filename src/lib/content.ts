@@ -2,15 +2,20 @@ import "server-only";
 
 import dbConnect from "@/lib/dbConnect";
 import CategoryModel from "@/models/Category";
+import HomeSettingsModel from "@/models/HomeSettings";
 import NewsArticleModel from "@/models/NewsArticle";
 import ProductModel from "@/models/Product";
+import TeamMemberModel from "@/models/TeamMember";
+import { DEFAULT_HOME_SETTINGS } from "@/lib/homeSettingsDefaults";
 import type {
   Category,
+  HomeSettings,
   Locale,
   NewsArticle,
   Product,
   ProductMenuCategory,
   ProductMenuItem,
+  TeamMember,
 } from "@/types";
 
 interface LocalizedValue {
@@ -81,7 +86,51 @@ interface NewsDocument {
   updatedAt?: Date | string;
 }
 
-function localize(value: LocalizedValue | undefined, locale: Locale) {
+interface HomeSettingsDocument {
+  _id: unknown;
+  contactEmail?: string;
+  contactPhone?: string;
+  createdAt?: Date | string;
+  heroSlides?: Array<{
+    _id?: unknown;
+    alt?: LocalizedValue;
+    isVisible?: boolean;
+    mediaType?: "image" | "video";
+    mediaUrl?: string;
+    order?: number;
+    posterUrl?: string;
+  }>;
+  heroStats?: Array<{
+    _id?: unknown;
+    isVisible?: boolean;
+    label?: LocalizedValue;
+    order?: number;
+    value?: LocalizedValue;
+  }>;
+  updatedAt?: Date | string;
+}
+
+interface TeamMemberDocument {
+  _id: unknown;
+  createdAt?: Date | string;
+  email?: string;
+  image?: string;
+  isVisible?: boolean;
+  name?: LocalizedValue;
+  order?: number;
+  phone?: string;
+  region?: LocalizedValue;
+  title?: LocalizedValue;
+  updatedAt?: Date | string;
+  whatsapp?: string;
+  zalo?: string;
+}
+
+function localize(value: LocalizedValue | string | undefined, locale: Locale) {
+  if (typeof value === "string") {
+    return value.trim();
+  }
+
   if (!value) {
     return "";
   }
@@ -254,6 +303,83 @@ function serializeNews(
   };
 }
 
+function serializeHomeSettings(
+  doc: HomeSettingsDocument | null
+): HomeSettings {
+  const source = doc ?? {
+    ...DEFAULT_HOME_SETTINGS,
+    _id: "default-home-settings",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  const heroSlides = (source.heroSlides ?? DEFAULT_HOME_SETTINGS.heroSlides)
+    .map((slide, index) => {
+      const mediaType: "image" | "video" =
+        slide.mediaType === "video" ? "video" : "image";
+
+      return {
+        _id: slide._id ? String(slide._id) : `slide-${index}`,
+        alt: {
+          en: slide.alt?.en || slide.alt?.vi || "",
+          vi: slide.alt?.vi || slide.alt?.en || "",
+        },
+        isVisible: slide.isVisible ?? true,
+        mediaType,
+        mediaUrl: slide.mediaUrl ?? "",
+        order: slide.order ?? index,
+        posterUrl: slide.posterUrl ?? "",
+      };
+    })
+    .filter((slide) => slide.mediaUrl)
+    .sort((left, right) => left.order - right.order);
+
+  const heroStats = (source.heroStats ?? DEFAULT_HOME_SETTINGS.heroStats)
+    .map((stat, index) => ({
+      _id: stat._id ? String(stat._id) : `stat-${index}`,
+      isVisible: stat.isVisible ?? true,
+      label: {
+        en: stat.label?.en || stat.label?.vi || "",
+        vi: stat.label?.vi || stat.label?.en || "",
+      },
+      order: stat.order ?? index,
+      value: {
+        en: stat.value?.en || stat.value?.vi || "",
+        vi: stat.value?.vi || stat.value?.en || "",
+      },
+    }))
+    .filter((stat) => stat.value.en || stat.value.vi || stat.label.en || stat.label.vi)
+    .sort((left, right) => left.order - right.order);
+
+  return {
+    _id: String(source._id),
+    contactEmail: source.contactEmail ?? DEFAULT_HOME_SETTINGS.contactEmail,
+    contactPhone: source.contactPhone ?? DEFAULT_HOME_SETTINGS.contactPhone,
+    createdAt: formatDate(source.createdAt) || new Date().toISOString(),
+    heroSlides,
+    heroStats,
+    updatedAt: formatDate(source.updatedAt) || new Date().toISOString(),
+  };
+}
+
+function serializeTeamMember(doc: TeamMemberDocument, locale: Locale): TeamMember {
+  return {
+    _id: String(doc._id),
+    createdAt: formatDate(doc.createdAt),
+    email: doc.email ?? "",
+    image: doc.image ?? "",
+    isVisible: doc.isVisible ?? true,
+    name: localize(doc.name, locale),
+    order: doc.order ?? 0,
+    phone: doc.phone ?? "",
+    region: localize(doc.region, locale),
+    title: localize(doc.title, locale),
+    updatedAt: formatDate(doc.updatedAt),
+    whatsapp: doc.whatsapp ?? "",
+    zalo: doc.zalo ?? "",
+  };
+}
+
 async function getVisibleCategoryMap(locale: Locale) {
   await dbConnect();
   const categories = (await CategoryModel.find({ isVisible: true })
@@ -268,6 +394,16 @@ async function getVisibleCategoryMap(locale: Locale) {
 export async function fetchVisibleCategories(locale: Locale) {
   const categoryMap = await getVisibleCategoryMap(locale);
   return Array.from(categoryMap.values());
+}
+
+export async function fetchHomeSettings() {
+  await dbConnect();
+
+  const settings = (await HomeSettingsModel.findOne({})
+    .sort({ updatedAt: -1 })
+    .lean()) as HomeSettingsDocument | null;
+
+  return serializeHomeSettings(settings);
 }
 
 export async function fetchVisibleProducts(locale: Locale) {
@@ -408,4 +544,14 @@ export async function fetchVisibleNewsBySlug(slug: string, locale: Locale) {
   }
 
   return serializeNews(article as NewsDocument, locale, categoryMap);
+}
+
+export async function fetchVisibleTeamMembers(locale: Locale) {
+  await dbConnect();
+
+  const members = (await TeamMemberModel.find({ isVisible: true })
+    .sort({ order: 1, createdAt: -1 })
+    .lean()) as TeamMemberDocument[];
+
+  return members.map((item) => serializeTeamMember(item, locale));
 }
