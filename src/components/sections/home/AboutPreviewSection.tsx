@@ -34,7 +34,7 @@ export default function AboutPreviewSection() {
           </div>
         </div>
 
-        <div className="border border-outline-variant/30 bg-white p-8 md:p-10 xl:p-14">
+        <div className="flex h-full flex-col border border-outline-variant/30 bg-white p-8 md:p-10 xl:p-14">
           <p className="text-xs font-label font-bold uppercase tracking-[0.3em] text-secondary">
             {t("badge")}
           </p>
@@ -66,13 +66,15 @@ export default function AboutPreviewSection() {
             </div>
           </div>
 
-          <Link
-            href="/about"
-            className="mt-8 inline-flex items-center gap-2 bg-primary px-6 py-4 font-label text-xs font-semibold uppercase tracking-widest text-on-primary transition-colors duration-300 hover:bg-secondary"
-          >
-            {tCommon("learnMore")}
-            <span>→</span>
-          </Link>
+          <div className="mt-auto pt-8">
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 bg-primary px-6 py-4 font-label text-xs font-semibold uppercase tracking-widest text-on-primary transition-colors duration-300 hover:bg-secondary"
+            >
+              {tCommon("learnMore")}
+              <span>→</span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

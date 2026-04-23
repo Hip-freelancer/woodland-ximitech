@@ -11,8 +11,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const t = useTranslations("products");
 
   return (
-    <article className="group overflow-hidden border border-outline-variant/30 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(18,55,31,0.12)]">
-      <Link href={`/products/${product.slug}`} className="block h-full">
+    <article className="group h-full overflow-hidden border border-outline-variant/30 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(18,55,31,0.12)]">
+      <Link href={`/products/${product.slug}`} className="flex h-full flex-col">
         <div className="relative aspect-[4/3] overflow-hidden bg-surface-container-low">
           <Image
             src={product.image}
@@ -23,7 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/24 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-90" />
         </div>
 
-        <div className="p-8">
+        <div className="flex flex-1 flex-col p-8">
           <div className="mb-5 flex flex-wrap items-center gap-2">
             <span className="inline-flex bg-tertiary-fixed px-2.5 py-1 font-label text-[10px] font-bold uppercase tracking-widest text-on-tertiary-fixed">
               {product.grade}
@@ -44,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               : ""}
           </p>
 
-          <div className="mt-8 flex items-end justify-between gap-4 border-t border-outline-variant/40 pt-6">
+          <div className="mt-auto flex items-end justify-between gap-4 border-t border-outline-variant/40 pt-6">
             <span className="text-xs font-label font-bold uppercase tracking-[0.14em] text-primary">
               {product.thickness.length > 0
                 ? `${t("specificationLabel")}: ${product.thickness[0]}-${product.thickness[product.thickness.length - 1]}mm`

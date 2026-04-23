@@ -67,13 +67,15 @@ export default function NewsSection({ articles }: NewsSectionProps) {
                   </h3>
                 </div>
               </div>
-              <div className="border-t border-outline-variant/20 bg-white px-8 py-7 md:px-10 md:py-8">
+              <div className="flex flex-1 flex-col border-t border-outline-variant/20 bg-white px-8 py-7 md:px-10 md:py-8">
                 <p className=" line-clamp-3 font-body text-sm leading-7 text-on-surface-variant md:text-base">
                   {featuredArticle.excerpt}
                 </p>
-                <span className="mt-5 inline-flex font-label text-xs font-bold uppercase tracking-widest text-secondary transition-transform duration-300 group-hover:translate-x-1">
-                  {t("readMore")} →
-                </span>
+                <div className="mt-auto border-t border-outline-variant/20 pt-5">
+                  <span className="inline-flex font-label text-xs font-bold uppercase tracking-widest text-secondary transition-transform duration-300 group-hover:translate-x-1">
+                    {t("readMore")} →
+                  </span>
+                </div>
               </div>
             </Link>
           </article>
@@ -82,11 +84,11 @@ export default function NewsSection({ articles }: NewsSectionProps) {
             {secondaryArticles.map((article) => (
               <article
                 key={article._id}
-                className="group overflow-hidden border border-outline-variant/30 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(18,55,31,0.12)]"
+                className="group h-full overflow-hidden border border-outline-variant/30 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(18,55,31,0.12)]"
               >
                 <Link
                   href={`/news/${article.slug}`}
-                  className="grid md:grid-cols-[0.95fr_1.05fr]"
+                  className="grid h-full md:grid-cols-[0.95fr_1.05fr]"
                 >
                   <div className="relative min-h-[220px] overflow-hidden">
                     <Image
@@ -96,7 +98,7 @@ export default function NewsSection({ articles }: NewsSectionProps) {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="p-6">
+                  <div className="flex h-full flex-col p-6">
                     <time className="text-[10px] font-label font-bold uppercase tracking-[0.2em] text-outline">
                       {new Date(article.publishDate).toLocaleDateString(
                         locale === "vi" ? "vi-VN" : "en-GB",
@@ -113,9 +115,11 @@ export default function NewsSection({ articles }: NewsSectionProps) {
                     <p className="mt-4 line-clamp-3 break-words whitespace-pre-wrap font-body text-sm leading-7 text-on-surface-variant">
                       {article.excerpt}
                     </p>
-                    <span className="mt-6 inline-flex font-label text-xs font-bold uppercase tracking-widest text-secondary">
-                      {t("readMore")} →
-                    </span>
+                    <div className="mt-auto border-t border-outline-variant/20 pt-6">
+                      <span className="inline-flex font-label text-xs font-bold uppercase tracking-widest text-secondary">
+                        {t("readMore")} →
+                      </span>
+                    </div>
                   </div>
                 </Link>
               </article>

@@ -106,7 +106,7 @@ export default function NewsListSection({ articles }: NewsListSectionProps) {
 
         {featuredArticle ? (
           <div className="space-y-10">
-            <article className="group overflow-hidden border border-outline-variant/30 bg-white">
+            <article className="group h-full overflow-hidden border border-outline-variant/30 bg-white">
               <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_0.85fr]">
                 <Link
                   href={`/news/${featuredArticle.slug}`}
@@ -172,11 +172,11 @@ export default function NewsListSection({ articles }: NewsListSectionProps) {
                   {remainingArticles.map((article) => (
                     <article
                       key={article._id}
-                      className="group overflow-hidden border border-outline-variant/30 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(18,55,31,0.12)]"
+                      className="group h-full overflow-hidden border border-outline-variant/30 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(18,55,31,0.12)]"
                     >
                       <Link
                         href={`/news/${article.slug}`}
-                        className="block h-full"
+                        className="flex h-full flex-col"
                       >
                         <div className="relative aspect-[4/3] overflow-hidden">
                           <Image
@@ -188,7 +188,7 @@ export default function NewsListSection({ articles }: NewsListSectionProps) {
                           <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/30 to-transparent" />
                         </div>
 
-                        <div className="p-8">
+                        <div className="flex flex-1 flex-col p-8">
                           <div className="mb-5 flex flex-wrap items-center gap-3">
                             <span className="inline-flex bg-tertiary-fixed px-2.5 py-1 font-label text-[10px] font-bold uppercase tracking-widest text-on-tertiary-fixed">
                               {article.categoryLabel ?? article.category}
@@ -213,7 +213,7 @@ export default function NewsListSection({ articles }: NewsListSectionProps) {
                             {article.excerpt}
                           </p>
 
-                          <div className="mt-8 border-t border-outline-variant/40 pt-6">
+                          <div className="mt-auto border-t border-outline-variant/40 pt-6">
                             <span className="inline-flex items-center gap-2 font-label text-xs font-bold uppercase tracking-widest text-primary transition-colors group-hover:text-secondary">
                               {t("list.readMore")}
                               <span className="transition-transform duration-300 group-hover:translate-x-1">

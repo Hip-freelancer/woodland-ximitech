@@ -15,8 +15,8 @@ export default function NewsPreviewCard({
   const t = useTranslations("newsBase.list");
 
   return (
-    <article className="group overflow-hidden border border-outline-variant/30 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(18,55,31,0.12)]">
-      <Link href={`/news/${article.slug}`} className="block h-full">
+    <article className="group h-full overflow-hidden border border-outline-variant/30 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(18,55,31,0.12)]">
+      <Link href={`/news/${article.slug}`} className="flex h-full flex-col">
         <div className="relative aspect-[4/3] overflow-hidden bg-surface-container-low">
           <Image
             alt={article.title}
@@ -26,7 +26,7 @@ export default function NewsPreviewCard({
           />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent opacity-75 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
-        <div className="p-8">
+        <div className="flex flex-1 flex-col p-8">
           <div className="mb-5 flex items-center justify-between gap-4">
             <span className="inline-block bg-tertiary-fixed px-2 py-1 font-label text-[10px] font-bold uppercase tracking-widest text-on-tertiary-fixed">
               {article.categoryLabel ?? article.category}
@@ -51,7 +51,7 @@ export default function NewsPreviewCard({
             {article.excerpt}
           </p>
 
-          <div className="mt-8 border-t border-outline-variant/40 pt-6">
+          <div className="mt-auto border-t border-outline-variant/40 pt-6">
             <span className="inline-flex items-center gap-2 font-label text-xs font-bold uppercase tracking-widest text-primary transition-colors group-hover:text-secondary">
               {t("readMore")}
               <span className="transition-transform duration-300 group-hover:translate-x-1">

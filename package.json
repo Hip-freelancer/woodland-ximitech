@@ -8,6 +8,8 @@
     "build": "next build",
     "lint": "eslint",
     "migrate:categories": "tsx src/scripts/migrateCategoryContentTypes.ts",
+    "seed:team": "tsx src/scripts/seedTeamMembers.ts",
+    "seed:woodland-crawl": "tsx src/scripts/seedWoodlandCrawl.ts",
     "start": "next start"
   },
   "dependencies": {

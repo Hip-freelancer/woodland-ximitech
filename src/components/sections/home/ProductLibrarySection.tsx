@@ -29,14 +29,14 @@ export default function ProductLibrarySection() {
           {items.map((item) => (
             <div
               key={item}
-              className="border-b border-white/14 pb-5"
+              className="flex h-full flex-col border-b border-white/14 pb-5"
             >
               <h3 className="font-headline text-xl font-bold uppercase leading-tight text-white">
                 {item}
               </h3>
               <Link
                 href="/contact"
-                className="mt-3 inline-block font-label text-xs font-semibold uppercase tracking-[0.18em] text-primary-fixed transition-colors hover:text-white"
+                className="mt-auto inline-flex w-fit pt-3 font-label text-xs font-semibold uppercase tracking-[0.18em] text-primary-fixed transition-colors hover:text-white"
               >
                 {t("contactItem")}
               </Link>
