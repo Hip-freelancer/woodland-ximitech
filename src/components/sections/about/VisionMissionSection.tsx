@@ -16,11 +16,11 @@ export default function VisionMissionSection() {
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.05fr_0.95fr]">
         <div className="relative overflow-hidden border border-primary/18 bg-primary p-10 grain-overlay md:p-12">
-          <div className="relative z-10 max-w-xl">
-            <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-primary-fixed mb-4">
-              01
-            </p>
-            <h2 className="font-headline font-black text-3xl uppercase text-white leading-tight tracking-tight mb-6">
+        <div className="relative z-10 max-w-xl">
+          <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-primary-fixed mb-4">
+            01
+          </p>
+            <h2 className="max-w-[22ch] px-1 pt-[0.22em] pb-[0.14em] font-headline text-2xl font-bold uppercase leading-[1.48] tracking-normal text-white [text-wrap:balance] md:text-3xl">
               {t("vision.title")}
             </h2>
             <p className="font-body text-sm leading-8 text-white/74 md:text-base">
@@ -33,7 +33,7 @@ export default function VisionMissionSection() {
           <p className="mb-4 font-label text-[10px] font-semibold uppercase tracking-widest text-secondary">
             02
           </p>
-          <h2 className="mb-6 font-headline text-3xl font-black uppercase leading-tight tracking-tight text-primary">
+          <h2 className="mb-6 max-w-[22ch] px-1 pt-[0.22em] pb-[0.14em] font-headline text-2xl font-bold uppercase leading-[1.48] tracking-normal text-primary [text-wrap:balance] md:text-3xl">
             {t("mission.title")}
           </h2>
           <p className="font-body text-sm leading-8 text-on-surface-variant md:text-base">

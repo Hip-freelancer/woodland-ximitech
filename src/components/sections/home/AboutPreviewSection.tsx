@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import AnimatedCountText from "@/components/ui/AnimatedCountText";
 
 export default function AboutPreviewSection() {
   const t = useTranslations("home.about");
@@ -46,17 +47,19 @@ export default function AboutPreviewSection() {
 
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="border border-outline-variant/30 bg-surface-container-low px-6 py-6">
-              <p className="font-headline text-4xl font-black text-primary">
-                {t("stat1Value")}
-              </p>
+              <AnimatedCountText
+                className="font-headline text-4xl font-black text-primary"
+                value={t("stat1Value")}
+              />
               <p className="mt-2 text-xs font-label uppercase tracking-widest text-outline">
                 {t("stat1Label")}
               </p>
             </div>
             <div className="border border-outline-variant/30 bg-surface-container-low px-6 py-6">
-              <p className="font-headline text-4xl font-black text-primary">
-                {t("stat2Value")}
-              </p>
+              <AnimatedCountText
+                className="font-headline text-4xl font-black text-primary"
+                value={t("stat2Value")}
+              />
               <p className="mt-2 text-xs font-label uppercase tracking-widest text-outline">
                 {t("stat2Label")}
               </p>

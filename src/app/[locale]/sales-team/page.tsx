@@ -85,7 +85,7 @@ export default async function SalesTeamPage({
             <p className="font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-primary-fixed">
               Woodland
             </p>
-            <h2 className="mt-4 font-headline text-3xl font-black uppercase tracking-tight">
+            <h2 className="mt-4 max-w-4xl px-2 pt-[0.35em] pb-[0.22em] font-headline text-xl font-bold uppercase leading-[1.45] tracking-normal [text-wrap:balance] md:text-[2rem] xl:text-[2rem]">
               {tSupport("title")}
             </h2>
             <p className="mt-5 max-w-2xl font-body text-sm leading-8 text-white/78">

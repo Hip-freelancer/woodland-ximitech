@@ -22,7 +22,7 @@ export default function CoreValuesSection() {
     <section className="bg-surface-container-low py-24">
       <div className="mx-auto max-w-[1440px] px-6">
         <div className="mx-auto mb-16 max-w-4xl text-center">
-          <h2 className="font-headline text-4xl font-black uppercase leading-none tracking-tight text-primary">
+          <h2 className="mx-auto max-w-4xl px-2 pt-[0.35em] pb-[0.22em] font-headline text-2xl font-bold uppercase leading-[1.45] tracking-normal text-primary [text-wrap:balance] md:text-[2.4rem] xl:text-[2rem]">
             {t("portfolio.title")}
           </h2>
           <p className="mt-6 font-body text-base leading-relaxed text-on-surface-variant">

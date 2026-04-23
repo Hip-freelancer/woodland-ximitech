@@ -117,9 +117,27 @@ function AnimatedStatValue({
   );
 }
 
+function getStatValueClasses(value: string) {
+  const length = value.trim().length;
+
+  if (length >= 18) {
+    return "max-w-[13ch] text-[clamp(1.9rem,1.6vw+1.2rem,3.5rem)] leading-[0.92]";
+  }
+
+  if (length >= 11) {
+    return "max-w-[12ch] text-[clamp(2.05rem,1.65vw+1.25rem,3.45rem)] leading-[0.95]";
+  }
+
+  if (length >= 9) {
+    return "max-w-[11ch] text-[clamp(2.15rem,1.75vw+1.3rem,3.55rem)] leading-[0.95]";
+  }
+
+  return "max-w-[10ch] text-[clamp(2.3rem,1.9vw+1.35rem,3.8rem)] leading-[0.95]";
+}
+
 function getStatCellClasses(index: number) {
   const baseClasses =
-    "flex min-h-[138px] flex-col items-center justify-center px-6 py-8 text-center";
+    "flex min-h-[138px] min-w-0 items-center justify-center px-8 py-8 text-center lg:px-8";
 
   const mobileClasses = index > 0 ? "border-t border-white/10" : "";
   const tabletClasses = [
@@ -252,19 +270,29 @@ export default function HeroSliderClient({
         <div className="relative z-10 border-t border-white/12 bg-black/18 backdrop-blur-sm">
           <div className="mx-auto grid w-full max-w-[1920px] grid-cols-1 px-6 md:grid-cols-2 md:px-10 lg:grid-cols-4 lg:px-14">
             {visibleStats.map((stat, index) => (
-              <div
-                key={stat._id ?? `${stat.order}-${stat.value.en}`}
-                className={getStatCellClasses(index)}
-              >
-                <AnimatedStatValue
-                  key={`${stat._id ?? stat.order}-${localize(stat.value, locale)}`}
-                  className="font-headline text-[2.5rem] font-black leading-none tracking-tight text-white md:text-[3.05rem]"
-                  value={localize(stat.value, locale)}
-                />
-                <p className="mt-4 max-w-[24ch] font-label text-[11px] font-medium uppercase tracking-[0.22em] text-white/74 md:text-xs">
-                  {localize(stat.label, locale)}
-                </p>
-              </div>
+              (() => {
+                const localizedValue = localize(stat.value, locale);
+
+                return (
+                  <div
+                    key={stat._id ?? `${stat.order}-${stat.value.en}`}
+                    className={getStatCellClasses(index)}
+                  >
+                    <div className="mx-auto flex w-full max-w-[21rem] flex-col items-center justify-center text-center">
+                      <AnimatedStatValue
+                        key={`${stat._id ?? stat.order}-${localizedValue}`}
+                        className={`mx-auto max-w-full text-center font-headline font-black tracking-tight text-white [word-break:keep-all] ${getStatValueClasses(localizedValue)} ${
+                          localizedValue.includes(" / ") ? "[text-wrap:balance]" : ""
+                        }`}
+                        value={localizedValue}
+                      />
+                      <p className="mt-4 whitespace-nowrap text-center font-label text-[11px] font-medium uppercase tracking-[0.18em] text-white/74 md:text-xs">
+                        {localize(stat.label, locale)}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()
             ))}
           </div>
         </div>

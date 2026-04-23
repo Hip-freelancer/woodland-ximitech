@@ -220,7 +220,7 @@ function ProductDetailContent({
                 </span>
               </div>
 
-              <h1 className="mt-5 font-headline text-4xl font-black uppercase leading-[0.98] tracking-tight text-primary md:text-5xl">
+              <h1 className="mt-5 pt-[0.18em] pb-[0.12em] font-headline text-4xl font-black uppercase leading-[1.16] tracking-tight text-primary [text-wrap:balance] md:text-5xl">
                 {product.name}
               </h1>
 
@@ -255,7 +255,7 @@ function ProductDetailContent({
               </div>
 
               <div
-                className="rich-content mt-7 font-body text-base leading-relaxed text-on-surface-variant"
+                className="rich-content mt-7 font-body text-base leading-8 text-on-surface-variant"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
 

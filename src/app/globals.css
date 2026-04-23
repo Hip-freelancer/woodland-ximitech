@@ -372,7 +372,9 @@ html:lang(vi) .rich-content h6 {
 .rich-content blockquote {
   color: #334155;
   line-height: 1.9;
-  white-space: pre-wrap;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .rich-content ul,

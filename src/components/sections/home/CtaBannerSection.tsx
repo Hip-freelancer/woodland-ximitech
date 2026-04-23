@@ -11,11 +11,11 @@ export default function CtaBannerSection() {
         <div className="absolute top-0 right-0 opacity-10 pointer-events-none -translate-y-1/2 translate-x-1/2 text-[220px] leading-none text-primary-fixed-dim">
           ○
         </div>
-        <div className="relative z-10 max-w-3xl">
-          <h2 className="font-headline font-black text-4xl md:text-6xl text-on-primary uppercase tracking-tighter mb-8 leading-none">
+        <div className="relative z-10 max-w-5xl">
+          <h2 className="mb-8 pt-[0.16em] pb-[0.08em] font-headline text-4xl font-black uppercase leading-[1.12] tracking-tighter text-on-primary [text-wrap:balance] md:text-6xl">
             {t("title")}
           </h2>
-          <p className="font-body text-lg text-primary-fixed mb-12">
+          <p className="mb-12 font-body text-base leading-8 text-primary-fixed [text-wrap:balance] md:text-lg md:leading-9 xl:text-xl">
             {t("subtitle")}
           </p>
           <Link

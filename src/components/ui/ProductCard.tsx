@@ -33,7 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </span>
           </div>
 
-          <h3 className="min-h-[4.5rem] font-headline text-[1.85rem] font-black uppercase leading-[1.05] tracking-tight text-primary transition-colors duration-300 group-hover:text-secondary">
+          <h3 className="min-h-[5rem] pt-[0.2em] pb-[0.12em] font-headline text-[1.85rem] font-black uppercase leading-[1.22] tracking-tight text-primary transition-colors duration-300 group-hover:text-secondary">
             {product.name}
           </h3>
 

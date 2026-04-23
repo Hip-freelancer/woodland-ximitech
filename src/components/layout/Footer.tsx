@@ -83,32 +83,32 @@ export default function Footer() {
                 <p className="font-label text-[10px] font-semibold uppercase tracking-[0.24em] text-white/72">
                   {t("contactTitle")}
                 </p>
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                <div className="mt-6 grid gap-4 2xl:grid-cols-2">
                   {directChannels.map(({ href, icon: Icon, label }) => (
                     <a
                       key={label}
                       href={href}
-                      className="flex min-h-[76px] items-start gap-3 rounded-[22px] border border-white/12 bg-white/8 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/12"
+                      className="flex min-h-[76px] w-full items-start gap-3 rounded-[22px] border border-white/12 bg-white/8 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/12"
                     >
                       <span className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-full bg-white/14 text-white">
                         <Icon size={17} />
                       </span>
-                      <span className="font-body text-sm leading-6 text-white/90">
+                      <span className="min-w-0 break-words font-body text-sm leading-6 text-white/90">
                         {label}
                       </span>
                     </a>
                   ))}
 
-                  <div className="rounded-[22px] border border-white/12 bg-white/8 p-4 sm:col-span-2">
+                  <div className="rounded-[22px] border border-white/12 bg-white/8 p-4 2xl:col-span-2">
                     <div className="flex items-start gap-3">
                       <span className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-full bg-white/14 text-white">
                         <MapPin size={17} />
                       </span>
                       <div className="space-y-3">
-                        <p className="font-body text-sm leading-6 text-white/90">
+                        <p className="break-words font-body text-sm leading-6 text-white/90">
                           {PRIMARY_ADDRESS}
                         </p>
-                        <p className="font-body text-sm leading-6 text-white/74">
+                        <p className="break-words font-body text-sm leading-6 text-white/74">
                           {COMPANY_INFO.warehouseAddress}
                         </p>
                       </div>
@@ -176,29 +176,31 @@ export default function Footer() {
             <h5 className="font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
               {t("directChannel")}
             </h5>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <div className="mt-6 grid gap-4 2xl:grid-cols-2">
               {directChannels.map(({ href, icon: Icon, label }) => (
                 <a
                   key={`bottom-${label}`}
                   href={href}
-                  className="flex items-center gap-3 rounded-[20px] bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:bg-primary hover:text-white"
+                  className="group flex w-full items-center gap-3 rounded-[20px] border border-primary/8 bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-slate-50 hover:shadow-[0_14px_30px_rgba(18,55,31,0.08)]"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
                     <Icon size={16} />
                   </span>
-                  <span className="break-all">{label}</span>
+                  <span className="min-w-0 break-words transition-colors duration-300 group-hover:text-primary">
+                    {label}
+                  </span>
                 </a>
               ))}
               <a
                 href={COMPANY_INFO.website}
-                className="flex items-center gap-3 rounded-[20px] bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:bg-primary hover:text-white md:col-span-2"
+                className="group flex w-full items-center gap-3 rounded-[20px] border border-primary/8 bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-slate-50 hover:shadow-[0_14px_30px_rgba(18,55,31,0.08)] 2xl:col-span-2"
                 rel="noreferrer"
                 target="_blank"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
                   <ExternalLink size={16} />
                 </span>
-                <span>
+                <span className="transition-colors duration-300 group-hover:text-primary">
                   {t("websiteLabel")} {COMPANY_INFO.website}
                 </span>
               </a>
