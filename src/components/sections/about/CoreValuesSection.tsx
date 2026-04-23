@@ -21,8 +21,8 @@ export default function CoreValuesSection() {
   return (
     <section className="bg-surface-container-low py-24">
       <div className="mx-auto max-w-[1440px] px-6">
-        <div className="mx-auto mb-16 max-w-4xl text-center">
-          <h2 className="mx-auto max-w-4xl px-2 pt-[0.35em] pb-[0.22em] font-headline text-2xl font-bold uppercase leading-[1.45] tracking-normal text-primary [text-wrap:balance] md:text-[2.4rem] xl:text-[2rem]">
+        <div className="mx-auto mb-16 text-center">
+          <h2 className="mx-auto px-2 pt-[0.35em] pb-[0.22em] font-headline text-2xl font-bold uppercase leading-[1.45] tracking-normal text-primary [text-wrap:balance] md:text-[2.4rem] xl:text-[2rem]">
             {t("portfolio.title")}
           </h2>
           <p className="mt-6 font-body text-base leading-relaxed text-on-surface-variant">
@@ -36,7 +36,9 @@ export default function CoreValuesSection() {
               key={item.title}
               className="border border-outline-variant/30 bg-white p-10 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(18,55,31,0.1)]"
             >
-              <div className="mb-6 flex justify-center text-secondary">{icons[i]}</div>
+              <div className="mb-6 flex justify-center text-secondary">
+                {icons[i]}
+              </div>
               <h3 className="mb-4 font-headline text-xl font-bold uppercase tracking-wide text-primary">
                 {item.title}
               </h3>

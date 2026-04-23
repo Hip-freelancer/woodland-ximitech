@@ -5,7 +5,7 @@ export default function VisionMissionSection() {
 
   return (
     <section className="mx-auto max-w-[1440px] px-6 py-24">
-      <div className="mb-12 max-w-4xl">
+      <div className="mb-12">
         <p className="mb-4 font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
           {t("hero.subtitle")}
         </p>
@@ -16,10 +16,10 @@ export default function VisionMissionSection() {
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.05fr_0.95fr]">
         <div className="relative overflow-hidden border border-primary/18 bg-primary p-10 grain-overlay md:p-12">
-        <div className="relative z-10 max-w-xl">
-          <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-primary-fixed mb-4">
-            01
-          </p>
+          <div className="relative z-10 max-w-xl">
+            <p className="font-label text-[10px] font-semibold uppercase tracking-widest text-primary-fixed mb-4">
+              01
+            </p>
             <h2 className="max-w-[22ch] px-1 pt-[0.22em] pb-[0.14em] font-headline text-2xl font-bold uppercase leading-[1.48] tracking-normal text-white [text-wrap:balance] md:text-3xl">
               {t("vision.title")}
             </h2>

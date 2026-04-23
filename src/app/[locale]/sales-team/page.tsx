@@ -6,7 +6,6 @@ import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import PageHero from "@/components/ui/PageHero";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { fetchVisibleTeamMembers } from "@/lib/content";
-import { buildLocalizedMetadata } from "@/lib/metadata";
 import type { Locale } from "@/types";
 
 export async function generateMetadata({
@@ -17,12 +16,10 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "salesTeam.hero" });
 
-  return buildLocalizedMetadata({
-    locale,
-    path: "/sales-team",
-    title: t("title"),
+  return {
+    title: `${t("title")} | Woodland`,
     description: t("subtitle"),
-  });
+  };
 }
 
 export default async function SalesTeamPage({
@@ -47,7 +44,11 @@ export default async function SalesTeamPage({
           { label: tNav("salesTeam") },
         ]}
       />
-      <PageHero label="Woodland" title={tHero("title")} description={tHero("subtitle")} />
+      <PageHero
+        label="Woodland"
+        title={tHero("title")}
+        description={tHero("subtitle")}
+      />
       <SectionDivider />
 
       <section className="mx-auto max-w-[1440px] px-6 py-16">
@@ -88,7 +89,7 @@ export default async function SalesTeamPage({
             <p className="font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-primary-fixed">
               Woodland
             </p>
-            <h2 className="mt-4 max-w-4xl px-2 pt-[0.35em] pb-[0.22em] font-headline text-xl font-bold uppercase leading-[1.45] tracking-normal [text-wrap:balance] md:text-[2rem] xl:text-[2rem]">
+            <h2 className="mt-4 px-2 pt-[0.35em] pb-[0.22em] font-headline text-xl font-bold uppercase leading-[1.45] tracking-normal [text-wrap:balance] md:text-[2rem] xl:text-[2rem]">
               {tSupport("title")}
             </h2>
             <p className="mt-5 max-w-2xl font-body text-sm leading-8 text-white/78">
