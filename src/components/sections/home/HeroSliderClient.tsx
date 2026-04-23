@@ -21,10 +21,7 @@ interface HeroSliderClientProps {
   title: string;
 }
 
-function localize(
-  value: { en: string; vi: string },
-  locale: Locale
-) {
+function localize(value: { en: string; vi: string }, locale: Locale) {
   return locale === "vi" ? value.vi || value.en : value.en || value.vi;
 }
 
@@ -62,7 +59,7 @@ function AnimatedStatValue({
   value: string;
 }) {
   const [displayValue, setDisplayValue] = useState(() =>
-    formatAnimatedValue(value, 0)
+    formatAnimatedValue(value, 0),
   );
   const [hasAnimated, setHasAnimated] = useState(false);
   const rootRef = useRef<HTMLParagraphElement | null>(null);
@@ -102,7 +99,7 @@ function AnimatedStatValue({
       },
       {
         threshold: 0.45,
-      }
+      },
     );
 
     observer.observe(node);
@@ -238,14 +235,14 @@ export default function HeroSliderClient({
         <div className="mx-auto flex w-full max-w-[1920px] flex-1 items-center px-6 pb-36 pt-28 md:px-10 lg:px-14">
           <div className="w-full text-center">
             <div className="relative mx-auto max-w-5xl">
-              <div className="absolute inset-x-0 top-1/2 -z-10 mx-auto h-[360px] max-w-4xl -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(3,10,6,0.58)_0%,rgba(3,10,6,0.36)_42%,transparent_75%)] blur-2xl" />
+              <div className="absolute inset-x-0 top-1/2 -z-10 mx-auto h-[360px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(3,10,6,0.58)_0%,rgba(3,10,6,0.36)_42%,transparent_75%)] blur-2xl" />
               <span className="inline-flex items-center justify-center border border-white/24 bg-black/22 px-4 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.28em] text-white/92 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.18)]">
                 Woodland
               </span>
               <h1 className="mx-auto mt-8 max-w-6xl pt-[0.1em] pb-[0.08em] font-headline text-5xl font-black leading-[1.04] tracking-tight text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)] md:text-7xl xl:text-[5.1rem]">
                 {title}
               </h1>
-              <p className="mx-auto mt-5 max-w-3xl font-body text-base leading-8 text-white/90 drop-shadow-[0_4px_18px_rgba(0,0,0,0.5)] md:text-xl">
+              <p className="mx-auto mt-5  font-body text-base leading-8 text-white/90 drop-shadow-[0_4px_18px_rgba(0,0,0,0.5)] md:text-xl">
                 {subtitle}
               </p>
 
@@ -269,7 +266,7 @@ export default function HeroSliderClient({
 
         <div className="relative z-10 border-t border-white/12 bg-black/18 backdrop-blur-sm">
           <div className="mx-auto grid w-full max-w-[1920px] grid-cols-1 px-6 md:grid-cols-2 md:px-10 lg:grid-cols-4 lg:px-14">
-            {visibleStats.map((stat, index) => (
+            {visibleStats.map((stat, index) =>
               (() => {
                 const localizedValue = localize(stat.value, locale);
 
@@ -282,7 +279,9 @@ export default function HeroSliderClient({
                       <AnimatedStatValue
                         key={`${stat._id ?? stat.order}-${localizedValue}`}
                         className={`mx-auto max-w-full text-center font-headline font-black tracking-tight text-white [word-break:keep-all] ${getStatValueClasses(localizedValue)} ${
-                          localizedValue.includes(" / ") ? "[text-wrap:balance]" : ""
+                          localizedValue.includes(" / ")
+                            ? "[text-wrap:balance]"
+                            : ""
                         }`}
                         value={localizedValue}
                       />
@@ -292,8 +291,8 @@ export default function HeroSliderClient({
                     </div>
                   </div>
                 );
-              })()
-            ))}
+              })(),
+            )}
           </div>
         </div>
       </div>
@@ -304,7 +303,9 @@ export default function HeroSliderClient({
             aria-label={locale === "vi" ? "Slide trước" : "Previous slide"}
             className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/18 text-white backdrop-blur-sm transition-colors hover:bg-white/28 md:left-8"
             onClick={() =>
-              setActiveIndex((current) => (current - 1 + slides.length) % slides.length)
+              setActiveIndex(
+                (current) => (current - 1 + slides.length) % slides.length,
+              )
             }
             type="button"
           >
@@ -313,14 +314,15 @@ export default function HeroSliderClient({
           <button
             aria-label={locale === "vi" ? "Slide kế tiếp" : "Next slide"}
             className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/18 text-white backdrop-blur-sm transition-colors hover:bg-white/28 md:right-8"
-            onClick={() => setActiveIndex((current) => (current + 1) % slides.length)}
+            onClick={() =>
+              setActiveIndex((current) => (current + 1) % slides.length)
+            }
             type="button"
           >
             <ArrowRight size={20} />
           </button>
         </>
       ) : null}
-
-      </section>
+    </section>
   );
 }

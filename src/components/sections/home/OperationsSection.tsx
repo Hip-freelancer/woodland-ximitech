@@ -8,7 +8,7 @@ export default function OperationsSection() {
 
   return (
     <section className="mx-auto max-w-[1440px] px-6 py-24 md:py-32">
-      <div className="mb-14 max-w-3xl">
+      <div className="mb-14 ">
         <p className="mb-3 text-xs font-label font-bold uppercase tracking-[0.3em] text-secondary">
           {t("eyebrow")}
         </p>

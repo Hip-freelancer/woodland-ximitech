@@ -20,7 +20,9 @@ export default function ProductsGrid({
   const itemsPerPage = 9;
   const [selectedCategories, setSelectedCategories] =
     useState<string[]>(initialCategories);
-  const [selectedThickness, setSelectedThickness] = useState<number | null>(null);
+  const [selectedThickness, setSelectedThickness] = useState<number | null>(
+    null,
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const deferredSearchQuery = useDeferredValue(searchQuery);
@@ -32,16 +34,16 @@ export default function ProductsGrid({
           products.map((product) => [
             product.category,
             product.categoryLabel ?? product.category,
-          ])
-        ).entries()
+          ]),
+        ).entries(),
       ).map(([slug, label]) => ({ label, slug })),
-    [products]
+    [products],
   );
 
   const toggleCategory = (cat: string) => {
     setCurrentPage(1);
     setSelectedCategories((prev) =>
-      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat],
     );
   };
 
@@ -54,10 +56,12 @@ export default function ProductsGrid({
 
   const filtered = products.filter((p) => {
     const categoryMatch =
-      selectedCategories.length === 0 || selectedCategories.includes(p.category);
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(p.category);
     const thicknessMatch =
       selectedThickness === null || p.thickness.includes(selectedThickness);
-    const searchSource = `${p.name} ${p.material} ${p.categoryLabel ?? p.category}`.toLowerCase();
+    const searchSource =
+      `${p.name} ${p.material} ${p.categoryLabel ?? p.category}`.toLowerCase();
     const searchMatch =
       deferredSearchQuery.trim().length === 0 ||
       searchSource.includes(deferredSearchQuery.trim().toLowerCase());
@@ -67,14 +71,14 @@ export default function ProductsGrid({
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const paginatedProducts = filtered.slice(
     (safeCurrentPage - 1) * itemsPerPage,
-    safeCurrentPage * itemsPerPage
+    safeCurrentPage * itemsPerPage,
   );
 
   return (
     <div className="space-y-10">
       <div className="border border-outline-variant/30 bg-surface-container-low px-6 py-7 md:px-8">
         <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
-          <div className="max-w-3xl">
+          <div className="">
             <p className="mb-3 font-label text-[10px] font-semibold uppercase tracking-[0.24em] text-secondary">
               Woodland
             </p>
@@ -137,7 +141,9 @@ export default function ProductsGrid({
           <div className="mb-8 flex flex-col gap-4 border-b border-outline-variant/30 pb-5 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="font-label text-xs uppercase tracking-[0.18em] text-on-surface-variant">
-                <span className="font-semibold text-primary">{filtered.length}</span>{" "}
+                <span className="font-semibold text-primary">
+                  {filtered.length}
+                </span>{" "}
                 {t("results")}
               </p>
             </div>
@@ -181,22 +187,23 @@ export default function ProductsGrid({
 
               {totalPages > 1 ? (
                 <div className="flex flex-wrap items-center justify-center gap-2 border-t border-outline-variant/20 pt-6">
-                  {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-                    (page) => (
-                      <button
-                        key={page}
-                        className={`min-w-11 px-4 py-3 font-label text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${
-                          page === safeCurrentPage
-                            ? "bg-primary text-on-primary"
-                            : "border border-outline-variant/40 bg-white text-primary hover:border-primary"
-                        }`}
-                        onClick={() => setCurrentPage(page)}
-                        type="button"
-                      >
-                        {page}
-                      </button>
-                    )
-                  )}
+                  {Array.from(
+                    { length: totalPages },
+                    (_, index) => index + 1,
+                  ).map((page) => (
+                    <button
+                      key={page}
+                      className={`min-w-11 px-4 py-3 font-label text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${
+                        page === safeCurrentPage
+                          ? "bg-primary text-on-primary"
+                          : "border border-outline-variant/40 bg-white text-primary hover:border-primary"
+                      }`}
+                      onClick={() => setCurrentPage(page)}
+                      type="button"
+                    >
+                      {page}
+                    </button>
+                  ))}
                 </div>
               ) : null}
             </div>

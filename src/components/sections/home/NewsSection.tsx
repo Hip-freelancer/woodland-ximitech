@@ -59,16 +59,16 @@ export default function NewsSection({ articles }: NewsSectionProps) {
                         day: "numeric",
                         month: "long",
                         year: "numeric",
-                      }
+                      },
                     )}
                   </time>
-                  <h3 className="mt-4 max-w-3xl font-headline text-3xl font-black uppercase leading-tight tracking-tight text-white md:text-4xl">
+                  <h3 className="mt-4  font-headline text-3xl font-black uppercase leading-tight tracking-tight text-white md:text-4xl">
                     {featuredArticle.title}
                   </h3>
                 </div>
               </div>
               <div className="border-t border-outline-variant/20 bg-white px-8 py-7 md:px-10 md:py-8">
-                <p className="max-w-3xl line-clamp-3 font-body text-sm leading-7 text-on-surface-variant md:text-base">
+                <p className=" line-clamp-3 font-body text-sm leading-7 text-on-surface-variant md:text-base">
                   {featuredArticle.excerpt}
                 </p>
                 <span className="mt-5 inline-flex font-label text-xs font-bold uppercase tracking-widest text-secondary transition-transform duration-300 group-hover:translate-x-1">
@@ -104,7 +104,7 @@ export default function NewsSection({ articles }: NewsSectionProps) {
                           day: "numeric",
                           month: "long",
                           year: "numeric",
-                        }
+                        },
                       )}
                     </time>
                     <h3 className="mt-3 font-headline text-xl font-bold uppercase leading-tight text-primary transition-colors duration-300 group-hover:text-secondary">

@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Boxes, FolderOpen, MessageSquare, Newspaper, Users } from "lucide-react";
+import {
+  Boxes,
+  FolderOpen,
+  MessageSquare,
+  Newspaper,
+  Users,
+} from "lucide-react";
 import AdminNotice from "@/components/admin/AdminNotice";
 
 interface DashboardStats {
@@ -30,14 +36,19 @@ export default function AdminPage() {
     }
 
     try {
-      const [productsResponse, categoriesResponse, newsResponse, contactsResponse, teamResponse] =
-        await Promise.all([
-          fetch("/api/admin/products"),
-          fetch("/api/admin/categories"),
-          fetch("/api/admin/news"),
-          fetch("/api/admin/contacts"),
-          fetch("/api/admin/team"),
-        ]);
+      const [
+        productsResponse,
+        categoriesResponse,
+        newsResponse,
+        contactsResponse,
+        teamResponse,
+      ] = await Promise.all([
+        fetch("/api/admin/products"),
+        fetch("/api/admin/categories"),
+        fetch("/api/admin/news"),
+        fetch("/api/admin/contacts"),
+        fetch("/api/admin/team"),
+      ]);
 
       if (
         !productsResponse.ok ||
@@ -66,7 +77,9 @@ export default function AdminPage() {
       });
     } catch (error) {
       setErrorMessage(
-        error instanceof Error ? error.message : "Không thể tải số liệu tổng quan."
+        error instanceof Error
+          ? error.message
+          : "Không thể tải số liệu tổng quan.",
       );
     } finally {
       setIsLoading(false);
@@ -118,13 +131,15 @@ export default function AdminPage() {
         <h1 className="mt-3 font-headline text-3xl font-black uppercase tracking-tight text-primary">
           Tổng quan quản trị
         </h1>
-        <p className="mt-3 max-w-3xl font-body text-sm leading-6 text-on-surface-variant">
-          Theo dõi nhanh số lượng nội dung đang quản lý và chuyển sang các khu vực
-          sản phẩm, danh mục, bài viết hoặc liên hệ để thao tác chi tiết.
+        <p className="mt-3  font-body text-sm leading-6 text-on-surface-variant">
+          Theo dõi nhanh số lượng nội dung đang quản lý và chuyển sang các khu
+          vực sản phẩm, danh mục, bài viết hoặc liên hệ để thao tác chi tiết.
         </p>
       </div>
 
-      {errorMessage ? <AdminNotice message={errorMessage} tone="error" /> : null}
+      {errorMessage ? (
+        <AdminNotice message={errorMessage} tone="error" />
+      ) : null}
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
@@ -154,10 +169,10 @@ export default function AdminPage() {
         <h2 className="font-headline text-2xl font-black uppercase tracking-tight">
           Ghi chú vận hành
         </h2>
-        <p className="mt-3 max-w-3xl font-body text-sm leading-7 text-white/78">
-          Các thao tác trong admin hiện đã hỗ trợ chỉnh sửa trực tiếp, bật tắt hiển
-          thị và thay đổi độ ưu tiên cho nội dung chính. Trình soạn thảo ảnh cũng đã
-          bỏ `alert` và hiển thị lỗi ngay trong giao diện.
+        <p className="mt-3  font-body text-sm leading-7 text-white/78">
+          Các thao tác trong admin hiện đã hỗ trợ chỉnh sửa trực tiếp, bật tắt
+          hiển thị và thay đổi độ ưu tiên cho nội dung chính. Trình soạn thảo
+          ảnh cũng đã bỏ `alert` và hiển thị lỗi ngay trong giao diện.
         </p>
       </div>
     </div>

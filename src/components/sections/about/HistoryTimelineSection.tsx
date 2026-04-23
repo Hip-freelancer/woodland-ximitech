@@ -47,7 +47,7 @@ export default function HistoryTimelineSection() {
                     {String(index + 1).padStart(2, "0")}
                   </p>
                   <p className="mt-3 font-body text-sm leading-7 text-on-surface-variant">
-                  {highlight}
+                    {highlight}
                   </p>
                 </div>
               ))}
@@ -58,7 +58,7 @@ export default function HistoryTimelineSection() {
             <h2 className="font-headline text-4xl font-black uppercase leading-none tracking-tight text-white">
               {tTeam("title")}
             </h2>
-            <p className="mt-6 max-w-3xl font-body text-base leading-8 text-white/78">
+            <p className="mt-6  font-body text-base leading-8 text-white/78">
               {tTeam("description")}
             </p>
           </div>
