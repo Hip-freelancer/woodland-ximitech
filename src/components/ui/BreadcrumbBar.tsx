@@ -22,17 +22,17 @@ export default function BreadcrumbBar({ items }: BreadcrumbBarProps) {
                 {item.href && !isLast ? (
                   <Link
                     href={item.href}
-                    className="font-body text-[1.05rem] text-on-surface-variant transition-colors duration-200 hover:text-primary"
+                    className="font-body text-sm text-on-surface-variant transition-colors duration-200 hover:text-primary md:text-[1.05rem]"
                   >
                     {item.label}
                   </Link>
                 ) : (
-                  <span className="font-headline text-[1.05rem] font-black uppercase tracking-tight text-primary">
+                  <span className="font-headline text-sm font-black uppercase tracking-tight text-primary md:text-[1.05rem]">
                     {item.label}
                   </span>
                 )}
                 {!isLast ? (
-                  <span className="font-body text-xl text-outline">/</span>
+                  <span className="font-body text-base text-outline md:text-xl">/</span>
                 ) : null}
               </div>
             );

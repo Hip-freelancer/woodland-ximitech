@@ -71,6 +71,12 @@ interface ProductSeedDocument {
   galleryImages: string[];
   certifications: string[];
   availability: LocalizedText;
+  contactLabel: LocalizedText;
+  contentBlocks: [];
+  downloads: [];
+  faqItems: [];
+  priceLabel: LocalizedText;
+  reviewCount: number;
   specifications: ProductSpec[];
   applications: [];
   featured: boolean;
@@ -81,6 +87,7 @@ interface ProductSeedDocument {
     description: string;
     keywords: string;
   };
+  sourceUrl: string;
   imageCandidates?: string[];
 }
 
@@ -89,18 +96,24 @@ interface NewsSeedDocument {
   content: LocalizedText;
   excerpt: LocalizedText;
   image: string;
+  galleryImages: string[];
+  faqItems: [];
   author: string;
   publishDate: Date;
   slug: string;
   category: string;
   tags: string[];
+  contentBlocks: [];
   isVisible: boolean;
   priority: number;
+  relatedSlugs: string[];
   seo: {
     title: string;
     description: string;
     keywords: string;
   };
+  sourceUrl: string;
+  toc: Array<{ id: string; level: number; title: string }>;
   imageCandidates?: string[];
 }
 
@@ -121,6 +134,33 @@ interface CategorySeedDocument {
 
 const SOURCE_PATH = path.resolve("docs/woodland-old-site-context.md");
 const DEFAULT_NEWS_CATEGORY_SLUG = "tin-tuc";
+const NEWS_CATEGORY_RULES = [
+  {
+    keywords: ["marine", "chiu nuoc", "chong nuoc", "am uot"],
+    name: "Tu van plywood chong nuoc",
+    slug: "tu-van-plywood-chong-nuoc",
+  },
+  {
+    keywords: ["melamine", "tu bep", "noi that", "phu melamine"],
+    name: "Ung dung noi that",
+    slug: "ung-dung-noi-that",
+  },
+  {
+    keywords: ["full birch", "poplar", "okume", "okoume", "uon cong", "cao su"],
+    name: "Kien thuc san pham",
+    slug: "kien-thuc-san-pham",
+  },
+  {
+    keywords: ["xanh", "vat lieu song", "su menh"],
+    name: "Xu huong vat lieu xanh",
+    slug: "xu-huong-vat-lieu-xanh",
+  },
+  {
+    keywords: ["don vi", "cung cap", "uy tin", "woodland"],
+    name: "Tin Woodland",
+    slug: "tin-woodland",
+  },
+];
 const FEATURED_PRODUCT_KEYWORDS = [
   "plywood melamine nhập khẩu",
   "plywood marine tiêu chuẩn carb p2",
@@ -960,6 +1000,22 @@ function buildKeywords(...values: string[]) {
   ).join(", ");
 }
 
+function deriveNewsCategory(record: CrawlRecord, title: string) {
+  const source = normalizeForMatch(
+    [title, record.title, record.metaDescription, record.content]
+      .filter(Boolean)
+      .join(" ")
+  );
+  const matchedRule = NEWS_CATEGORY_RULES.find((rule) =>
+    rule.keywords.some((keyword) => source.includes(normalizeForMatch(keyword)))
+  );
+
+  return matchedRule ?? {
+    name: "Tin tuc",
+    slug: DEFAULT_NEWS_CATEGORY_SLUG,
+  };
+}
+
 function extractProductCategories(records: CrawlRecord[]) {
   const categories = new Map<string, CategorySeedDocument>();
   let priority = 0;
@@ -1078,6 +1134,18 @@ function buildProductSeedDocuments(
         en: "In Stock",
         vi: "Còn hàng",
       },
+      contactLabel: {
+        en: "Contact",
+        vi: "Lien he",
+      },
+      contentBlocks: [],
+      downloads: [],
+      faqItems: [],
+      priceLabel: {
+        en: "Contact for price",
+        vi: "Lien he",
+      },
+      reviewCount: 0,
       specifications: parseSpecifications(bodyLines),
       applications: [],
       featured,
@@ -1088,6 +1156,7 @@ function buildProductSeedDocuments(
         description: record.metaDescription || summary,
         keywords: buildKeywords(productName, categoryName, record.metaDescription),
       },
+      sourceUrl: record.url,
       imageCandidates: filteredImages,
     } satisfies ProductSeedDocument;
   });
@@ -1112,31 +1181,45 @@ function buildNewsSeedDocuments(records: CrawlRecord[], dateMap: Map<string, Dat
       new Date(Date.UTC(2025, 0, 1 + index));
     const filteredImages = pickImageSet(record.imageUrls, "news", 1);
     const imageCandidates = pickImageSet(record.imageUrls, "news", 4);
+    const category = deriveNewsCategory(record, title);
+    const toc = record.headings
+      .filter((heading) => heading.level === "h2" || heading.level === "h3")
+      .map((heading) => ({
+        id: createSlug(heading.text),
+        level: heading.level === "h3" ? 3 : 2,
+        title: heading.text,
+      }));
 
     return {
       title: createLocalizedText(title),
       content: createLocalizedText(buildHtmlFromLines(bodyLines, record)),
       excerpt: createLocalizedText(excerpt),
       image: filteredImages[0] || imageCandidates[0] || "",
+      galleryImages: imageCandidates,
+      faqItems: [],
       author: "Woodland",
       publishDate,
       slug: record.slug || createSlug(title),
-      category: DEFAULT_NEWS_CATEGORY_SLUG,
+      category: category.slug,
       tags: Array.from(
         new Set(
           record.headings
             .filter((heading) => heading.level === "h2")
             .slice(0, 5)
-            .map((heading) => heading.text)
+          .map((heading) => heading.text)
         )
       ),
+      contentBlocks: [],
       isVisible: true,
       priority: index,
+      relatedSlugs: [],
       seo: {
         title,
         description: record.metaDescription || excerpt,
-        keywords: buildKeywords(title, record.metaDescription, ...record.headings.map((item) => item.text)),
+        keywords: buildKeywords(title, category.name, record.metaDescription, ...record.headings.map((item) => item.text)),
       },
+      sourceUrl: record.url,
+      toc,
       imageCandidates,
     } satisfies NewsSeedDocument;
   });
@@ -1232,15 +1315,29 @@ async function rehostNewsDocuments(
   return Promise.all(
     articles.map(async (article) => {
       const { imageCandidates, ...rest } = article;
+      const rehostedGallery = (
+        await Promise.all(
+          article.galleryImages.map((imageUrl) =>
+            rehostFirstAvailableImage([imageUrl], "seed-news-gallery", cache)
+          )
+        )
+      ).filter(Boolean);
+      const image = await rehostFirstAvailableImage(
+        imageCandidates && imageCandidates.length > 0 ? imageCandidates : [article.image],
+        "seed-news-cover",
+        cache,
+        true
+      );
 
       return {
         ...rest,
-        image: await rehostFirstAvailableImage(
-          imageCandidates && imageCandidates.length > 0 ? imageCandidates : [article.image],
-          "seed-news-cover",
-          cache,
-          true
-        ),
+        galleryImages:
+          rehostedGallery.length > 0
+            ? Array.from(new Set([image || rehostedGallery[0], ...rehostedGallery].filter(Boolean)))
+            : image
+              ? [image]
+              : [],
+        image,
       };
     })
   );
@@ -1288,8 +1385,25 @@ async function main() {
     productCategoryMap
   );
   const newsDocuments = buildNewsSeedDocuments(newsRecords, dateMap);
+  const ruleNewsCategoryDocuments: CategorySeedDocument[] = NEWS_CATEGORY_RULES.map(
+    (rule, index) => ({
+      contentType: "news",
+      name: createLocalizedText(rule.name),
+      slug: rule.slug,
+      image: newsDocuments.find((article) => article.category === rule.slug)?.image || "",
+      isVisible: true,
+      priority: index + 1,
+      seo: {
+        title: rule.name,
+        description: rule.name,
+        keywords: buildKeywords(rule.name),
+      },
+      imageCandidates: newsDocuments.find((article) => article.category === rule.slug)?.imageCandidates,
+    })
+  );
   const categoryDocuments: CategorySeedDocument[] = [
     ...Array.from(productCategoryMap.values()),
+    ...ruleNewsCategoryDocuments,
     {
       contentType: "news",
       name: {

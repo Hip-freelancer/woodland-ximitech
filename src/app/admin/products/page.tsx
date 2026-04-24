@@ -79,9 +79,13 @@ interface AdminProduct {
   bonding: LocalizedText;
   category: string;
   certifications: string[];
+  contactLabel?: LocalizedText;
+  contentBlocks?: unknown[];
   createdAt: string;
   description: LocalizedText;
   dimensions: string[];
+  downloads?: unknown[];
+  faqItems?: unknown[];
   featured: boolean;
   galleryImages: string[];
   grade: LocalizedText;
@@ -89,10 +93,13 @@ interface AdminProduct {
   isVisible: boolean;
   material: LocalizedText;
   name: LocalizedText;
+  priceLabel?: LocalizedText;
   priority: number;
+  reviewCount?: number;
   seo: SeoFields;
   series: string;
   slug: string;
+  sourceUrl?: string;
   specifications: ProductSpecification[];
   thickness: number[];
   updatedAt: string;
@@ -104,18 +111,25 @@ interface ProductFormState {
   bonding: LocalizedText;
   category: string;
   certificationsText: string;
+  contactLabel: LocalizedText;
+  contentBlocksJson: string;
   description: LocalizedText;
   dimensionsText: string;
+  downloadsJson: string;
+  faqItemsJson: string;
   featured: boolean;
   galleryImages: string[];
   grade: LocalizedText;
   isVisible: boolean;
   material: LocalizedText;
   name: LocalizedText;
+  priceLabel: LocalizedText;
   priority: number;
+  reviewCount: number;
   seo: SeoFields;
   series: string;
   slug: string;
+  sourceUrl: string;
   specifications: ProductSpecification[];
   thicknessText: string;
 }
@@ -132,18 +146,25 @@ function createEmptyForm(category = ""): ProductFormState {
     bonding: { en: "", vi: "" },
     category,
     certificationsText: "",
+    contactLabel: { en: "Contact", vi: "Lien he" },
+    contentBlocksJson: "[]",
     description: { en: "", vi: "" },
     dimensionsText: "",
+    downloadsJson: "[]",
+    faqItemsJson: "[]",
     featured: false,
     galleryImages: [],
     grade: { en: "", vi: "" },
     isVisible: true,
     material: { en: "", vi: "" },
     name: { en: "", vi: "" },
+    priceLabel: { en: "Contact for price", vi: "Lien he" },
     priority: 0,
+    reviewCount: 0,
     seo: { title: "", description: "", keywords: "" },
     series: "",
     slug: "",
+    sourceUrl: "",
     specifications: [],
     thicknessText: "",
   };
@@ -311,11 +332,18 @@ export default function AdminProductsPage() {
       },
       category: product.category ?? categories[0]?.slug ?? "",
       certificationsText: (product.certifications ?? []).join(", "),
+      contactLabel: {
+        en: product.contactLabel?.en ?? "Contact",
+        vi: product.contactLabel?.vi ?? "Lien he",
+      },
+      contentBlocksJson: JSON.stringify(product.contentBlocks ?? [], null, 2),
       description: {
         en: product.description?.en ?? "",
         vi: product.description?.vi ?? "",
       },
       dimensionsText: (product.dimensions ?? []).join(", "),
+      downloadsJson: JSON.stringify(product.downloads ?? [], null, 2),
+      faqItemsJson: JSON.stringify(product.faqItems ?? [], null, 2),
       featured: product.featured ?? false,
       galleryImages: (
         product.galleryImages?.length ? product.galleryImages : [product.image]
@@ -334,7 +362,12 @@ export default function AdminProductsPage() {
         en: product.name?.en ?? "",
         vi: product.name?.vi ?? "",
       },
+      priceLabel: {
+        en: product.priceLabel?.en ?? "Contact for price",
+        vi: product.priceLabel?.vi ?? "Lien he",
+      },
       priority: product.priority ?? 0,
+      reviewCount: product.reviewCount ?? 0,
       seo: {
         description: product.seo?.description ?? "",
         keywords: product.seo?.keywords ?? "",
@@ -342,6 +375,7 @@ export default function AdminProductsPage() {
       },
       series: product.series ?? "",
       slug: product.slug ?? "",
+      sourceUrl: product.sourceUrl ?? "",
       specifications: product.specifications ?? [],
       thicknessText: (product.thickness ?? []).join(", "),
     });
@@ -386,18 +420,25 @@ export default function AdminProductsPage() {
           bonding: formData.bonding,
           category: formData.category,
           certificationsText: formData.certificationsText,
+          contactLabel: formData.contactLabel,
+          contentBlocksJson: formData.contentBlocksJson,
           description: formData.description,
           dimensionsText: formData.dimensionsText,
+          downloadsJson: formData.downloadsJson,
+          faqItemsJson: formData.faqItemsJson,
           featured: formData.featured,
           galleryImages: formData.galleryImages,
           grade: formData.grade,
           isVisible: formData.isVisible,
           material: formData.material,
           name: formData.name,
+          priceLabel: formData.priceLabel,
           priority: formData.priority,
+          reviewCount: formData.reviewCount,
           seo: formData.seo,
           series: formData.series,
           slug: formData.slug,
+          sourceUrl: formData.sourceUrl,
           specifications: formData.specifications,
           thicknessText: formData.thicknessText,
         }),
@@ -541,6 +582,12 @@ export default function AdminProductsPage() {
           tone="warning"
         />
       ) : null}
+      {products.filter((p) => !p.name?.en).length > 0 ? (
+        <AdminNotice
+          message={`${products.filter((p) => !p.name?.en).length} sản phẩm chưa có bản dịch tiếng Anh. Nhấn "Sửa" và dùng nút dịch AI để bổ sung — website tiếng Anh sẽ hiển thị fallback tiếng Việt nếu thiếu.`}
+          tone="warning"
+        />
+      ) : null}
 
       {isEditorOpen ? (
         <div className="border border-outline-variant/40 bg-white p-6">
@@ -678,6 +725,59 @@ export default function AdminProductsPage() {
                   }
                   type="number"
                   value={formData.priority}
+                />
+              </label>
+            </div>
+
+            <div className="grid items-end gap-4 lg:grid-cols-4">
+              <label className="block space-y-2 lg:col-span-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  URL gốc Woodland
+                </span>
+                <input
+                  className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      sourceUrl: event.target.value,
+                    }))
+                  }
+                  placeholder="https://woodland.vn/..."
+                  value={formData.sourceUrl}
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  Giá hiển thị
+                </span>
+                <input
+                  className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      priceLabel: { ...current.priceLabel, vi: event.target.value },
+                    }))
+                  }
+                  value={formData.priceLabel.vi}
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  Đánh giá
+                </span>
+                <input
+                  className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
+                  min={0}
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      reviewCount: Number(event.target.value) || 0,
+                    }))
+                  }
+                  type="number"
+                  value={formData.reviewCount}
                 />
               </label>
             </div>
@@ -1021,6 +1121,56 @@ export default function AdminProductsPage() {
               </div>
             </div>
 
+            <div className="grid gap-4 lg:grid-cols-3">
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  Content blocks JSON
+                </span>
+                <textarea
+                  className="min-h-36 w-full border border-outline-variant bg-surface px-4 py-3 font-mono text-xs outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      contentBlocksJson: event.target.value,
+                    }))
+                  }
+                  value={formData.contentBlocksJson}
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  Downloads JSON
+                </span>
+                <textarea
+                  className="min-h-36 w-full border border-outline-variant bg-surface px-4 py-3 font-mono text-xs outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      downloadsJson: event.target.value,
+                    }))
+                  }
+                  value={formData.downloadsJson}
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  FAQ JSON
+                </span>
+                <textarea
+                  className="min-h-36 w-full border border-outline-variant bg-surface px-4 py-3 font-mono text-xs outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      faqItemsJson: event.target.value,
+                    }))
+                  }
+                  value={formData.faqItemsJson}
+                />
+              </label>
+            </div>
+
             <AdminProductSpecificationsEditor
               items={formData.specifications}
               onChange={(value) =>
@@ -1238,6 +1388,11 @@ export default function AdminProductsPage() {
                               <span className="inline-flex items-center gap-1 bg-primary-fixed px-2 py-1 font-label text-[10px] font-semibold uppercase tracking-[0.14em] text-on-primary-fixed">
                                 <Star size={12} />
                                 Nổi bật
+                              </span>
+                            ) : null}
+                            {!product.name?.en ? (
+                              <span className="inline-flex items-center bg-amber-100 px-2 py-0.5 font-label text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-700">
+                                Thiếu EN
                               </span>
                             ) : null}
                           </div>

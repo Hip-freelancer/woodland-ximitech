@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import CtaBannerSection from "@/components/sections/home/CtaBannerSection";
+import FeaturedProductsCarousel from "@/components/sections/home/FeaturedProductsCarousel";
+import NewsSectionCarousel from "@/components/sections/home/NewsSectionCarousel";
 import StructuredData from "@/components/seo/StructuredData";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
-import NewsPreviewCard from "@/components/ui/NewsPreviewCard";
-import ProductCard from "@/components/ui/ProductCard";
 import SectionDivider from "@/components/ui/SectionDivider";
 import {
   fetchVisibleNews,
@@ -15,7 +15,9 @@ import {
 } from "@/lib/content";
 import {
   buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
   buildLocalizedMetadata,
+  buildWoodlandSeoKeywords,
   getAbsoluteUrl,
   resolveSeoFields,
 } from "@/lib/metadata";
@@ -74,7 +76,11 @@ export async function generateMetadata({
     path: `/news/${article.slug}`,
     title: seo.title,
     description: seo.description,
-    keywords: seo.keywords,
+    keywords: buildWoodlandSeoKeywords(locale, [
+      seo.keywords,
+      article.title,
+      article.categoryLabel ?? article.category,
+    ]),
     image: article.image,
     type: "article",
   });
@@ -110,8 +116,8 @@ export default async function NewsDetailPage({
   const recentProductsSource = products.length > 0 ? products : fallbackProducts;
   const recentNews = recentNewsSource
     .filter((item) => item.slug !== article.slug)
-    .slice(0, 3);
-  const recentProducts = recentProductsSource.slice(0, 3);
+    .slice(0, 6);
+  const recentProducts = recentProductsSource.slice(0, 6);
   const publishDate = new Date(article.publishDate).toLocaleDateString(
     locale === "vi" ? "vi-VN" : "en-GB",
     {
@@ -125,15 +131,15 @@ export default async function NewsDetailPage({
     { label: tNav("news"), path: "/news" },
     { label: article.title, path: `/news/${article.slug}` },
   ];
+  const structuredData = [
+    buildBreadcrumbJsonLd(locale, breadcrumbItems),
+    buildArticleJsonLd(locale, article),
+    buildFaqJsonLd(article.faqItems),
+  ].filter(Boolean) as Record<string, unknown>[];
 
   return (
     <>
-      <StructuredData
-        data={[
-          buildBreadcrumbJsonLd(locale, breadcrumbItems),
-          buildArticleJsonLd(locale, article),
-        ]}
-      />
+      <StructuredData data={structuredData} />
 
       <BreadcrumbBar
         items={[
@@ -271,10 +277,8 @@ export default async function NewsDetailPage({
             <h2 className="font-headline text-3xl font-black uppercase tracking-tight text-primary md:text-4xl">
               {t("recentNews")}
             </h2>
-            <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {recentNews.map((item) => (
-                <NewsPreviewCard key={item._id} article={item} locale={locale} />
-              ))}
+            <div className="mt-10">
+              <NewsSectionCarousel articles={recentNews} />
             </div>
           </section>
           <SectionDivider />
@@ -290,10 +294,8 @@ export default async function NewsDetailPage({
             <h2 className="font-headline text-3xl font-black uppercase tracking-tight text-primary md:text-4xl">
               {t("recentProducts")}
             </h2>
-            <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {recentProducts.map((item) => (
-                <ProductCard key={item._id} product={item} />
-              ))}
+            <div className="mt-10">
+              <FeaturedProductsCarousel products={recentProducts} />
             </div>
           </section>
           <SectionDivider />

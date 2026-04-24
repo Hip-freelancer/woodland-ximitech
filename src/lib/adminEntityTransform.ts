@@ -27,6 +27,31 @@ interface ProductApplicationInput {
   image?: unknown;
 }
 
+interface ContentBlockInput {
+  body?: LocalizedInput;
+  image?: unknown;
+  order?: unknown;
+  title?: LocalizedInput;
+  type?: unknown;
+}
+
+interface DownloadInput {
+  label?: LocalizedInput;
+  url?: unknown;
+}
+
+interface TocEntryInput {
+  id?: unknown;
+  level?: unknown;
+  title?: unknown;
+}
+
+interface FaqItemInput {
+  answer?: LocalizedInput;
+  order?: unknown;
+  question?: LocalizedInput;
+}
+
 interface HomeHeroSlideInput {
   alt?: LocalizedInput;
   isVisible?: unknown;
@@ -180,6 +205,60 @@ function normalizeProductApplications(value: unknown) {
     );
 }
 
+function normalizeContentBlocks(value: unknown) {
+  return parseJsonArray<ContentBlockInput>(value)
+    .map((item, index) => ({
+      body: normalizeLocalizedRichText(item.body),
+      image: normalizeString(item.image),
+      order: normalizeNumber(item.order, index),
+      title: normalizeLocalizedText(item.title),
+      type: normalizeString(item.type) || "section",
+    }))
+    .filter(
+      (item) =>
+        item.body.en ||
+        item.body.vi ||
+        item.image ||
+        item.title.en ||
+        item.title.vi
+    )
+    .sort((left, right) => left.order - right.order);
+}
+
+function normalizeDownloads(value: unknown) {
+  return parseJsonArray<DownloadInput>(value)
+    .map((item) => ({
+      label: normalizeLocalizedText(item.label),
+      url: normalizeString(item.url),
+    }))
+    .filter((item) => item.label.en || item.label.vi || item.url);
+}
+
+function normalizeToc(value: unknown) {
+  return parseJsonArray<TocEntryInput>(value)
+    .map((item) => ({
+      id: normalizeString(item.id),
+      level: normalizeNumber(item.level, 2),
+      title: normalizeString(item.title),
+    }))
+    .filter((item) => item.id || item.title);
+}
+
+function normalizeFaqItems(value: unknown) {
+  return parseJsonArray<FaqItemInput>(value)
+    .map((item, index) => ({
+      answer: normalizeLocalizedRichText(item.answer),
+      order: normalizeNumber(item.order, index),
+      question: normalizeLocalizedText(item.question),
+    }))
+    .filter(
+      (item) =>
+        (item.question.en || item.question.vi) &&
+        (item.answer.en || item.answer.vi)
+    )
+    .sort((left, right) => left.order - right.order);
+}
+
 function normalizeHomeHeroSlides(value: unknown) {
   return parseJsonArray<HomeHeroSlideInput>(value)
     .map((item, index) => ({
@@ -260,16 +339,27 @@ export function normalizeAdminEntityPayload(entity: string, payload: unknown) {
         author: normalizeString(body.author) || "Editorial",
         category: normalizeString(body.category),
         content: normalizeLocalizedRichText(body.content),
+        contentBlocks: normalizeContentBlocks(
+          body.contentBlocks ?? body.contentBlocksJson
+        ),
         excerpt: normalizeLocalizedText(body.excerpt),
+        faqItems: normalizeFaqItems(body.faqItems ?? body.faqItemsJson),
+        galleryImages: normalizeStringList(
+          body.galleryImages ?? body.galleryImagesText,
+          /\n+/
+        ),
         image: normalizeString(body.image),
         isVisible: normalizeBoolean(body.isVisible, true),
         priority: normalizeNumber(body.priority, 0),
         publishDate:
           normalizeString(body.publishDate) || new Date().toISOString().split("T")[0],
+        relatedSlugs: normalizeStringList(body.relatedSlugs ?? body.relatedSlugsText),
         seo: normalizeSeo(body.seo),
         slug,
+        sourceUrl: normalizeString(body.sourceUrl),
         tags: normalizeStringList(body.tags),
         title,
+        toc: normalizeToc(body.toc ?? body.tocJson),
       };
     }
 
@@ -292,8 +382,14 @@ export function normalizeAdminEntityPayload(entity: string, payload: unknown) {
         certifications: normalizeStringList(
           body.certifications ?? body.certificationsText
         ),
+        contactLabel: normalizeLocalizedText(body.contactLabel),
+        contentBlocks: normalizeContentBlocks(
+          body.contentBlocks ?? body.contentBlocksJson
+        ),
         description: normalizeLocalizedRichText(body.description),
         dimensions: normalizeStringList(body.dimensions ?? body.dimensionsText),
+        downloads: normalizeDownloads(body.downloads ?? body.downloadsJson),
+        faqItems: normalizeFaqItems(body.faqItems ?? body.faqItemsJson),
         featured: normalizeBoolean(body.featured, false),
         galleryImages: normalizedGalleryImages,
         grade: normalizeLocalizedText(body.grade),
@@ -301,10 +397,13 @@ export function normalizeAdminEntityPayload(entity: string, payload: unknown) {
         isVisible: normalizeBoolean(body.isVisible, true),
         material: normalizeLocalizedText(body.material),
         name,
+        priceLabel: normalizeLocalizedText(body.priceLabel),
         priority: normalizeNumber(body.priority, 0),
+        reviewCount: normalizeNumber(body.reviewCount, 0),
         seo: normalizeSeo(body.seo),
         series: normalizeString(body.series),
         slug,
+        sourceUrl: normalizeString(body.sourceUrl),
         specifications: normalizeProductSpecs(
           body.specifications ?? body.specificationsJson
         ),

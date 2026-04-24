@@ -4,7 +4,20 @@ export const DEFAULT_HOME_SETTINGS: Omit<HomeSettings, "_id" | "createdAt" | "up
   {
     contactEmail: "lienphuonghl@yahoo.com",
     contactPhone: "(+84) 0908 759 007",
-    heroSlides: [],
+    heroSlides: [
+      {
+        alt: {
+          en: "Woodland hero background",
+          vi: "Hinh nen hero Woodland",
+        },
+        isVisible: true,
+        mediaType: "image",
+        mediaUrl:
+          "https://pub-af309aad38b04a5288f51e1a0f26f628.r2.dev/home-hero-seed/558244530-122155559126625053-6958421341796759826-n-1776988673733-a64a87be.jpg",
+        order: 0,
+        posterUrl: "",
+      },
+    ],
     heroStats: [
       {
         isVisible: true,

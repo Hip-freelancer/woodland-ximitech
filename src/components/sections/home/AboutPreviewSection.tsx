@@ -13,9 +13,10 @@ export default function AboutPreviewSection() {
         <div className="relative overflow-hidden border border-outline-variant/30 bg-surface-container-low p-3 shadow-[0_24px_50px_rgba(18,55,31,0.08)]">
           <div className="relative aspect-[4/5] overflow-hidden bg-white">
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw-Hp6--4boMLamw7bgoEEXH5_Dl7hSKXvdGtNXx4OZgA1jhBDXXcrh-aXNEzqHbv_6nOGn5-rl7iDu00O5OOWpVMF5R3G-5cWdvclIL0Evskc5ZgpuVF78fQIrKqKrostyJal4YUfUXErC3tJAB8W8ZeKXrIYKB3LDzBTTpI77OULFulHRRG9vr2G6fR4sPq7pZ_Vll0txlvK61in-zgJMKPl6jedEJbhiP_u0LFq20e0V71bNhZMHoYyCtQnZ9Ra1gfspZ-sd0pX"
+            src="https://pub-af309aad38b04a5288f51e1a0f26f628.r2.dev/home-hero-seed/558244530-122155559126625053-6958421341796759826-n-1776988673733-a64a87be.jpg"
             alt="Woodland factory"
             fill
+            sizes="(max-width: 1279px) 100vw, 50vw"
             className="object-cover"
           />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent" />

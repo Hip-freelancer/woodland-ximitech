@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "backfill:legacy-images": "tsx src/scripts/backfillLegacyWoodlandImages.ts",
+    "categorize:news": "tsx src/scripts/categorizeExistingNews.ts",
     "dev": "next dev",
+    "dev:local": "next dev --hostname 127.0.0.1 --port 3001",
     "build": "next build",
     "lint": "eslint",
     "migrate:categories": "tsx src/scripts/migrateCategoryContentTypes.ts",
+    "recrawl:woodland-parity": "tsx src/scripts/recrawlWoodlandParity.ts",
     "seed:team": "tsx src/scripts/seedTeamMembers.ts",
     "seed:woodland-crawl": "tsx src/scripts/seedWoodlandCrawl.ts",
     "start": "next start"

@@ -2,7 +2,7 @@
   "nav": {
     "home": "Trang chủ",
     "about": "Giới thiệu",
-    "gallery": "Hình ảnh",
+    "gallery": "Thư viện",
     "products": "Sản phẩm",
     "projects": "Dự án",
     "news": "Tin tức",
@@ -18,7 +18,8 @@
       "empty": "Danh mục sản phẩm đang được cập nhật.",
       "itemCount": "{count} sản phẩm",
       "moreProducts": "+{count} sản phẩm khác"
-    }
+    },
+    "operations": "Năng Lực Hoạt Động"
   },
   "home": {
     "hero": {
@@ -50,16 +51,9 @@
       "title": "Sản Phẩm Của Chúng Tôi",
       "contactItem": "Liên hệ >>",
       "viewAll": "Xem toàn bộ sản phẩm",
-      "items": [
-        "Woodland và xu hướng “Xanh hoá vật liệu” cùng Plywood Melamine cao cấp",
-        "Plywood Phủ Veneer Walnut",
-        "Plywood Marine Đạt Chuẩn tại Woodland",
-        "Plywood Full Birch Vượt Khổ",
-        "Plywood Melamine nhập khẩu",
-        "Plywood Marine tiêu chuẩn Carb P2",
-        "Plywood Poplar 100% Carb P2",
-        "Plywood Full Birch Nhập Khẩu"
-      ]
+      "description": "Danh mục sản phẩm trên trang chủ được load trực tiếp từ dữ liệu sản phẩm hiện có, hiển thị hình ảnh và liên kết vào trang chi tiết từng sản phẩm.",
+      "empty": "Danh sách sản phẩm đang được cập nhật.",
+      "showMore": "Xem thêm"
     },
     "operations": {
       "eyebrow": "CÔNG TY TNHH WOODLAND",
@@ -92,8 +86,8 @@
       ]
     },
     "projects": {
-      "title": "Hồ Sơ Và Hình Ảnh Nổi Bật",
-      "subtitle": "Hồ sơ năng lực, kho xưởng và hình ảnh sản phẩm",
+      "title": "Video Nổi Bật",
+      "subtitle": "Video hồ sơ, kho xưởng và quy trình sản xuất",
       "viewAll": "Xem thêm"
     },
     "news": {
@@ -189,8 +183,14 @@
       ]
     },
     "gallery": {
-      "title": "Hình Ảnh Woodland",
-      "subtitle": "Kho xưởng, sản phẩm và hình ảnh vận hành thực tế từ Woodland trên website cũ."
+      "title": "Thư Viện Woodland",
+      "subtitle": "Video sản phẩm, kho xưởng và hình ảnh vận hành thực tế của Woodland.",
+      "videosEyebrow": "Video nổi bật",
+      "videosTitle": "4 Video Giới Thiệu Riêng",
+      "videosSubtitle": "Xem trực tiếp 4 video hồ sơ, sản phẩm và quy trình vận hành của Woodland trong một khu riêng.",
+      "imagesEyebrow": "Hình ảnh thực tế",
+      "imagesTitle": "Kho Ảnh Riêng",
+      "imagesSubtitle": "Tập hợp hình ảnh kho xưởng, hạ tầng, sản phẩm và đội ngũ để xem riêng, không trộn với video."
     }
   },
   "products": {

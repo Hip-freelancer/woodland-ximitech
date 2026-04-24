@@ -396,8 +396,13 @@ html:lang(vi) .rich-content h6 {
 .rich-content img {
   border: 1px solid rgba(148, 163, 184, 0.22);
   display: block;
-  height: auto;
+  height: auto !important;
   margin: 2rem 0;
+  max-width: 100% !important;
+  width: auto;
+}
+
+img:not([data-nimg]) {
   max-width: 100%;
 }
 

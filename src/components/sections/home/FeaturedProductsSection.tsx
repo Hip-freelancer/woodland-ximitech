@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import ProductCard from "@/components/ui/ProductCard";
+import FeaturedProductsCarousel from "@/components/sections/home/FeaturedProductsCarousel";
 import type { Product } from "@/types";
 
 interface FeaturedProductsSectionProps {
@@ -36,11 +36,7 @@ export default function FeaturedProductsSection({
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
+        <FeaturedProductsCarousel products={products} />
       </div>
     </section>
   );

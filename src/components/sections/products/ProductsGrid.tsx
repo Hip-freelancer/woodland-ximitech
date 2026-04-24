@@ -1,80 +1,103 @@
 "use client";
 
-import { useDeferredValue, useMemo, useState } from "react";
+import { useState, type FormEvent } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Link, useRouter } from "@/i18n/navigation";
 import ProductCard from "@/components/ui/ProductCard";
 import ProductsFilterSidebar from "./ProductsFilterSidebar";
 import type { Product } from "@/types";
 
 interface ProductsGridProps {
+  categories: Array<{ label: string; slug: string }>;
+  currentPage: number;
   initialCategories?: string[];
+  initialSearch?: string;
+  initialThickness?: number | null;
   products: Product[];
+  totalItems: number;
+  totalPages: number;
 }
 
 export default function ProductsGrid({
+  categories,
+  currentPage,
   initialCategories = [],
+  initialSearch = "",
+  initialThickness = null,
   products,
+  totalItems,
+  totalPages,
 }: ProductsGridProps) {
   const t = useTranslations("products");
   const tCatalog = useTranslations("products.catalog");
-  const itemsPerPage = 9;
+  const router = useRouter();
   const [selectedCategories, setSelectedCategories] =
     useState<string[]>(initialCategories);
   const [selectedThickness, setSelectedThickness] = useState<number | null>(
-    null,
+    initialThickness,
   );
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const deferredSearchQuery = useDeferredValue(searchQuery);
 
-  const categories = useMemo(
-    () =>
-      Array.from(
-        new Map(
-          products.map((product) => [
-            product.category,
-            product.categoryLabel ?? product.category,
-          ]),
-        ).entries(),
-      ).map(([slug, label]) => ({ label, slug })),
-    [products],
-  );
+  const buildHref = ({
+    nextCategories = selectedCategories,
+    nextPage = 1,
+    nextSearch = searchQuery,
+    nextThickness = selectedThickness,
+  }: {
+    nextCategories?: string[];
+    nextPage?: number;
+    nextSearch?: string;
+    nextThickness?: number | null;
+  } = {}) => {
+    const params = new URLSearchParams();
+
+    if (nextCategories.length > 0) {
+      params.set("category", nextCategories.join(","));
+    }
+
+    if (nextThickness !== null) {
+      params.set("thickness", String(nextThickness));
+    }
+
+    if (nextSearch.trim()) {
+      params.set("q", nextSearch.trim());
+    }
+
+    if (nextPage > 1) {
+      params.set("page", String(nextPage));
+    }
+
+    const queryString = params.toString();
+    return queryString ? `/products?${queryString}` : "/products";
+  };
 
   const toggleCategory = (cat: string) => {
-    setCurrentPage(1);
-    setSelectedCategories((prev) =>
-      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat],
-    );
+    const nextCategories = selectedCategories.includes(cat)
+      ? selectedCategories.filter((c) => c !== cat)
+      : [...selectedCategories, cat];
+
+    setSelectedCategories(nextCategories);
+    router.push(buildHref({ nextCategories }));
   };
 
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedThickness(null);
     setSearchQuery("");
-    setCurrentPage(1);
+    router.push("/products");
   };
 
-  const filtered = products.filter((p) => {
-    const categoryMatch =
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(p.category);
-    const thicknessMatch =
-      selectedThickness === null || p.thickness.includes(selectedThickness);
-    const searchSource =
-      `${p.name} ${p.material} ${p.categoryLabel ?? p.category}`.toLowerCase();
-    const searchMatch =
-      deferredSearchQuery.trim().length === 0 ||
-      searchSource.includes(deferredSearchQuery.trim().toLowerCase());
-    return categoryMatch && thicknessMatch && searchMatch;
-  });
-  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const paginatedProducts = filtered.slice(
-    (safeCurrentPage - 1) * itemsPerPage,
-    safeCurrentPage * itemsPerPage,
-  );
+  const updateThickness = (value: number | null) => {
+    setSelectedThickness(value);
+    router.push(buildHref({ nextThickness: value }));
+  };
+
+  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    router.push(buildHref({ nextSearch: searchQuery }));
+  };
 
   return (
     <div className="space-y-10">
@@ -95,7 +118,7 @@ export default function ProductsGrid({
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             <div className="border border-outline-variant/30 bg-white px-4 py-4">
               <p className="font-headline text-2xl font-black text-primary">
-                {products.length}
+                {totalItems}
               </p>
               <p className="mt-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
                 {tCatalog("stats.items")}
@@ -111,7 +134,7 @@ export default function ProductsGrid({
             </div>
             <div className="border border-outline-variant/30 bg-white px-4 py-4">
               <p className="font-headline text-2xl font-black text-primary">
-                {filtered.length}
+                {products.length}
               </p>
               <p className="mt-2 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-outline">
                 {tCatalog("stats.visible")}
@@ -137,7 +160,7 @@ export default function ProductsGrid({
           selectedThickness={selectedThickness}
           onCategoryChange={toggleCategory}
           onClose={() => setMobileFiltersOpen(false)}
-          onThicknessChange={setSelectedThickness}
+          onThicknessChange={updateThickness}
           onReset={resetFilters}
         />
 
@@ -146,12 +169,15 @@ export default function ProductsGrid({
             <div>
               <p className="font-label text-xs uppercase tracking-[0.18em] text-on-surface-variant">
                 <span className="font-semibold text-primary">
-                  {filtered.length}
+                  {totalItems}
                 </span>{" "}
                 {t("results")}
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <form
+              className="flex flex-col gap-3 sm:flex-row sm:items-center"
+              onSubmit={submitSearch}
+            >
               <button
                 className="inline-flex items-center justify-center gap-2 border border-outline-variant/40 bg-white px-4 py-3 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant transition-colors hover:border-primary hover:text-primary lg:hidden"
                 onClick={() => setMobileFiltersOpen(true)}
@@ -162,13 +188,16 @@ export default function ProductsGrid({
               </button>
               <input
                 className="min-w-[240px] border border-outline-variant/40 bg-white px-4 py-3 font-body text-sm text-on-surface outline-none transition-colors focus:border-primary"
-                onChange={(event) => {
-                  setSearchQuery(event.target.value);
-                  setCurrentPage(1);
-                }}
+                onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder={tCatalog("searchPlaceholder")}
                 value={searchQuery}
               />
+              <button
+                className="border border-primary bg-primary px-4 py-3 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-primary transition-colors hover:bg-secondary"
+                type="submit"
+              >
+                Tìm
+              </button>
               {(selectedCategories.length > 0 ||
                 selectedThickness !== null ||
                 searchQuery.trim().length > 0) && (
@@ -180,10 +209,10 @@ export default function ProductsGrid({
                   {tCatalog("clearFilters")}
                 </button>
               )}
-            </div>
+            </form>
           </div>
 
-          {filtered.length === 0 ? (
+          {products.length === 0 ? (
             <div className="border border-dashed border-outline-variant/50 bg-surface-container-low px-6 py-24 text-center">
               <p className="font-body text-base text-on-surface-variant">
                 {t("noProducts")}
@@ -192,7 +221,7 @@ export default function ProductsGrid({
           ) : (
             <div className="space-y-8">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {paginatedProducts.map((product) => (
+                {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </div>
@@ -203,18 +232,17 @@ export default function ProductsGrid({
                     { length: totalPages },
                     (_, index) => index + 1,
                   ).map((page) => (
-                    <button
+                    <Link
                       key={page}
                       className={`min-w-11 px-4 py-3 font-label text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${
-                        page === safeCurrentPage
+                        page === currentPage
                           ? "bg-primary text-on-primary"
                           : "border border-outline-variant/40 bg-white text-primary hover:border-primary"
                       }`}
-                      onClick={() => setCurrentPage(page)}
-                      type="button"
+                      href={buildHref({ nextPage: page })}
                     >
                       {page}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               ) : null}

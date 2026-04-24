@@ -21,12 +21,19 @@ export interface Product {
   galleryImages: string[];
   certifications: string[];
   availability: string;
+  contactLabel?: string;
+  contentBlocks?: ContentBlock[];
+  downloads?: ContentDownload[];
+  faqItems?: FaqItem[];
+  priceLabel?: string;
+  reviewCount?: number;
   specifications: ProductSpec[];
   applications: ProductApplication[];
   featured: boolean;
   isVisible?: boolean;
   priority?: number;
   seo?: SeoFields;
+  sourceUrl?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -46,6 +53,22 @@ export interface ProductMenuCategory {
   slug: string;
 }
 
+export interface NewsMenuItem {
+  _id: string;
+  image: string;
+  publishDate: string;
+  slug: string;
+  title: string;
+}
+
+export interface NewsMenuCategory {
+  articleCount: number;
+  articles: NewsMenuItem[];
+  image: string;
+  name: string;
+  slug: string;
+}
+
 export interface ProductSpec {
   attribute: string;
   specification: string;
@@ -58,6 +81,31 @@ export interface ProductApplication {
   title: string;
   subtitle: string;
   image: string;
+}
+
+export interface ContentBlock {
+  body: string;
+  image: string;
+  order: number;
+  title: string;
+  type: string;
+}
+
+export interface ContentDownload {
+  label: string;
+  url: string;
+}
+
+export interface FaqItem {
+  answer: string;
+  order: number;
+  question: string;
+}
+
+export interface TocEntry {
+  id: string;
+  level: number;
+  title: string;
 }
 
 export interface TeamMember {
@@ -94,17 +142,23 @@ export interface NewsArticle {
   content: string;
   excerpt: string;
   image: string;
+  galleryImages?: string[];
+  faqItems?: FaqItem[];
   author: string;
   publishDate: string;
   slug: string;
   category?: string;
   categoryLabel?: string;
   tags: string[];
+  contentBlocks?: ContentBlock[];
   createdAt: string;
   updatedAt?: string;
   isVisible?: boolean;
   priority?: number;
+  relatedSlugs?: string[];
   seo?: SeoFields;
+  sourceUrl?: string;
+  toc?: TocEntry[];
 }
 
 export interface Category {

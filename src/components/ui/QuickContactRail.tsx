@@ -114,8 +114,19 @@ export default function QuickContactRail({
 
   return (
     <div className="fixed bottom-5 right-3 z-[70] flex flex-col items-end gap-2.5 md:bottom-8 md:right-5">
-      {contactOpen ? (
-        <div className="mb-1 flex flex-col items-end gap-2.5">
+      <div
+        className={`mb-1 flex flex-col items-end gap-2.5 transition-all duration-300 ease-out ${
+          contactOpen
+            ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+            : "pointer-events-none translate-y-2 scale-95 opacity-0"
+        }`}
+      >
+        <div
+          className={`transition-all duration-300 ease-out ${
+            contactOpen ? "translate-x-0 opacity-100" : "translate-x-3 opacity-0"
+          }`}
+          style={{ transitionDelay: contactOpen ? "0ms" : "120ms" }}
+        >
           <ContactActionButton
             ariaLabel="Facebook Woodland"
             href={COMPANY_INFO.facebook}
@@ -127,8 +138,17 @@ export default function QuickContactRail({
               <FacebookIcon className="h-5 w-5 md:h-6 md:w-6" />
             </span>
           </ContactActionButton>
+        </div>
 
-          {quickContactEmail ? (
+        {quickContactEmail ? (
+          <div
+            className={`transition-all duration-300 ease-out ${
+              contactOpen
+                ? "translate-x-0 opacity-100"
+                : "translate-x-3 opacity-0"
+            }`}
+            style={{ transitionDelay: contactOpen ? "40ms" : "80ms" }}
+          >
             <ContactActionButton
               ariaLabel={quickContactEmail}
               href={`mailto:${quickContactEmail}`}
@@ -139,9 +159,18 @@ export default function QuickContactRail({
                 <Mail size={20} className="md:h-[22px] md:w-[22px]" />
               </span>
             </ContactActionButton>
-          ) : null}
+          </div>
+        ) : null}
 
-          {settings.contactPhone ? (
+        {settings.contactPhone ? (
+          <div
+            className={`transition-all duration-300 ease-out ${
+              contactOpen
+                ? "translate-x-0 opacity-100"
+                : "translate-x-3 opacity-0"
+            }`}
+            style={{ transitionDelay: contactOpen ? "80ms" : "40ms" }}
+          >
             <ContactActionButton
               ariaLabel={settings.contactPhone}
               href={`tel:${settings.contactPhone.replace(/\s+/g, "")}`}
@@ -152,9 +181,18 @@ export default function QuickContactRail({
                 <PhoneCall size={20} className="md:h-[22px] md:w-[22px]" />
               </span>
             </ContactActionButton>
-          ) : null}
+          </div>
+        ) : null}
 
-          {COMPANY_INFO.secondaryPhone ? (
+        {COMPANY_INFO.secondaryPhone ? (
+          <div
+            className={`transition-all duration-300 ease-out ${
+              contactOpen
+                ? "translate-x-0 opacity-100"
+                : "translate-x-3 opacity-0"
+            }`}
+            style={{ transitionDelay: contactOpen ? "120ms" : "0ms" }}
+          >
             <ContactActionButton
               ariaLabel={COMPANY_INFO.secondaryPhone}
               href={`tel:${COMPANY_INFO.secondaryPhone.replace(/\s+/g, "")}`}
@@ -165,9 +203,9 @@ export default function QuickContactRail({
                 <PhoneCall size={20} className="md:h-[22px] md:w-[22px]" />
               </span>
             </ContactActionButton>
-          ) : null}
-        </div>
-      ) : null}
+          </div>
+        ) : null}
+      </div>
 
       <button
         aria-label={

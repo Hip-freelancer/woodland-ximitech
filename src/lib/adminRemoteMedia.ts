@@ -53,6 +53,32 @@ async function rehostLocalizedHtml(
   };
 }
 
+async function rehostContentBlocks(
+  value: unknown,
+  prefix: string,
+  cache: Map<string, string>
+) {
+  return Promise.all(
+    (Array.isArray(value) ? value : []).map(async (block, index) => {
+      const nextBlock = asRecord(block);
+
+      return {
+        ...nextBlock,
+        body: await rehostLocalizedHtml(
+          nextBlock.body,
+          `${prefix}-body-${index + 1}`,
+          cache
+        ),
+        image: await rehostImageField(
+          nextBlock.image,
+          `${prefix}-image-${index + 1}`,
+          cache
+        ),
+      };
+    })
+  );
+}
+
 export async function resolveAdminEntityRemoteMedia(
   entity: string,
   payload: unknown
@@ -77,7 +103,17 @@ export async function resolveAdminEntityRemoteMedia(
     case "news":
       return {
         ...input,
+        contentBlocks: await rehostContentBlocks(
+          input.contentBlocks,
+          "news-content-block",
+          cache
+        ),
         content: await rehostLocalizedHtml(input.content, "news-content", cache),
+        galleryImages: await rehostImageList(
+          input.galleryImages,
+          "news-gallery",
+          cache
+        ),
         image: await rehostImageField(input.image, "news-cover", cache),
       };
 
@@ -99,6 +135,11 @@ export async function resolveAdminEntityRemoteMedia(
               };
             }
           )
+        ),
+        contentBlocks: await rehostContentBlocks(
+          input.contentBlocks,
+          "products-content-block",
+          cache
         ),
         description: await rehostLocalizedHtml(
           input.description,

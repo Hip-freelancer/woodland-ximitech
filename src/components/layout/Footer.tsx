@@ -4,9 +4,31 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { COMPANY_INFO, PRIMARY_ADDRESS } from "@/lib/companyInfo";
 
+function FacebookIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
+type DirectChannel = {
+  href: string;
+  icon: typeof Phone;
+  isExternal?: boolean;
+  label: string;
+};
+
 const navLinks = [
   { key: "home", href: "/" },
   { key: "about", href: "/about" },
+  { key: "operations", href: "/operations" },
   { key: "gallery", href: "/gallery" },
   { key: "products", href: "/products" },
   { key: "news", href: "/news" },
@@ -18,7 +40,7 @@ export default function Footer() {
   const t = useTranslations("footer");
   const tNav = useTranslations("nav");
   const productGroups = t.raw("productGroups") as string[];
-  const directChannels = [
+  const directChannels: DirectChannel[] = [
     {
       href: `tel:${COMPANY_INFO.hotline.replace(/\s+/g, "")}`,
       icon: Phone,
@@ -41,7 +63,7 @@ export default function Footer() {
       <div className="mx-auto max-w-[1440px] px-6 py-16 md:py-20">
         <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
           <div className="overflow-hidden border border-primary/10 bg-white shadow-[0_28px_80px_rgba(18,55,31,0.08)]">
-            <div className="grid gap-8 p-8 md:p-10 xl:grid-cols-[0.9fr_1.1fr]">
+            <div className="grid gap-8 p-8 md:p-10 xl:grid-cols-[1.05fr_0.95fr] 2xl:grid-cols-[0.95fr_1.05fr]">
               <div>
                 <p className="font-label text-[10px] font-semibold uppercase tracking-[0.24em] text-secondary">
                   Woodland
@@ -66,8 +88,8 @@ export default function Footer() {
                     rel="noreferrer"
                     target="_blank"
                   >
+                    <FacebookIcon size={12} />
                     Facebook
-                    <ExternalLink size={12} />
                   </a>
                   <Link
                     href="/contact"
@@ -83,14 +105,16 @@ export default function Footer() {
                 <p className="font-label text-[10px] font-semibold uppercase tracking-[0.24em] text-white/72">
                   {t("contactTitle")}
                 </p>
-                <div className="mt-6 grid gap-4 2xl:grid-cols-2">
-                  {directChannels.map(({ href, icon: Icon, label }) => (
+                <div className="mt-6 flex flex-col gap-4">
+                  {directChannels.map(({ href, icon: Icon, label, isExternal }, index) => (
                     <a
                       key={label}
                       href={href}
-                      className="flex min-h-[76px] w-full items-start gap-3 rounded-[22px] border border-white/12 bg-white/8 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/12"
+                      rel={isExternal ? "noreferrer" : undefined}
+                      target={isExternal ? "_blank" : undefined}
+                      className="flex min-h-[72px] w-full items-center gap-3 overflow-hidden rounded-[22px] border border-white/12 bg-white/8 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/12"
                     >
-                      <span className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-full bg-white/14 text-white">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/14 text-white">
                         <Icon size={17} />
                       </span>
                       <span className="min-w-0 break-words font-body text-sm leading-6 text-white/90">
@@ -99,7 +123,7 @@ export default function Footer() {
                     </a>
                   ))}
 
-                  <div className="rounded-[22px] border border-white/12 bg-white/8 p-4 2xl:col-span-2">
+                  <div className="rounded-[22px] border border-white/12 bg-white/8 p-4">
                     <div className="flex items-start gap-3">
                       <span className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-full bg-white/14 text-white">
                         <MapPin size={17} />
@@ -176,31 +200,46 @@ export default function Footer() {
             <h5 className="font-label text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
               {t("directChannel")}
             </h5>
-            <div className="mt-6 grid gap-4 2xl:grid-cols-2">
-              {directChannels.map(({ href, icon: Icon, label }) => (
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {directChannels.map(({ href, icon: Icon, label, isExternal }) => (
                 <a
                   key={`bottom-${label}`}
                   href={href}
-                  className="group flex w-full items-center gap-3 rounded-[20px] border border-primary/8 bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-slate-50 hover:shadow-[0_14px_30px_rgba(18,55,31,0.08)]"
+                  rel={isExternal ? "noreferrer" : undefined}
+                  target={isExternal ? "_blank" : undefined}
+                  className="group flex w-full items-center gap-3 overflow-hidden rounded-[20px] border border-primary/8 bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-slate-50 hover:shadow-[0_14px_30px_rgba(18,55,31,0.08)]"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
                     <Icon size={16} />
                   </span>
-                  <span className="min-w-0 break-words transition-colors duration-300 group-hover:text-primary">
+                  <span className="min-w-0 truncate transition-colors duration-300 group-hover:text-primary">
                     {label}
                   </span>
                 </a>
               ))}
               <a
-                href={COMPANY_INFO.website}
-                className="group flex w-full items-center gap-3 rounded-[20px] border border-primary/8 bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-slate-50 hover:shadow-[0_14px_30px_rgba(18,55,31,0.08)] 2xl:col-span-2"
+                href={COMPANY_INFO.facebook}
+                className="group flex w-full items-center gap-3 overflow-hidden rounded-[20px] border border-primary/8 bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-slate-50 hover:shadow-[0_14px_30px_rgba(18,55,31,0.08)]"
                 rel="noreferrer"
                 target="_blank"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
-                  <ExternalLink size={16} />
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                  <FacebookIcon size={16} />
                 </span>
                 <span className="transition-colors duration-300 group-hover:text-primary">
+                  Facebook
+                </span>
+              </a>
+              <a
+                href={COMPANY_INFO.website}
+                className="group col-span-full flex w-full items-center gap-3 overflow-hidden rounded-[20px] border border-primary/8 bg-slate-50 px-4 py-4 font-body text-sm text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-slate-50 hover:shadow-[0_14px_30px_rgba(18,55,31,0.08)]"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                  <ExternalLink size={16} />
+                </span>
+                <span className="min-w-0 truncate transition-colors duration-300 group-hover:text-primary">
                   {t("websiteLabel")} {COMPANY_INFO.website}
                 </span>
               </a>

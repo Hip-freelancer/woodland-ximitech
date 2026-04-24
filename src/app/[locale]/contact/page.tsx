@@ -6,7 +6,7 @@ import Badge from "@/components/ui/Badge";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import SectionDivider from "@/components/ui/SectionDivider";
 import PageHero from "@/components/ui/PageHero";
-import { buildLocalizedMetadata } from "@/lib/metadata";
+import { buildLocalizedMetadata, buildWoodlandSeoKeywords } from "@/lib/metadata";
 import type { Locale } from "@/types";
 
 const CERTIFICATIONS = [
@@ -47,6 +47,7 @@ export async function generateMetadata({
     path: "/contact",
     title: t("title"),
     description: t("subtitle"),
+    keywords: buildWoodlandSeoKeywords(locale, [t("title"), t("subtitle")]),
   });
 }
 

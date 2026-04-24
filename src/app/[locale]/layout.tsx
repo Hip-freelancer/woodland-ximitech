@@ -42,7 +42,7 @@ export default async function LocaleLayout({
         ]}
       />
       <Header locale={locale as Locale} />
-      <main className="pt-16">{children}</main>
+      <main className="overflow-x-hidden pt-16">{children}</main>
       <Footer />
       <QuickContactRail
         locale={locale as Locale}

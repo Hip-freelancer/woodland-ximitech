@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "about": "About",
-    "gallery": "Gallery",
+    "gallery": "Library",
     "products": "Products",
     "projects": "Projects",
     "news": "News",
@@ -18,7 +18,8 @@
       "empty": "Product categories are being updated.",
       "itemCount": "{count, plural, one {# product} other {# products}}",
       "moreProducts": "{count, plural, one {+# more product} other {+# more products}}"
-    }
+    },
+    "operations": "Operations"
   },
   "home": {
     "hero": {
@@ -50,16 +51,9 @@
       "title": "Our Products",
       "contactItem": "Contact >>",
       "viewAll": "Browse all products",
-      "items": [
-        "Woodland and the green material trend with premium melamine plywood",
-        "Walnut veneered plywood",
-        "Marine plywood at Woodland",
-        "Oversized full birch plywood",
-        "Imported melamine plywood",
-        "Marine plywood CARB P2 standard",
-        "Poplar plywood 100% CARB P2",
-        "Imported full birch plywood"
-      ]
+      "description": "The homepage product library now pulls directly from the live product dataset, showing product images and linking visitors to each product detail page.",
+      "empty": "The product list is being updated.",
+      "showMore": "Show more"
     },
     "operations": {
       "eyebrow": "WOODLAND COMPANY LIMITED",
@@ -92,8 +86,8 @@
       ]
     },
     "projects": {
-      "title": "Featured Profiles And Visuals",
-      "subtitle": "Company profile, warehouse operations and product imagery",
+      "title": "Featured Videos",
+      "subtitle": "Profile, warehouse and production process videos",
       "viewAll": "Explore More"
     },
     "news": {
@@ -189,8 +183,14 @@
       ]
     },
     "gallery": {
-      "title": "Woodland Gallery",
-      "subtitle": "Warehouse, products and operational visuals adapted from the original Woodland website."
+      "title": "Woodland Library",
+      "subtitle": "Product videos, warehouse coverage and operational imagery from Woodland.",
+      "videosEyebrow": "Featured videos",
+      "videosTitle": "4 Dedicated Videos",
+      "videosSubtitle": "Watch Woodland profile, product and operations videos in a separate video block.",
+      "imagesEyebrow": "Still images",
+      "imagesTitle": "Image Library",
+      "imagesSubtitle": "Browse warehouse, infrastructure, product and team images separately from the videos."
     }
   },
   "products": {

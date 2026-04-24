@@ -14,6 +14,34 @@ const ProductApplicationSchema = new Schema({
   image: String,
 });
 
+const ProductContentBlockSchema = new Schema(
+  {
+    body: { en: { type: String, default: "" }, vi: { type: String, default: "" } },
+    image: { type: String, default: "" },
+    order: { type: Number, default: 0 },
+    title: { en: { type: String, default: "" }, vi: { type: String, default: "" } },
+    type: { type: String, default: "section" },
+  },
+  { _id: false }
+);
+
+const ProductDownloadSchema = new Schema(
+  {
+    label: { en: { type: String, default: "" }, vi: { type: String, default: "" } },
+    url: { type: String, default: "" },
+  },
+  { _id: false }
+);
+
+const ProductFaqItemSchema = new Schema(
+  {
+    answer: { en: { type: String, default: "" }, vi: { type: String, default: "" } },
+    order: { type: Number, default: 0 },
+    question: { en: { type: String, default: "" }, vi: { type: String, default: "" } },
+  },
+  { _id: false }
+);
+
 export interface IProduct extends Document {
   name: { en: string; vi: string };
   series: string;
@@ -29,6 +57,22 @@ export interface IProduct extends Document {
   galleryImages: string[];
   certifications: string[];
   availability: { en: string; vi: string };
+  contactLabel: { en: string; vi: string };
+  contentBlocks: Array<{
+    body: { en: string; vi: string };
+    image: string;
+    order: number;
+    title: { en: string; vi: string };
+    type: string;
+  }>;
+  downloads: Array<{ label: { en: string; vi: string }; url: string }>;
+  faqItems: Array<{
+    answer: { en: string; vi: string };
+    order: number;
+    question: { en: string; vi: string };
+  }>;
+  priceLabel: { en: string; vi: string };
+  reviewCount: number;
   specifications: typeof ProductSpecSchema[];
   applications: typeof ProductApplicationSchema[];
   featured: boolean;
@@ -39,6 +83,7 @@ export interface IProduct extends Document {
     description: string;
     keywords: string;
   };
+  sourceUrl: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -77,6 +122,18 @@ const ProductSchema = new Schema<IProduct>(
       en: { type: String, default: "In Stock" },
       vi: { type: String, default: "Còn Hàng" }
     },
+    contactLabel: {
+      en: { type: String, default: "Contact" },
+      vi: { type: String, default: "Lien he" }
+    },
+    contentBlocks: [ProductContentBlockSchema],
+    downloads: [ProductDownloadSchema],
+    faqItems: [ProductFaqItemSchema],
+    priceLabel: {
+      en: { type: String, default: "Contact for price" },
+      vi: { type: String, default: "Lien he" }
+    },
+    reviewCount: { type: Number, default: 0 },
     specifications: [ProductSpecSchema],
     applications: [ProductApplicationSchema],
     featured: { type: Boolean, default: false },
@@ -87,9 +144,14 @@ const ProductSchema = new Schema<IProduct>(
       description: { type: String },
       keywords: { type: String },
     },
+    sourceUrl: { type: String, default: "" },
   },
   { timestamps: true }
 );
+
+ProductSchema.index({ isVisible: 1, priority: 1, createdAt: -1 });
+ProductSchema.index({ isVisible: 1, category: 1, priority: 1, createdAt: -1 });
+ProductSchema.index({ isVisible: 1, thickness: 1, priority: 1, createdAt: -1 });
 
 export default mongoose.models.Product ||
   mongoose.model<IProduct>("Product", ProductSchema);

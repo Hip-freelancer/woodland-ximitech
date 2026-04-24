@@ -239,23 +239,23 @@ export default function HeroSliderClient({
               <span className="inline-flex items-center justify-center border border-white/24 bg-black/22 px-4 py-2 font-label text-[10px] font-semibold uppercase tracking-[0.28em] text-white/92 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.18)]">
                 Woodland
               </span>
-              <h1 className="mx-auto mt-8 max-w-6xl pt-[0.1em] pb-[0.08em] font-headline text-5xl font-black leading-[1.04] tracking-tight text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)] md:text-7xl xl:text-[5.1rem]">
+              <h1 className="mx-auto mt-8 max-w-6xl pt-[0.1em] pb-[0.08em] font-headline text-4xl font-black leading-[1.04] tracking-tight text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)] sm:text-5xl md:text-7xl xl:text-[5.1rem]">
                 {title}
               </h1>
               <p className="mx-auto mt-5  font-body text-base leading-8 text-white/90 drop-shadow-[0_4px_18px_rgba(0,0,0,0.5)] md:text-xl">
                 {subtitle}
               </p>
 
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
                 <Link
                   href={actionHrefs.primary}
-                  className="inline-flex min-w-[190px] items-center justify-center bg-white px-8 py-4 font-headline text-sm font-bold uppercase tracking-[0.16em] text-primary shadow-[0_12px_30px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-primary-fixed"
+                  className="inline-flex w-full items-center justify-center bg-white px-8 py-4 font-headline text-sm font-bold uppercase tracking-[0.16em] text-primary shadow-[0_12px_30px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-primary-fixed sm:w-auto sm:min-w-[190px]"
                 >
                   {actions.primary}
                 </Link>
                 <Link
                   href={actionHrefs.secondary}
-                  className="inline-flex min-w-[190px] items-center justify-center border border-white/60 bg-black/12 px-8 py-4 font-headline text-sm font-bold uppercase tracking-[0.16em] text-white shadow-[0_12px_30px_rgba(0,0,0,0.14)] backdrop-blur-sm transition-colors duration-300 hover:bg-white/10"
+                  className="inline-flex w-full items-center justify-center border border-white/60 bg-black/12 px-8 py-4 font-headline text-sm font-bold uppercase tracking-[0.16em] text-white shadow-[0_12px_30px_rgba(0,0,0,0.14)] backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 sm:w-auto sm:min-w-[190px]"
                 >
                   {actions.secondary}
                 </Link>

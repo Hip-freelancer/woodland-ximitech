@@ -4,12 +4,13 @@ import { getTranslations } from "next-intl/server";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import CtaBannerSection from "@/components/sections/home/CtaBannerSection";
+import FeaturedProductsCarousel from "@/components/sections/home/FeaturedProductsCarousel";
+import NewsSectionCarousel from "@/components/sections/home/NewsSectionCarousel";
 import ProductDetailGallery from "@/components/sections/products/ProductDetailGallery";
 import StructuredData from "@/components/seo/StructuredData";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import Badge from "@/components/ui/Badge";
-import NewsPreviewCard from "@/components/ui/NewsPreviewCard";
-import ProductCard from "@/components/ui/ProductCard";
+import FaqSection from "@/components/ui/FaqSection";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { COMPANY_INFO } from "@/lib/companyInfo";
 import {
@@ -17,9 +18,12 @@ import {
   fetchVisibleProductBySlug,
   fetchVisibleProducts,
 } from "@/lib/content";
+import { getProductFallbackFaqItems } from "@/lib/faqContent";
 import {
   buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
   buildLocalizedMetadata,
+  buildWoodlandSeoKeywords,
   getAbsoluteUrl,
   resolveSeoFields,
 } from "@/lib/metadata";
@@ -252,7 +256,13 @@ export async function generateMetadata({
     path: `/products/${product.slug}`,
     title: seo.title,
     description: seo.description,
-    keywords: seo.keywords,
+    keywords: buildWoodlandSeoKeywords(locale, [
+      seo.keywords,
+      product.name,
+      product.categoryLabel ?? product.category,
+      product.material,
+      product.grade,
+    ]),
   });
 }
 
@@ -284,23 +294,24 @@ export default async function ProductDetailPage({
   const recentNewsSource = articles.length > 0 ? articles : fallbackNews;
   const recentProducts = recentProductsSource
     .filter((item) => item.slug !== product.slug)
-    .slice(0, 3);
-  const recentNews = recentNewsSource.slice(0, 3);
+    .slice(0, 6);
+  const recentNews = recentNewsSource.slice(0, 6);
   const { summaryItems, technicalCards } = resolveProductSummary(product, t);
+  const productFaqItems = getProductFallbackFaqItems(product, locale);
   const breadcrumbItems = [
     { label: tNav("home"), path: "/" },
     { label: tNav("products"), path: "/products" },
     { label: product.name, path: `/products/${product.slug}` },
   ];
+  const structuredData = [
+    buildBreadcrumbJsonLd(locale, breadcrumbItems),
+    buildProductJsonLd(locale, product),
+    buildFaqJsonLd(productFaqItems),
+  ].filter(Boolean) as Record<string, unknown>[];
 
   return (
     <>
-      <StructuredData
-        data={[
-          buildBreadcrumbJsonLd(locale, breadcrumbItems),
-          buildProductJsonLd(locale, product),
-        ]}
-      />
+      <StructuredData data={structuredData} />
 
       <BreadcrumbBar
         items={[
@@ -481,6 +492,13 @@ export default async function ProductDetailPage({
 
       <SectionDivider />
 
+      <FaqSection
+        items={productFaqItems}
+        title={locale === "vi" ? "FAQ Sản Phẩm" : "Product FAQ"}
+      />
+
+      <SectionDivider />
+
       {recentProducts.length > 0 ? (
         <>
           <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
@@ -494,10 +512,8 @@ export default async function ProductDetailPage({
               {t("recentProducts.subtitle")}
             </p>
 
-            <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {recentProducts.map((item) => (
-                <ProductCard key={item._id} product={item} />
-              ))}
+            <div className="mt-10">
+              <FeaturedProductsCarousel products={recentProducts} />
             </div>
           </section>
           <SectionDivider />
@@ -517,14 +533,8 @@ export default async function ProductDetailPage({
               {t("recentNews.subtitle")}
             </p>
 
-            <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {recentNews.map((article) => (
-                <NewsPreviewCard
-                  key={article._id}
-                  article={article}
-                  locale={locale}
-                />
-              ))}
+            <div className="mt-10">
+              <NewsSectionCarousel articles={recentNews} />
             </div>
           </section>
           <SectionDivider />

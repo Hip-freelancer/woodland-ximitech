@@ -17,6 +17,8 @@ import type {
   HomeSettings,
   Locale,
   NewsArticle,
+  NewsMenuCategory,
+  NewsMenuItem,
   Product,
   ProductMenuCategory,
   ProductMenuItem,
@@ -54,9 +56,23 @@ interface ProductDocument {
   bonding?: LocalizedValue;
   category?: string;
   certifications?: string[];
+  contactLabel?: LocalizedValue;
+  contentBlocks?: Array<{
+    body?: LocalizedValue;
+    image?: string;
+    order?: number;
+    title?: LocalizedValue;
+    type?: string;
+  }>;
   createdAt?: Date | string;
   description?: LocalizedValue;
   dimensions?: string[];
+  downloads?: Array<{ label?: LocalizedValue; url?: string }>;
+  faqItems?: Array<{
+    answer?: LocalizedValue;
+    order?: number;
+    question?: LocalizedValue;
+  }>;
   featured?: boolean;
   galleryImages?: string[];
   grade?: LocalizedValue;
@@ -64,10 +80,13 @@ interface ProductDocument {
   isVisible?: boolean;
   material?: LocalizedValue;
   name?: LocalizedValue;
+  priceLabel?: LocalizedValue;
   priority?: number;
+  reviewCount?: number;
   seo?: SeoFields;
   series?: string;
   slug?: string;
+  sourceUrl?: string;
   specifications?: Array<{
     attribute?: LocalizedValue;
     specification?: LocalizedValue;
@@ -83,16 +102,32 @@ interface NewsDocument {
   author?: string;
   category?: string;
   content?: LocalizedValue;
+  contentBlocks?: Array<{
+    body?: LocalizedValue;
+    image?: string;
+    order?: number;
+    title?: LocalizedValue;
+    type?: string;
+  }>;
   createdAt?: Date | string;
   excerpt?: LocalizedValue;
+  faqItems?: Array<{
+    answer?: LocalizedValue;
+    order?: number;
+    question?: LocalizedValue;
+  }>;
+  galleryImages?: string[];
   image?: string;
   isVisible?: boolean;
   priority?: number;
   publishDate?: Date | string;
+  relatedSlugs?: string[];
   seo?: SeoFields;
   slug?: string;
+  sourceUrl?: string;
   tags?: string[];
   title?: LocalizedValue;
+  toc?: Array<{ id?: string; level?: number; title?: string }>;
   updatedAt?: Date | string;
 }
 
@@ -170,6 +205,46 @@ function stripHtml(input: string) {
     .trim();
 }
 
+function serializeContentBlocks(
+  blocks: Array<{
+    body?: LocalizedValue;
+    image?: string;
+    order?: number;
+    title?: LocalizedValue;
+    type?: string;
+  }> | undefined,
+  locale: Locale
+) {
+  return (blocks ?? [])
+    .map((block, index) => ({
+      body: localize(block.body, locale),
+      image: block.image ?? "",
+      order: block.order ?? index,
+      title: localize(block.title, locale),
+      type: block.type ?? "section",
+    }))
+    .filter((block) => block.body || block.image || block.title)
+    .sort((left, right) => left.order - right.order);
+}
+
+function serializeFaqItems(
+  items: Array<{
+    answer?: LocalizedValue;
+    order?: number;
+    question?: LocalizedValue;
+  }> | undefined,
+  locale: Locale
+) {
+  return (items ?? [])
+    .map((item, index) => ({
+      answer: localize(item.answer, locale),
+      order: item.order ?? index,
+      question: localize(item.question, locale),
+    }))
+    .filter((item) => item.question && item.answer)
+    .sort((left, right) => left.order - right.order);
+}
+
 function serializeCategory(doc: CategoryDocument, locale: Locale): Category {
   return {
     _id: String(doc._id),
@@ -238,9 +313,18 @@ function serializeProduct(
       findCategoryByReference(doc.category ?? "", categoryMap)?.name ??
       (doc.category ?? ""),
     certifications: doc.certifications ?? [],
+    contactLabel: localize(doc.contactLabel, locale),
+    contentBlocks: serializeContentBlocks(doc.contentBlocks, locale),
     createdAt: formatDate(doc.createdAt),
     description: localize(doc.description, locale),
     dimensions: doc.dimensions ?? [],
+    downloads: (doc.downloads ?? [])
+      .map((item) => ({
+        label: localize(item.label, locale),
+        url: item.url ?? "",
+      }))
+      .filter((item) => item.label || item.url),
+    faqItems: serializeFaqItems(doc.faqItems, locale),
     featured: doc.featured ?? false,
     galleryImages: mergedImages,
     grade: localize(doc.grade, locale),
@@ -248,9 +332,12 @@ function serializeProduct(
     isVisible: doc.isVisible ?? true,
     material: localize(doc.material, locale),
     name: localize(doc.name, locale),
+    priceLabel: localize(doc.priceLabel, locale),
     priority: doc.priority ?? 0,
+    reviewCount: doc.reviewCount ?? 0,
     series: doc.series ?? "",
     seo: doc.seo,
+    sourceUrl: doc.sourceUrl ?? "",
     slug: doc.slug ?? "",
     specifications: (doc.specifications ?? []).map((item) => ({
       attribute: localize(item.attribute, locale),
@@ -286,6 +373,27 @@ function serializeProductMenuItem(
   };
 }
 
+function serializeNewsMenuItem(
+  doc: NewsDocument,
+  locale: Locale
+): NewsMenuItem | null {
+  const title = localize(doc.title, locale);
+  const slug = doc.slug ?? "";
+  const image = doc.image ?? "";
+
+  if (!title || !slug) {
+    return null;
+  }
+
+  return {
+    _id: String(doc._id),
+    image,
+    publishDate: formatDate(doc.publishDate),
+    slug,
+    title,
+  };
+}
+
 function resolveMenuCategorySlug(
   rawCategory: string,
   categoryMap: Map<string, Category>
@@ -306,6 +414,10 @@ function serializeNews(
 ): NewsArticle {
   const content = localize(doc.content, locale);
   const excerpt = localize(doc.excerpt, locale) || stripHtml(content).slice(0, 180);
+  const galleryImages = Array.isArray(doc.galleryImages)
+    ? doc.galleryImages.filter(Boolean)
+    : [];
+  const image = doc.image || galleryImages[0] || "";
 
   return {
     _id: String(doc._id),
@@ -315,16 +427,28 @@ function serializeNews(
       findCategoryByReference(doc.category ?? "", categoryMap)?.name ??
       (doc.category ?? ""),
     content,
+    contentBlocks: serializeContentBlocks(doc.contentBlocks, locale),
     createdAt: formatDate(doc.createdAt),
     excerpt,
-    image: doc.image ?? "",
+    faqItems: serializeFaqItems(doc.faqItems, locale),
+    galleryImages: image
+      ? [image, ...galleryImages.filter((item) => item !== image)]
+      : galleryImages,
+    image,
     isVisible: doc.isVisible ?? true,
     priority: doc.priority ?? 0,
     publishDate: formatDate(doc.publishDate),
+    relatedSlugs: doc.relatedSlugs ?? [],
     seo: doc.seo,
+    sourceUrl: doc.sourceUrl ?? "",
     slug: doc.slug ?? "",
     tags: doc.tags ?? [],
     title: localize(doc.title, locale),
+    toc: (doc.toc ?? []).map((item) => ({
+      id: item.id ?? "",
+      level: item.level ?? 2,
+      title: item.title ?? "",
+    })),
     updatedAt: formatDate(doc.updatedAt),
   };
 }
@@ -466,6 +590,95 @@ export async function fetchVisibleProducts(locale: Locale) {
   );
 }
 
+interface PaginatedProductOptions {
+  categories?: string[];
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  thickness?: number | null;
+}
+
+interface PaginatedNewsOptions {
+  category?: string;
+  page?: number;
+  pageSize?: number;
+  search?: string;
+}
+
+function escapeRegex(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function normalizePage(value: number | undefined) {
+  if (!Number.isFinite(value) || !value || value < 1) {
+    return 1;
+  }
+
+  return Math.floor(value);
+}
+
+export async function fetchVisibleProductsPage(
+  locale: Locale,
+  {
+    categories = [],
+    page = 1,
+    pageSize = 9,
+    search = "",
+    thickness = null,
+  }: PaginatedProductOptions = {}
+) {
+  await dbConnect();
+
+  const safePage = normalizePage(page);
+  const safePageSize = Math.max(1, Math.floor(pageSize));
+  const query: Record<string, unknown> = { isVisible: true };
+  const normalizedCategories = categories.filter(Boolean);
+  const normalizedSearch = search.trim();
+
+  if (normalizedCategories.length > 0) {
+    query.category = { $in: normalizedCategories };
+  }
+
+  if (typeof thickness === "number" && Number.isFinite(thickness)) {
+    query.thickness = thickness;
+  }
+
+  if (normalizedSearch) {
+    const regex = new RegExp(escapeRegex(normalizedSearch), "i");
+    query.$or = [
+      { [`name.${locale}`]: regex },
+      { "name.vi": regex },
+      { "name.en": regex },
+      { [`description.${locale}`]: regex },
+      { [`material.${locale}`]: regex },
+      { series: regex },
+      { category: regex },
+    ];
+  }
+
+  const [categoryMap, totalItems] = await Promise.all([
+    getVisibleCategoryMapByType(locale, "product"),
+    ProductModel.countDocuments(query),
+  ]);
+  const totalPages = Math.max(1, Math.ceil(totalItems / safePageSize));
+  const resolvedPage = Math.min(safePage, totalPages);
+  const products = await ProductModel.find(query)
+    .sort({ priority: 1, createdAt: -1 })
+    .skip((resolvedPage - 1) * safePageSize)
+    .limit(safePageSize)
+    .lean();
+
+  return {
+    items: (products as ProductDocument[]).map((item) =>
+      serializeProduct(item, locale, categoryMap)
+    ),
+    page: resolvedPage,
+    pageSize: safePageSize,
+    totalItems,
+    totalPages,
+  };
+}
+
 export async function fetchProductMenu(locale: Locale, limitPerCategory = 4) {
   await dbConnect();
 
@@ -523,6 +736,64 @@ export async function fetchProductMenu(locale: Locale, limitPerCategory = 4) {
   return Array.from(groups.values()).filter((group) => group.productCount > 0);
 }
 
+export async function fetchNewsMenu(locale: Locale, limitPerCategory = 4) {
+  await dbConnect();
+
+  const [categoryMap, news] = await Promise.all([
+    getVisibleCategoryMapByType(locale, "news"),
+    NewsArticleModel.find({ isVisible: true })
+      .sort({ priority: 1, publishDate: -1, createdAt: -1 })
+      .lean(),
+  ]);
+
+  const groups = new Map<string, NewsMenuCategory>();
+
+  for (const category of categoryMap.values()) {
+    groups.set(category.slug, {
+      articleCount: 0,
+      articles: [],
+      image: category.image,
+      name: category.name,
+      slug: category.slug,
+    });
+  }
+
+  for (const article of news as NewsDocument[]) {
+    const categorySlug =
+      resolveMenuCategorySlug(article.category ?? "", categoryMap) ??
+      (article.category ?? "");
+    const item = serializeNewsMenuItem(article, locale);
+
+    if (!item || !categorySlug) {
+      continue;
+    }
+
+    const group =
+      groups.get(categorySlug) ??
+      {
+        articleCount: 0,
+        articles: [],
+        image: "",
+        name: categoryMap.get(categorySlug)?.name ?? categorySlug,
+        slug: categorySlug,
+      };
+
+    groups.set(categorySlug, group);
+
+    group.articleCount += 1;
+
+    if (group.articles.length < limitPerCategory) {
+      group.articles.push(item);
+    }
+
+    if (!group.image && item.image) {
+      group.image = item.image;
+    }
+  }
+
+  return Array.from(groups.values()).filter((group) => group.articleCount > 0);
+}
+
 export async function fetchFeaturedProducts(locale: Locale, limit = 3) {
   await dbConnect();
 
@@ -574,6 +845,62 @@ export async function fetchVisibleNews(locale: Locale, limit?: number) {
   return (news as NewsDocument[]).map((item) =>
     serializeNews(item, locale, categoryMap)
   );
+}
+
+export async function fetchVisibleNewsPage(
+  locale: Locale,
+  {
+    category = "",
+    page = 1,
+    pageSize = 7,
+    search = "",
+  }: PaginatedNewsOptions = {}
+) {
+  await dbConnect();
+
+  const safePage = normalizePage(page);
+  const safePageSize = Math.max(1, Math.floor(pageSize));
+  const query: Record<string, unknown> = { isVisible: true };
+  const normalizedCategory = category.trim();
+  const normalizedSearch = search.trim();
+
+  if (normalizedCategory) {
+    query.category = normalizedCategory;
+  }
+
+  if (normalizedSearch) {
+    const regex = new RegExp(escapeRegex(normalizedSearch), "i");
+    query.$or = [
+      { [`title.${locale}`]: regex },
+      { "title.vi": regex },
+      { "title.en": regex },
+      { [`excerpt.${locale}`]: regex },
+      { tags: regex },
+      { category: regex },
+    ];
+  }
+
+  const [categoryMap, totalItems] = await Promise.all([
+    getVisibleCategoryMapByType(locale, "news"),
+    NewsArticleModel.countDocuments(query),
+  ]);
+  const totalPages = Math.max(1, Math.ceil(totalItems / safePageSize));
+  const resolvedPage = Math.min(safePage, totalPages);
+  const news = await NewsArticleModel.find(query)
+    .sort({ priority: 1, publishDate: -1, createdAt: -1 })
+    .skip((resolvedPage - 1) * safePageSize)
+    .limit(safePageSize)
+    .lean();
+
+  return {
+    items: (news as NewsDocument[]).map((item) =>
+      serializeNews(item, locale, categoryMap)
+    ),
+    page: resolvedPage,
+    pageSize: safePageSize,
+    totalItems,
+    totalPages,
+  };
 }
 
 export async function fetchVisibleNewsBySlug(slug: string, locale: Locale) {

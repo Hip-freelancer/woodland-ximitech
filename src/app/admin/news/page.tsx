@@ -17,6 +17,7 @@ import {
 
 // Admin UI
 import AdminAutoSeoButton from "@/components/admin/AdminAutoSeoButton";
+import AdminGalleryField from "@/components/admin/AdminGalleryField";
 import AdminImageField from "@/components/admin/AdminImageField";
 import AdminNotice from "@/components/admin/AdminNotice";
 import AdminPriorityInput from "@/components/admin/AdminPriorityInput";
@@ -61,14 +62,20 @@ interface AdminNewsArticle {
   content: LocalizedText;
   createdAt: string;
   excerpt: LocalizedText;
+  galleryImages?: string[];
+  faqItems?: unknown[];
   image: string;
   isVisible: boolean;
   priority: number;
   publishDate: string;
+  relatedSlugs?: string[];
   seo: SeoFields;
+  sourceUrl?: string;
   slug: string;
   tags: string[];
   title: LocalizedText;
+  toc?: Array<{ id: string; level: number; title: string }>;
+  contentBlocks?: unknown[];
   updatedAt: string;
 }
 
@@ -77,14 +84,20 @@ interface NewsFormState {
   category: string;
   content: LocalizedText;
   excerpt: LocalizedText;
+  galleryImages: string[];
+  faqItemsJson: string;
   image: string;
   isVisible: boolean;
   priority: number;
   publishDate: string;
+  relatedSlugsText: string;
   seo: SeoFields;
+  sourceUrl: string;
   slug: string;
   tags: string;
   title: LocalizedText;
+  tocJson: string;
+  contentBlocksJson: string;
 }
 
 interface NoticeState {
@@ -97,15 +110,21 @@ function createEmptyForm(category = ""): NewsFormState {
     author: "Editorial",
     category,
     content: { en: "", vi: "" },
+    contentBlocksJson: "[]",
     excerpt: { en: "", vi: "" },
+    faqItemsJson: "[]",
+    galleryImages: [],
     image: "",
     isVisible: true,
     priority: 0,
     publishDate: new Date().toISOString().split("T")[0],
+    relatedSlugsText: "",
     seo: { title: "", description: "", keywords: "" },
+    sourceUrl: "",
     slug: "",
     tags: "",
     title: { en: "", vi: "" },
+    tocJson: "[]",
   };
 }
 
@@ -267,27 +286,35 @@ export default function AdminNewsPage() {
         en: article.content?.en ?? "",
         vi: article.content?.vi ?? "",
       },
+      contentBlocksJson: JSON.stringify(article.contentBlocks ?? [], null, 2),
       excerpt: {
         en: article.excerpt?.en ?? "",
         vi: article.excerpt?.vi ?? "",
       },
+      faqItemsJson: JSON.stringify(article.faqItems ?? [], null, 2),
+      galleryImages: (
+        article.galleryImages?.length ? article.galleryImages : [article.image]
+      ).filter(Boolean),
       image: article.image ?? "",
       isVisible: article.isVisible ?? true,
       priority: article.priority ?? 0,
       publishDate: article.publishDate
         ? new Date(article.publishDate).toISOString().split("T")[0]
         : new Date().toISOString().split("T")[0],
+      relatedSlugsText: (article.relatedSlugs ?? []).join(", "),
       seo: {
         description: article.seo?.description ?? "",
         keywords: article.seo?.keywords ?? "",
         title: article.seo?.title ?? "",
       },
+      sourceUrl: article.sourceUrl ?? "",
       slug: article.slug ?? "",
       tags: Array.isArray(article.tags) ? article.tags.join(", ") : "",
       title: {
         en: article.title?.en ?? "",
         vi: article.title?.vi ?? "",
       },
+      tocJson: JSON.stringify(article.toc ?? [], null, 2),
     });
     setIsEditorOpen(true);
   };
@@ -312,6 +339,11 @@ export default function AdminNewsPage() {
     const url = editingId ? `/api/admin/news/${editingId}` : "/api/admin/news";
     const payload = {
       ...formData,
+      contentBlocksJson: formData.contentBlocksJson,
+      faqItemsJson: formData.faqItemsJson,
+      galleryImages: formData.galleryImages,
+      relatedSlugsText: formData.relatedSlugsText,
+      sourceUrl: formData.sourceUrl,
       tags: formData.tags
         .split(",")
         .map((tag) => tag.trim())
@@ -461,6 +493,12 @@ export default function AdminNewsPage() {
           tone="warning"
         />
       ) : null}
+      {articles.filter((a) => !a.title?.en).length > 0 ? (
+        <AdminNotice
+          message={`${articles.filter((a) => !a.title?.en).length} bài viết chưa có tiêu đề tiếng Anh. Nhấn "Sửa" và dùng nút dịch AI để bổ sung — website tiếng Anh sẽ hiển thị fallback tiếng Việt nếu thiếu.`}
+          tone="warning"
+        />
+      ) : null}
 
       {isEditorOpen ? (
         <div className="border border-outline-variant/40 bg-white p-6">
@@ -602,6 +640,18 @@ export default function AdminNewsPage() {
               value={formData.image}
             />
 
+            <AdminGalleryField
+              label="Thư viện ảnh bài viết"
+              onChange={(value) =>
+                setFormData((current) => ({
+                  ...current,
+                  galleryImages: value,
+                  image: current.image || value[0] || "",
+                }))
+              }
+              values={formData.galleryImages}
+            />
+
             <div className="grid items-end gap-4 lg:grid-cols-[1fr_1fr_0.8fr_0.6fr]">
               <label className="block space-y-2">
                 <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
@@ -673,6 +723,42 @@ export default function AdminNewsPage() {
               </label>
             </div>
 
+            <div className="grid items-end gap-4 lg:grid-cols-2">
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  URL gốc Woodland
+                </span>
+                <input
+                  className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      sourceUrl: event.target.value,
+                    }))
+                  }
+                  placeholder="https://woodland.vn/..."
+                  value={formData.sourceUrl}
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  Slug bài liên quan
+                </span>
+                <input
+                  className="w-full border border-outline-variant bg-surface px-4 py-3 font-body text-sm outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      relatedSlugsText: event.target.value,
+                    }))
+                  }
+                  placeholder="slug-1, slug-2"
+                  value={formData.relatedSlugsText}
+                />
+              </label>
+            </div>
+
             <div className="grid items-end gap-6 lg:grid-cols-2">
               <div>
                 <p className="mb-2 font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
@@ -721,6 +807,56 @@ export default function AdminNewsPage() {
                 />
               </div>
             </div>
+
+            <div className="grid gap-4 lg:grid-cols-2">
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  Mục lục JSON
+                </span>
+                <textarea
+                  className="min-h-36 w-full border border-outline-variant bg-surface px-4 py-3 font-mono text-xs outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      tocJson: event.target.value,
+                    }))
+                  }
+                  value={formData.tocJson}
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                  Content blocks JSON
+                </span>
+                <textarea
+                  className="min-h-36 w-full border border-outline-variant bg-surface px-4 py-3 font-mono text-xs outline-none transition-colors focus:border-secondary"
+                  onChange={(event) =>
+                    setFormData((current) => ({
+                      ...current,
+                      contentBlocksJson: event.target.value,
+                    }))
+                  }
+                  value={formData.contentBlocksJson}
+                />
+              </label>
+            </div>
+
+            <label className="block space-y-2">
+              <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+                FAQ JSON
+              </span>
+              <textarea
+                className="min-h-36 w-full border border-outline-variant bg-surface px-4 py-3 font-mono text-xs outline-none transition-colors focus:border-secondary"
+                onChange={(event) =>
+                  setFormData((current) => ({
+                    ...current,
+                    faqItemsJson: event.target.value,
+                  }))
+                }
+                value={formData.faqItemsJson}
+              />
+            </label>
 
             <div className="space-y-4">
               <div>
@@ -943,8 +1079,13 @@ export default function AdminNewsPage() {
                       <div className="font-body text-sm font-semibold text-on-surface">
                         {article.title?.vi || "Chưa có tiêu đề"}
                       </div>
-                      <div className="mt-1 font-body text-xs text-on-surface-variant">
-                        {article.slug}
+                      <div className="mt-1 flex flex-wrap items-center gap-2 font-body text-xs text-on-surface-variant">
+                        <span>{article.slug}</span>
+                        {!article.title?.en ? (
+                          <span className="inline-flex items-center bg-amber-100 px-2 py-0.5 font-label text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-700">
+                            Thiếu EN
+                          </span>
+                        ) : null}
                       </div>
                     </td>
                     <td className="px-6 py-4 font-body text-sm text-on-surface-variant">

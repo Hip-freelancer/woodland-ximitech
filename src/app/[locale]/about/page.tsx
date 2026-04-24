@@ -6,7 +6,7 @@ import HistoryTimelineSection from "@/components/sections/about/HistoryTimelineS
 import CtaBannerSection from "@/components/sections/home/CtaBannerSection";
 import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import SectionDivider from "@/components/ui/SectionDivider";
-import { buildLocalizedMetadata } from "@/lib/metadata";
+import { buildLocalizedMetadata, buildWoodlandSeoKeywords } from "@/lib/metadata";
 import type { Locale } from "@/types";
 
 export async function generateMetadata({
@@ -22,6 +22,7 @@ export async function generateMetadata({
     path: "/about",
     title: t("title"),
     description: t("description"),
+    keywords: buildWoodlandSeoKeywords(locale, [t("title")]),
   });
 }
 

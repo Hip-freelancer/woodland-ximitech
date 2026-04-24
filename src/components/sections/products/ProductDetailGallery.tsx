@@ -40,7 +40,7 @@ export default function ProductDetailGallery({
       </div>
 
       {gallery.length > 1 ? (
-        <div className="grid grid-cols-4 gap-3 md:grid-cols-5">
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 sm:gap-3">
           {gallery.map((image, index) => {
             const isActive = image === selectedImage;
 

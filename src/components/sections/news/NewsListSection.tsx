@@ -1,107 +1,118 @@
 "use client";
 
-import { useDeferredValue, useMemo, useState } from "react";
+import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import type { NewsArticle } from "@/types";
 
 interface NewsListSectionProps {
   articles: NewsArticle[];
+  categories: Array<{ label: string; slug: string }>;
+  currentCategory?: string;
+  currentPage: number;
+  currentSearch?: string;
+  totalItems: number;
+  totalPages: number;
 }
 
-export default function NewsListSection({ articles }: NewsListSectionProps) {
+export default function NewsListSection({
+  articles,
+  categories,
+  currentCategory = "",
+  currentPage,
+  currentSearch = "",
+  totalItems,
+  totalPages,
+}: NewsListSectionProps) {
   const t = useTranslations("newsBase");
   const locale = useLocale();
-  const itemsPerPage = 7;
-  const [filter, setFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const deferredSearchQuery = useDeferredValue(searchQuery);
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState(currentSearch);
+  const featuredArticle = articles[0] ?? null;
+  const remainingArticles = articles.slice(1);
 
-  const categories = useMemo(() => {
-    const uniqueCategories = Array.from(
-      new Map(
-        articles
-          .filter((article) => article.category)
-          .map((article) => [
-            article.category as string,
-            article.categoryLabel ?? article.category ?? "",
-          ])
-      ).entries()
-    );
+  const buildHref = ({
+    nextCategory = currentCategory,
+    nextPage = 1,
+    nextSearch = searchQuery,
+  }: {
+    nextCategory?: string;
+    nextPage?: number;
+    nextSearch?: string;
+  } = {}) => {
+    const params = new URLSearchParams();
 
-    return uniqueCategories.map(([slug, label]) => ({ label, slug }));
-  }, [articles]);
+    if (nextCategory) {
+      params.set("category", nextCategory);
+    }
 
-  const filteredArticles = articles.filter((article) => {
-    const categoryMatch =
-      filter === "all" ? true : article.category === filter;
-    const searchSource = `${article.title} ${article.excerpt} ${article.categoryLabel ?? article.category ?? ""}`.toLowerCase();
-    const searchMatch =
-      deferredSearchQuery.trim().length === 0 ||
-      searchSource.includes(deferredSearchQuery.trim().toLowerCase());
-    return categoryMatch && searchMatch;
-  });
-  const featuredArticle = filteredArticles[0] ?? null;
-  const paginatedRemaining = filteredArticles.slice(1);
-  const totalPages = Math.max(1, Math.ceil(paginatedRemaining.length / itemsPerPage));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const remainingArticles = paginatedRemaining.slice(
-    (safeCurrentPage - 1) * itemsPerPage,
-    safeCurrentPage * itemsPerPage
-  );
+    if (nextSearch.trim()) {
+      params.set("q", nextSearch.trim());
+    }
+
+    if (nextPage > 1) {
+      params.set("page", String(nextPage));
+    }
+
+    const queryString = params.toString();
+    return queryString ? `/news?${queryString}` : "/news";
+  };
+
+  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    router.push(buildHref({ nextSearch: searchQuery }));
+  };
 
   return (
     <section className="bg-surface py-32">
       <div className="mx-auto max-w-[1440px] px-6">
         <div className="mb-12 flex flex-col gap-4 border-b border-outline-variant/20 pb-6">
+          <p className="font-label text-xs font-semibold uppercase tracking-[0.18em] text-on-surface-variant">
+            <span className="text-primary">{totalItems}</span>{" "}
+            {locale === "vi" ? "bài viết" : "articles"}
+          </p>
           <div className="flex flex-wrap gap-4">
-          <button
+          <Link
             className={`border px-6 py-3 font-label text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${
-              filter === "all"
+              !currentCategory
                 ? "border-primary bg-primary text-white"
                 : "border-outline-variant bg-transparent text-primary hover:bg-primary/5"
             }`}
-            onClick={() => {
-              setFilter("all");
-              setCurrentPage(1);
-            }}
-            type="button"
+            href={buildHref({ nextCategory: "" })}
           >
             {t("filters.all")}
-          </button>
+          </Link>
 
           {categories.map((category) => (
-            <button
+            <Link
               key={category.slug}
               className={`border px-6 py-3 font-label text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${
-                filter === category.slug
+                currentCategory === category.slug
                   ? "border-primary bg-primary text-white"
                   : "border-outline-variant bg-transparent text-primary hover:bg-primary/5"
               }`}
-              onClick={() => {
-                setFilter(category.slug);
-                setCurrentPage(1);
-              }}
-              type="button"
+              href={buildHref({ nextCategory: category.slug })}
             >
               {category.label}
-            </button>
+            </Link>
           ))}
           </div>
 
-          <div className="flex justify-end">
+          <form className="flex justify-end gap-3" onSubmit={submitSearch}>
             <input
               className="w-full max-w-sm border border-outline-variant/40 bg-white px-4 py-3 font-body text-sm text-on-surface outline-none transition-colors focus:border-primary"
-              onChange={(event) => {
-                setSearchQuery(event.target.value);
-                setCurrentPage(1);
-              }}
+              onChange={(event) => setSearchQuery(event.target.value)}
               placeholder={t("list.searchPlaceholder")}
               value={searchQuery}
             />
-          </div>
+            <button
+              className="border border-primary bg-primary px-5 py-3 font-label text-[10px] font-semibold uppercase tracking-[0.18em] text-on-primary transition-colors hover:bg-secondary"
+              type="submit"
+            >
+              Tìm
+            </button>
+          </form>
         </div>
 
         {featuredArticle ? (
@@ -110,13 +121,14 @@ export default function NewsListSection({ articles }: NewsListSectionProps) {
               <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_0.85fr]">
                 <Link
                   href={`/news/${featuredArticle.slug}`}
-                  className="relative block min-h-[420px] overflow-hidden"
+                  className="relative block aspect-[16/9] min-h-[280px] max-h-[480px] overflow-hidden xl:aspect-auto xl:min-h-[420px] xl:max-h-none"
                 >
                   <Image
                     alt={featuredArticle.title}
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     fill
                     priority
+                    sizes="(max-width: 1279px) 100vw, 60vw"
                     src={featuredArticle.image}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
@@ -178,11 +190,12 @@ export default function NewsListSection({ articles }: NewsListSectionProps) {
                         href={`/news/${article.slug}`}
                         className="flex h-full flex-col"
                       >
-                        <div className="relative aspect-[4/3] overflow-hidden">
+                        <div className="relative aspect-[16/9] overflow-hidden sm:aspect-[4/3]">
                           <Image
                             alt={article.title}
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                             fill
+                            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
                             src={article.image}
                           />
                           <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/30 to-transparent" />
@@ -231,18 +244,17 @@ export default function NewsListSection({ articles }: NewsListSectionProps) {
                   <div className="flex flex-wrap items-center justify-center gap-2 border-t border-outline-variant/20 pt-6">
                     {Array.from({ length: totalPages }, (_, index) => index + 1).map(
                       (page) => (
-                        <button
+                        <Link
                           key={page}
                           className={`min-w-11 px-4 py-3 font-label text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${
-                            page === safeCurrentPage
+                            page === currentPage
                               ? "bg-primary text-on-primary"
                               : "border border-outline-variant/40 bg-white text-primary hover:border-primary"
                           }`}
-                          onClick={() => setCurrentPage(page)}
-                          type="button"
+                          href={buildHref({ nextPage: page })}
                         >
                           {page}
-                        </button>
+                        </Link>
                       )
                     )}
                   </div>

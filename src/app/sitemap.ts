@@ -9,6 +9,7 @@ const LOCALES: Locale[] = ["en", "vi"];
 const STATIC_PATHS = [
   "/",
   "/about",
+  "/operations",
   "/contact",
   "/gallery",
   "/news",

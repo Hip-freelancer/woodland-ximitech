@@ -6,6 +6,7 @@ import BreadcrumbBar from "@/components/ui/BreadcrumbBar";
 import PageHero from "@/components/ui/PageHero";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { fetchVisibleTeamMembers } from "@/lib/content";
+import { buildLocalizedMetadata, buildWoodlandSeoKeywords } from "@/lib/metadata";
 import type { Locale } from "@/types";
 
 export async function generateMetadata({
@@ -16,10 +17,13 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "salesTeam.hero" });
 
-  return {
+  return buildLocalizedMetadata({
+    locale,
+    path: "/sales-team",
     title: `${t("title")} | Woodland`,
     description: t("subtitle"),
-  };
+    keywords: buildWoodlandSeoKeywords(locale, [t("title"), t("subtitle")]),
+  });
 }
 
 export default async function SalesTeamPage({
